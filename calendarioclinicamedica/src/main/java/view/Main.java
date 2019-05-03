@@ -5,8 +5,11 @@
  */
 package view;
 
-import dao.CidadeDao;
-import model.Cidade;
+import com.google.protobuf.ServiceException;
+import dao.PacienteDao;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Paciente;
 
 /**
  *
@@ -15,14 +18,22 @@ import model.Cidade;
 public class Main {
 
     public static void main(String[] args) {
-        Cidade c = new Cidade();
-        CidadeDao dao = new CidadeDao();
-        c.setEstado("MINAS");
-        c.setNome("FORMIGA");
-        c.setUf("MG");
-        dao.salvar(c);
-        
+        Paciente p = new Paciente();
+        p.setBairro("Bairro");
+        p.setCelular("CElular");
+        p.setCpf("13698113651");
+        PacienteDao pdao = new PacienteDao();
+        pdao.salvar(p);
+        Paciente p2 = null;
 
+        
+        try {
+            p2 = pdao.getByCpf("13698113651");
+        } catch (ServiceException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(p2.toString());
+        
     }
 
 }

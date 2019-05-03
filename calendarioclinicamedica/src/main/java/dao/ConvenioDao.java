@@ -14,7 +14,7 @@ import model.Convenio;
  */
 public class ConvenioDao extends GenericDao<Convenio, Integer>{
     
-     protected Convenio getByNome(String nome) throws ServiceException {
+     public Convenio getByNome(String nome) throws ServiceException {
         return em.createQuery("select c from Convenio c where c.nome = :nome", Convenio.class)
                 .setParameter("nome", nome).getSingleResult();
     }

@@ -14,7 +14,7 @@ import model.Especializacao;
  */
 public class EspecializacaoDao extends GenericDao<Especializacao, Integer> {
 
-    protected Especializacao getByNome(String nome) throws ServiceException {
+    public Especializacao getByNome(String nome) throws ServiceException {
         return em.createQuery("select e from Especializacao e where e.nome = :nome", Especializacao.class)
                 .setParameter("nome", nome).getSingleResult();
     }

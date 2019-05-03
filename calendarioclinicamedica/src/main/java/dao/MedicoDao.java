@@ -15,11 +15,11 @@ import model.Medico;
  */
 public class MedicoDao extends GenericDao<Medico, Integer> {
     
-    protected List<Medico> getByNome(String nome) throws ServiceException {
-        return em.createQuery("select m from Medico m where m.nome = :nome", Medico.class)
+    public List<Medico> getByNome(String nome) throws ServiceException {
+        return em.createQuery("select m from Medico m where m.nome like :nome", Medico.class)
                 .setParameter("nome", nome).getResultList();
     }
-    protected Medico getByCrm(String crm) throws ServiceException {
+    public Medico getByCrm(String crm) throws ServiceException {
         return em.createQuery("select m from Medico m where m.crm = :crm", Medico.class)
                 .setParameter("crm", crm).getSingleResult();
     }
