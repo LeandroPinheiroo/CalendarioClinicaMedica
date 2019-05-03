@@ -5,64 +5,64 @@
  */
 package model;
 
-import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
 
 /**
  *
  * @author leandro
  */
 @Entity
-@PrimaryKeyJoinColumn(name = "pessoa_id")
-public class Medico extends Pessoa {
+public class Procedimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 15)
-    private String crm;
-    @ManyToMany
-    @JoinTable(name = "Medico_Especializacao", joinColumns = @JoinColumn(name = "medico_id"),
-            inverseJoinColumns = @JoinColumn(name = "especializacao_id"))
-    private List<Especializacao> especializacoes;
+    @Column(length = 50)
+    private String nome;
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
+    private float preco;
     private boolean status;
+    
 
-    public Medico() {
+    public Procedimento() {
     }
 
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getCrm() {
-        return crm;
+    public String getNome() {
+        return nome;
     }
 
-    public void setCrm(String crm) {
-        this.crm = crm;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public List<Especializacao> getEspecializacoes() {
-        return especializacoes;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setEspecializacoes(List<Especializacao> especializacoes) {
-        this.especializacoes = especializacoes;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public float getPreco() {
+        return preco;
+    }
+
+    public void setPreco(float preco) {
+        this.preco = preco;
     }
 
     public boolean isStatus() {
@@ -72,6 +72,8 @@ public class Medico extends Pessoa {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+    
 
     @Override
     public int hashCode() {
@@ -89,16 +91,14 @@ public class Medico extends Pessoa {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Medico other = (Medico) obj;
+        final Procedimento other = (Procedimento) obj;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Medico{" + "id=" + id + ", crm=" + crm + ", especializacoes=" + especializacoes + ", status=" + status + '}';
+        return "Procedimento{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", status=" + status + '}';
     }
-
-   
 
     
 }

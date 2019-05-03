@@ -5,16 +5,12 @@
  */
 package model;
 
-import java.util.List;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 /**
@@ -23,20 +19,15 @@ import javax.persistence.PrimaryKeyJoinColumn;
  */
 @Entity
 @PrimaryKeyJoinColumn(name = "pessoa_id")
-public class Medico extends Pessoa {
-
+public class Paciente extends Pessoa{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 15)
-    private String crm;
-    @ManyToMany
-    @JoinTable(name = "Medico_Especializacao", joinColumns = @JoinColumn(name = "medico_id"),
-            inverseJoinColumns = @JoinColumn(name = "especializacao_id"))
-    private List<Especializacao> especializacoes;
+    @ManyToOne
+    private Convenio convenio;
     private boolean status;
 
-    public Medico() {
+    public Paciente() {
     }
 
     @Override
@@ -49,20 +40,12 @@ public class Medico extends Pessoa {
         this.id = id;
     }
 
-    public String getCrm() {
-        return crm;
+    public Convenio getConvenio() {
+        return convenio;
     }
 
-    public void setCrm(String crm) {
-        this.crm = crm;
-    }
-
-    public List<Especializacao> getEspecializacoes() {
-        return especializacoes;
-    }
-
-    public void setEspecializacoes(List<Especializacao> especializacoes) {
-        this.especializacoes = especializacoes;
+    public void setConvenio(Convenio convenio) {
+        this.convenio = convenio;
     }
 
     public boolean isStatus() {
@@ -89,16 +72,8 @@ public class Medico extends Pessoa {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Medico other = (Medico) obj;
+        final Paciente other = (Paciente) obj;
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "Medico{" + "id=" + id + ", crm=" + crm + ", especializacoes=" + especializacoes + ", status=" + status + '}';
-    }
-
-   
-
     
 }

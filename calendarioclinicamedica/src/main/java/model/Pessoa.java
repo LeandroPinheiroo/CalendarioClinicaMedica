@@ -27,7 +27,7 @@ public class Pessoa {
     @Column(length = 11)
     private String celular;
     @ManyToOne
-    private Cidade city;
+    private Cidade cidade;
     @Column(length = 8)
     private String cep;
     @Column(length = 50)
@@ -85,12 +85,12 @@ public class Pessoa {
         this.celular = celular;
     }
 
-    public Cidade getCity() {
-        return city;
+    public Cidade getCidade() {
+        return cidade;
     }
 
-    public void setCity(Cidade city) {
-        this.city = city;
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
     }
 
     public String getCep() {
@@ -203,7 +203,7 @@ public class Pessoa {
 
     @Override
     public String toString() {
-        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", email=" + email + ", celular=" + celular + ", city=" + city + ", cep=" + cep + ", bairro=" + bairro + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento + ", dataCadastro=" + dataCadastro + ", login=" + login + ", senha=" + senha + ", cpf=" + cpf + ", rg=" + rg + '}';
+        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", email=" + email + ", celular=" + celular + ", cidade=" + cidade + ", cep=" + cep + ", bairro=" + bairro + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento + ", dataCadastro=" + dataCadastro + ", login=" + login + ", senha=" + senha + ", cpf=" + cpf + ", rg=" + rg + '}';
     }
 
 }
