@@ -22,7 +22,7 @@ public class Especializacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     private String nome;
     @Column(columnDefinition = "TEXT")
     private String descricao;

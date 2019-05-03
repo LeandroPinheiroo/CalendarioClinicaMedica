@@ -28,7 +28,7 @@ public class Medico extends Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 15)
+    @Column(length = 15, unique = true)
     private String crm;
     @ManyToMany
     @JoinTable(name = "Medico_Especializacao", joinColumns = @JoinColumn(name = "medico_id"),
