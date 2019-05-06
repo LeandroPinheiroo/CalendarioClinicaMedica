@@ -39,12 +39,6 @@ public class PacienteService {
             throw new RegraDeNegocioException("Informe o CPF do paciente");
         } else if (entidade.getCelular() == null) {
             throw new RegraDeNegocioException("Informe o celular do paciente");
-        } else if (entidade.getLogin() == null) {
-            throw new RegraDeNegocioException("Informe o login do paciente");
-        } else if (entidade.getSenha() == null) {
-            throw new RegraDeNegocioException("Informe a senha do paciente");
-        } else if (entidade.getPermissao() == null) {
-            throw new RegraDeNegocioException("Informe a permição do paciente");
         } else if (entidade.getEmail() == null) {
             throw new RegraDeNegocioException("Informe o E-mail do paciente");
         }
@@ -78,6 +72,7 @@ public class PacienteService {
         }
         return dao.getByNome(nome);
     }
+
     public Paciente getByCpf(String crm) throws ServiceException, RegraDeNegocioException {
         if (crm == null) {
             throw new RegraDeNegocioException("Informe o CPF do paciente");
