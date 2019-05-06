@@ -38,7 +38,7 @@ public abstract class GenericDao<T, ID extends Serializable> implements IGeneric
     @Override
     public boolean remover(ID id) {
 
-        T aux = buscarPorID(id);
+        T aux = getId(id);
 
         if (aux != null) {
             em.getTransaction().begin();
@@ -50,12 +50,12 @@ public abstract class GenericDao<T, ID extends Serializable> implements IGeneric
     }
 
     @Override
-    public T buscarPorID(ID id) {
+    public T getId(ID id) {
         return em.find(entidade, id);
     }
 
     @Override
-    public List<T> buscarTodas() {
+    public List<T> getAll() {
 
         String jpql = "select e from "
                 + entidade.getName() + " e ";

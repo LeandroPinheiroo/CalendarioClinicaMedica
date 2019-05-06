@@ -16,8 +16,8 @@ public interface IGenericDao<T,ID extends Serializable> {
     
     public void salvar(T entidade);
     public boolean remover(ID id);
-    public T buscarPorID(ID id);
-    public List<T> buscarTodas();
+    public T getId(ID id);
+    public List<T> getAll();
     
 }
 
