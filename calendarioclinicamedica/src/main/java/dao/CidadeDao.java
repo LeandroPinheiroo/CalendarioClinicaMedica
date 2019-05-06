@@ -15,9 +15,9 @@ import model.Cidade;
  */
 public class CidadeDao extends GenericDao<Cidade, Integer> {
 
-    public Cidade getByNomeEstado(String city, String state) throws ServiceException {
+    public Cidade getByNomeEstado(String cidade, String estado) throws ServiceException {
         return em.createQuery("select c from Cidade c where c.nome = :cidade and c.estado = :estado", Cidade.class)
-                .setParameter("cidade", city).setParameter("estado", state).getSingleResult();
+                .setParameter("cidade", cidade).setParameter("estado", estado).getSingleResult();
     }
 
     public List<Cidade> getByEstado(String estado) throws ServiceException {
