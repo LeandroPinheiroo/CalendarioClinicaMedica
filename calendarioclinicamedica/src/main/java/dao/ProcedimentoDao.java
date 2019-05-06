@@ -5,12 +5,12 @@
  */
 package dao;
 
-import model.Medico;
+import model.Procedimento;
 
 /**
  *
  * @author leandro
  */
-public class ProcedimentoDao extends GenericDao<Medico, Integer>{
+public class ProcedimentoDao extends GenericDao<Procedimento, Integer>{
     
 }
