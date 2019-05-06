@@ -10,5 +10,15 @@ package model;
  * @author leandro
  */
 public enum Permissao {
+    MEDICO("Médico"),SECRETARIA("Secretária"),GERAL("Geral");
     
+    private String nome;
+
+    private Permissao(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }   
 }
