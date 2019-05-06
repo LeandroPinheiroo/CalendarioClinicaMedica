@@ -28,7 +28,7 @@ public class AgendamentoDao extends GenericDao<Agendamento, Integer> {
     }
     
     public List<Agendamento> getByDataRange(Date menorData, Date maiorData) throws ServiceException {
-        return em.createQuery("\"select a from Agendamento a where a.paidDay between :menorData and :maiorData", Agendamento.class)
-                .setParameter("lessPaidDay",menorData).setParameter("higherPaidDay", maiorData).getResultList();
+        return em.createQuery("select a from Agendamento a where a.data between :menorData and :maiorData", Agendamento.class)
+                .setParameter("menorData",menorData).setParameter("maiorData", maiorData).getResultList();
     }
 }
