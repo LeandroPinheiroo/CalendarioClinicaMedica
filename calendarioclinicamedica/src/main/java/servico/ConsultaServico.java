@@ -15,9 +15,9 @@ import model.Consulta;
  * @author leandro
  */
 /*classe de serviço de consulta para verificar as regras de negocio */
-public class ConsultaService extends ConsultaDao{
+public class ConsultaServico extends ConsultaDao{
     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public ConsultaService() {
+    public ConsultaServico() {
         super();
     }
     

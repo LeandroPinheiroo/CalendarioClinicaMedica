@@ -5,7 +5,6 @@
  */
 package servico;
 
-import com.google.protobuf.ServiceException;
 import dao.SecretariaDao;
 import excecao.ServicoException;
 import java.util.List;
@@ -16,9 +15,9 @@ import model.Secretaria;
  * @author leandro
  */
 /*classe de serviço de secretaria para verificar as regras de negocio da classe*/
-public class SecretariaService extends SecretariaDao{
+public class SecretariaServico extends SecretariaDao{
     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public SecretariaService() {
+    public SecretariaServico() {
         super();
     }
     

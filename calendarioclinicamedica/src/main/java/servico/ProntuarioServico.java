@@ -17,9 +17,9 @@ import model.Prontuario;
  * @author leandro
  */
 /*classe de serviço de prontuario para verificar as regras de negocio da classe*/
-public class ProntuarioService extends ProntuarioDao{
+public class ProntuarioServico extends ProntuarioDao{
     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public ProntuarioService() {
+    public ProntuarioServico() {
         super();
     }
     

@@ -17,9 +17,9 @@ import model.Agendamento;
  * @author leandro
  */
 /*classe de serviço de agendamento para verificar as regras de negocio */
-public class AgendamentoService extends AgendamentoDao{
+public class AgendamentoServico extends AgendamentoDao{
     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public AgendamentoService() {
+    public AgendamentoServico() {
         super();
     }
     

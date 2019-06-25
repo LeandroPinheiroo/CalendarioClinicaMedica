@@ -15,9 +15,9 @@ import model.Medico;
  * @author leandro
  */
 /*classe de serviço de médico para verificar as regras de negocio da classe*/
-public class MedicoService extends MedicoDao{
+public class MedicoServico extends MedicoDao{
     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public MedicoService() {
+    public MedicoServico() {
        super();
     }
     

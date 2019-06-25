@@ -15,9 +15,9 @@ import model.Paciente;
  * @author leandro
  */
 /*classe de serviço de paciente para verificar as regras de negocio da classe*/
-public class PacienteService extends PacienteDao{
+public class PacienteServico extends PacienteDao{
     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public PacienteService() {
+    public PacienteServico() {
         super();
     }
     

@@ -15,9 +15,9 @@ import model.Cidade;
  * @author leandro
  */
 /*classe de serviço de cidade para verificar as regras de negocio */
-public class CidadeService extends CidadeDao{
+public class CidadeServico extends CidadeDao{
     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public CidadeService() {
+    public CidadeServico() {
         super();
     }
     

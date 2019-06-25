@@ -15,9 +15,9 @@ import model.Procedimento;
  * @author leandro
  */
 /*classe de serviço de procedimento para verificar as regras de negocio da classe*/
-public class ProcedimentoService extends ProcedimentoDao{
+public class ProcedimentoServico extends ProcedimentoDao{
      /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public ProcedimentoService() {
+    public ProcedimentoServico() {
         super();
     }
     

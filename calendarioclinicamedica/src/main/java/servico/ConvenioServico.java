@@ -15,9 +15,9 @@ import model.Convenio;
  * @author leandro
  */
 /*classe de serviço de convenio para verificar as regras de negocio */
-public class ConvenioService extends ConvenioDao{
+public class ConvenioServico extends ConvenioDao{
     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public ConvenioService() {
+    public ConvenioServico() {
         super();
     }
 

@@ -34,7 +34,6 @@ public class Agendamento implements Serializable {
     private int id;
     @Temporal(TemporalType.DATE)
     private Date data;
-    @Temporal(TemporalType.TIME)
     private Time hora;
     @ManyToOne
     private Paciente paciente;

@@ -15,9 +15,9 @@ import model.Especializacao;
  * @author leandro
  */
 /*classe de serviço de especialização para verificar as regras de negocio */
-public class EspecializacaoService extends EspecializacaoDao{
+public class EspecializacaoServico extends EspecializacaoDao{
     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
-    public EspecializacaoService() {
+    public EspecializacaoServico() {
         super();
     }
     
