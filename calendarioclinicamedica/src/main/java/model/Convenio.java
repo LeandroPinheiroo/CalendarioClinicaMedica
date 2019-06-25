@@ -9,11 +9,12 @@ package model;
  *
  * @author leandro
  */
+import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Convenio {
+public class Convenio implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

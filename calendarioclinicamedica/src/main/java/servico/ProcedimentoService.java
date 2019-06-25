@@ -6,7 +6,7 @@
 package servico;
 
 import dao.ProcedimentoDao;
-import exception.RegraDeNegocioException;
+import excecao.ServicoException;
 import java.util.List;
 import model.Procedimento;
 
@@ -14,50 +14,89 @@ import model.Procedimento;
  *
  * @author leandro
  */
-public class ProcedimentoService {
-
-    private ProcedimentoDao dao;
-
+/*classe de serviço de procedimento para verificar as regras de negocio da classe*/
+public class ProcedimentoService extends ProcedimentoDao{
+     /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
     public ProcedimentoService() {
-        dao = new ProcedimentoDao();
+        super();
+    }
+    
+    /*método para salvar um procedimento*/
+    public void salvar(Procedimento procedimento) throws ServicoException {
+        /*verifica se a classe recebida está nula ou se os campos necessários não estão preenchidos*/
+        /*caso aconteça, lança exceção de acordo com o erro*/
+        if (procedimento == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (procedimento.getNome() == null || procedimento.getNome().isEmpty()) {
+            throw new ServicoException("Informe o nome do procedimento");
+        } else if (procedimento.getPreco() <= 0) {
+            throw new ServicoException("O preço do procedimento não procedimento");
+        }
+        /*se não houve problema , salva o procedimento*/
+        super.salvar(procedimento);
+    }
+    
+    /*método para atualizar um procedimento*/
+    public void atualizar(Procedimento procedimento) throws ServicoException {
+        /*verifica se a classe recebida está nula ou se os campos necessários não estão preenchidos*/
+        /*caso aconteça, lança exceção de acordo com o erro*/
+        if (procedimento == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (procedimento.getNome() == null || procedimento.getNome().isEmpty()) {
+            throw new ServicoException("Informe o nome do procedimento");
+        } else if (procedimento.getPreco() <= 0) {
+            throw new ServicoException("O preço do procedimento não procedimento");
+        }
+        /*se não houve problema , atualiza o procedimento*/
+        super.atualizar(procedimento);
     }
 
-    public Procedimento getByCodigo(Integer codigo) throws RegraDeNegocioException {
+    /*método para remover um procedimento*/
+    public Procedimento remover(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um código valido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*caso não recebeu, lança exceção informando o erro*/
+            throw new ServicoException("Informe um código válido.");
         }
-        return dao.getId(codigo);
-    }
-
-    public void salvar(Procedimento entidade) throws RegraDeNegocioException {
-        if (entidade == null) {
-            throw new RegraDeNegocioException("Informe a entidade");
-        } else if (entidade.getNome() == null) {
-            throw new RegraDeNegocioException("Informe o nome do procedimento");
-        } else if (entidade.getPreco() <= 0) {
-            throw new RegraDeNegocioException("O preço do procedimento não procedimento");
-        }
-        dao.salvar(entidade);
-    }
-
-    public Procedimento remover(Integer codigo) throws RegraDeNegocioException {
-        if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-        }
-        Procedimento procedimento = this.getId(codigo);
-        dao.remover(codigo);
+        /*caso não houve problema, busca o procedimento*/
+        Procedimento procedimento = super.buscaPorID(codigo);
+        /*remove o procedimento*/
+        super.remover(codigo);
+        /*retorna o procedimento removido*/
         return procedimento;
     }
-
-    public Procedimento getId(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para buscar um procedimento pelo seu codigo*/
+    public Procedimento buscaPorID(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um codigo valido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*se não recebeu, lança exceção*/
+            throw new ServicoException("Informe um código válido.");
         }
-        Procedimento procedimento = dao.getId(codigo);
-        return procedimento;
+        /*se não houve erro, retorna o procedimento buscado*/
+        return super.buscaPorID(codigo);
     }
-
-    public List<Procedimento> getAll() {
-        return dao.getAll();
+    
+    /*método para buscar todos os procedimentos cadastrados*/
+    public List<Procedimento> buscaTodos() {
+        /*retorna a lista de procedimentos*/
+        return super.buscaTodos();
+    }
+    
+    /*método para buscar um procedimento pelo seu nome*/
+    public Procedimento buscaPeloNome(String nome) throws ServicoException{
+        /*verifica se recebeu um nome nulo ou vazio*/
+        if (nome == null || nome.isEmpty()) {
+            /*se aconteceu, lança exceção informando o erro*/
+            throw new ServicoException("Informe o nome do paciente");
+        }
+        /* se não houve problema, retorna o procedimento pelo seu nome*/
+        return super.buscaPeloNome(nome);
+    }
+    
+    /*método para buscar uma lista de procedimentos pelo status*/
+    public List<Procedimento> buscaPorStatus(boolean status){
+        /*retorna a lista de procedimentos*/
+        return super.buscaPorStatus(status);
     }
 }

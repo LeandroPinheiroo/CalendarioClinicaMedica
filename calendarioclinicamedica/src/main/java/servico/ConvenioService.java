@@ -5,66 +5,94 @@
  */
 package servico;
 
-import com.google.protobuf.ServiceException;
 import dao.ConvenioDao;
-import exception.RegraDeNegocioException;
+import excecao.ServicoException;
 import java.util.List;
-import model.Cidade;
 import model.Convenio;
 
 /**
  *
  * @author leandro
  */
-public class ConvenioService {
-
-    private ConvenioDao dao;
-
+/*classe de serviço de convenio para verificar as regras de negocio */
+public class ConvenioService extends ConvenioDao{
+    /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
     public ConvenioService() {
-        dao = new ConvenioDao();
+        super();
     }
 
-    public Convenio getByCodigo(Integer codigo) throws RegraDeNegocioException {
+    /*método para salvar um convenio*/
+    public void salvar(Convenio convenio) throws ServicoException {
+        /*verifica se recebeu a classe instanciada ou se recebeu os campos validos
+        e caso não recebeu, lança exceção*/
+        if (convenio == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (convenio.getNome() == null) {
+            throw new ServicoException("Informe o nome do convênio");
+        }
+        /*se não houve problema, salva o convenio*/
+        super.salvar(convenio);
+    }
+    
+    /*método para atualizar um convenio*/
+    public void atualizar(Convenio convenio) throws ServicoException {
+        /*verifica se recebeu a classe instanciada ou se recebeu os campos validos
+        e caso não recebeu, lança exceção*/
+        if (convenio == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (convenio.getNome() == null) {
+            throw new ServicoException("Informe o nome do convênio");
+        }
+        /*se não houve problema, atualiza o convenio*/
+        super.atualizar(convenio);
+    }
+    
+    /*método para remover um convenio*/
+    public Convenio remover(Integer codigo) throws ServicoException {
+        /*verifica se recebeu código invalido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*se acontecer, lança exceção*/
+            throw new ServicoException("Informe um código válido.");
         }
-        return dao.getId(codigo);
-    }
-
-    public void salvar(Convenio entidade) throws RegraDeNegocioException {
-        if (entidade == null) {
-            throw new RegraDeNegocioException("Informe a entidade");
-        } else if (entidade.getNome() == null) {
-            throw new RegraDeNegocioException("Informe o nome do convênio");
-        }
-        dao.salvar(entidade);
-    }
-
-    public Convenio remover(Integer codigo) throws RegraDeNegocioException {
-        if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-        }
-        Convenio convenio = this.getId(codigo);
-        dao.remover(codigo);
+        /*busca o convenio*/
+        Convenio convenio = super.buscaPorID(codigo);
+        /*remove o convenio*/
+        super.remover(codigo);
+        /*retorna o convenio*/
         return convenio;
     }
-
-    public Convenio getId(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para buscar um convenio pelo seu código*/
+    public Convenio buscaPorID(Integer codigo) throws ServicoException {
+        /*verifica se recebeu algum código invalido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*se recebeu, lança exceção*/
+            throw new ServicoException("Informe um código válido.");
         }
-        Convenio convenio = dao.getId(codigo);
-        return convenio;
+        /*se não houve problema, retorna o convenio buscado*/
+        return super.buscaPorID(codigo);
     }
-
-    public List<Convenio> getAll() {
-        return dao.getAll();
+    
+    /*método para buscar todos os convenios cadastrados*/
+    public List<Convenio> buscarTodos() {
+        /*retorna a lista de convenios*/
+        return super.buscaTodos();
     }
-
-    public Convenio getByNome(String nome) throws ServiceException, RegraDeNegocioException {
-        if (nome == null) {
-            throw new RegraDeNegocioException("Informe o nome do convênio");
+    
+    /*método para buscar um convenio pelo seu nome*/
+    public Convenio buscaPorNome(String nome) throws ServicoException {
+        /*verifica se recebeu um nome valido*/
+        if (nome == null || nome.isEmpty()) {
+            /*caso aconteça, lança exceção*/
+            throw new ServicoException("Informe o nome do convênio");
         }
-        return dao.getByNome(nome);
+        /*retorna o convenio*/
+        return super.buscaPorNome(nome);
+    }
+    
+    /*método para buscar uma lista de convenio pelo status*/
+    public List<Convenio> buscaPorStatus(boolean status){
+        /*retorna a lista de convenios*/
+        return super.buscaPorStatus(status);
     }
 }

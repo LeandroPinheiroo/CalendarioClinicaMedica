@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -26,13 +27,14 @@ import javax.persistence.TemporalType;
  * @author leandro
  */
 @Entity
-public class Agendamento {
+public class Agendamento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Temporal(TemporalType.DATE)
     private Date data;
+    @Temporal(TemporalType.TIME)
     private Time hora;
     @ManyToOne
     private Paciente paciente;

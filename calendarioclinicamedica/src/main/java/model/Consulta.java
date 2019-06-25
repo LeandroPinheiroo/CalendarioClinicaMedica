@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 
 /**
@@ -15,7 +16,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Consulta {
+public class Consulta implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

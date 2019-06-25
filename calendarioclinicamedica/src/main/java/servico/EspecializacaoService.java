@@ -5,9 +5,8 @@
  */
 package servico;
 
-import com.google.protobuf.ServiceException;
 import dao.EspecializacaoDao;
-import exception.RegraDeNegocioException;
+import excecao.ServicoException;
 import java.util.List;
 import model.Especializacao;
 
@@ -15,55 +14,85 @@ import model.Especializacao;
  *
  * @author leandro
  */
-public class EspecializacaoService {
-
-    private EspecializacaoDao dao;
-
+/*classe de serviço de especialização para verificar as regras de negocio */
+public class EspecializacaoService extends EspecializacaoDao{
+    /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
     public EspecializacaoService() {
-        dao = new EspecializacaoDao();
+        super();
     }
-
-    public Especializacao getByCodigo(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para salvar uma especialização */
+    public void salvar(Especializacao especializacao) throws ServicoException {
+        /*verifica se recebeu a classe instancia ou os campos validos*/
+        /*se não recebeu, lança exceção*/
+        if (especializacao == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (especializacao.getNome() == null) {
+            throw new ServicoException("Informe o nome da especialização");
+        }
+        /*se não houve problema, salva a especialização*/
+        super.salvar(especializacao);
+    }
+    
+    /*método para atualizar uma especialização */
+    public void atualizar(Especializacao especializacao) throws ServicoException {
+        /*verifica se recebeu a classe instancia ou os campos validos*/
+        /*se não recebeu, lança exceção*/
+        if (especializacao == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (especializacao.getNome() == null) {
+            throw new ServicoException("Informe o nome da especialização");
+        }
+        /*se não houve problema, atualiza a especialização*/
+        super.atualizar(especializacao);
+    }
+    
+    /*método para remover uma especialização*/
+    public Especializacao remover(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um codigo valido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*se não recebeu, lança exceção*/
+            throw new ServicoException("Informe um código válido.");
         }
-        return dao.getId(codigo);
-    }
-
-    public void salvar(Especializacao entidade) throws RegraDeNegocioException {
-        if (entidade == null) {
-            throw new RegraDeNegocioException("Informe a entidade");
-        } else if (entidade.getNome() == null) {
-            throw new RegraDeNegocioException("Informe o nome da especialização");
-        }
-        dao.salvar(entidade);
-    }
-
-    public Especializacao remover(Integer codigo) throws RegraDeNegocioException {
-        if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-        }
-        Especializacao especializacao = this.getId(codigo);
-        dao.remover(codigo);
+        /*se não houve problema, busca a especialização*/
+        Especializacao especializacao = super.buscaPorID(codigo);
+        /*remove a especialização*/
+        super.remover(codigo);
+        /*e retorna ela*/
         return especializacao;
     }
-
-    public Especializacao getId(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para buscar a especialização*/
+    public Especializacao buscaPorID(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um código valido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*caso não tenha recebida, lança exceção*/
+            throw new ServicoException("Informe um código válido.");
         }
-        Especializacao especializacao = dao.getId(codigo);
-        return especializacao;
+        /*caso não teve erro, busca a especialização pelo seu codigo*/
+        return super.buscaPorID(codigo);
     }
-
-    public List<Especializacao> getAll() {
-        return dao.getAll();
+    
+    /*método para listar todas as especializações*/
+    public List<Especializacao> buscaTodos() {
+        /*retorna todas as especializações cadastradas*/
+        return super.buscaTodos();
     }
-
-    public Especializacao getByNome(String nome) throws ServiceException, RegraDeNegocioException {
-        if (nome == null) {
-            throw new RegraDeNegocioException("Informe o nome da especialização");
+    
+    /*método para buscar uma especialização pelo seu nome*/
+    public Especializacao buscaPeloNome(String nome) throws ServicoException {
+        /*verifica se recebeu um nome valido*/
+        if (nome == null || nome.isEmpty()) {
+            /*caso não tenha recebido, lança exceção*/
+            throw new ServicoException("Informe o nome da especialização");
         }
-        return dao.getByNome(nome);
+        /*se não houve problema, retorna a especialização buscada*/
+        return super.buscaPeloNome(nome);
+    }
+    
+    /*método para buscar uma lista de especializações pelo status*/
+    public List<Especializacao> buscaPorStatus(boolean status){
+        /*retorna a lista de especializações*/
+        return super.buscaPorStatus(status);
     }
 }

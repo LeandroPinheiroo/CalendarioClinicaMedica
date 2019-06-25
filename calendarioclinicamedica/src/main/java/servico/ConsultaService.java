@@ -6,7 +6,7 @@
 package servico;
 
 import dao.ConsultaDao;
-import exception.RegraDeNegocioException;
+import excecao.ServicoException;
 import java.util.List;
 import model.Consulta;
 
@@ -14,48 +14,74 @@ import model.Consulta;
  *
  * @author leandro
  */
-public class ConsultaService {
-
-    private ConsultaDao dao;
-
+/*classe de serviço de consulta para verificar as regras de negocio */
+public class ConsultaService extends ConsultaDao{
+    /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
     public ConsultaService() {
-        dao = new ConsultaDao();
+        super();
     }
-
-    public Consulta getByCodigo(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para salvar uma consulta*/
+    public void salvar(Consulta consulta) throws ServicoException {
+        /*verifica se a classe recebida está instanciada e se possui os campos necessários*/
+        /*se não possuir, lança exceção*/
+        if (consulta == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (consulta.getAvaliacao() == null) {
+            throw new ServicoException("Informe a avaliação");
+        }
+        /*se não houve problema, salva a consulta*/
+        super.salvar(consulta);
+    }
+    
+    /*método para atualizar uma consulta*/
+    public void atualizar(Consulta consulta) throws ServicoException {
+        /*verifica se a classe recebida está instanciada e se possui os campos necessários*/
+        /*se não possuir, lança exceção*/
+        if (consulta == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (consulta.getAvaliacao() == null) {
+            throw new ServicoException("Informe a avaliação");
+        }
+        /*se não houve problema, atualiza a consulta*/
+        super.atualizar(consulta);
+    }
+    
+    /*método para remover uma consulta */
+    public Consulta remover(Integer codigo) throws ServicoException {
+        /*verifica se recebeu uma código valido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-
+            /*caso não recebeu, lança exceção*/
+            throw new ServicoException("Informe um código válido.");
         }
-        return dao.getId(codigo);
-    }
-
-    public void salvar(Consulta entidade) throws RegraDeNegocioException {
-        if (entidade == null) {
-            throw new RegraDeNegocioException("Informe a entidade");
-        } else if (entidade.getAvaliacao() == null) {
-            throw new RegraDeNegocioException("Informe a avaliação");
-        }
-        dao.salvar(entidade);
-    }
-
-    public Consulta remover(Integer codigo) throws RegraDeNegocioException {
-        if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-        }
-        Consulta consulta = this.getId(codigo);
-        dao.remover(codigo);
+        /*busca a consulta*/
+        Consulta consulta = super.buscaPorID(codigo);
+        /*então remove a consulta*/
+        super.remover(codigo);
+        /*e por fim, remove a consulta*/
         return consulta;
     }
-
-    public Consulta getId(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para buscar uma consulta pelo ID*/
+    public Consulta buscaPorID(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um código válido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*se não recebeu, lança uma exceção*/
+            throw new ServicoException("Informe um código válido.");
         }
-        Consulta consulta = dao.getId(codigo);
-        return consulta;
+        /*caso não houve problema, retorna a consulta*/
+        return super.buscaPorID(codigo);
     }
-    public List<Consulta> getAll() {
-        return dao.getAll();
+    
+    /*método para buscar todas as consultas cadastradas*/
+    public List<Consulta> buscaTodos() {
+        /*retorna a lista de consultas*/
+        return super.buscaTodos();
+    }
+    
+    /*método para buscar as consultas por seu status*/
+    public List<Consulta> buscaPorStatus(boolean status){
+        /*retorna a lista de consultas*/
+        return super.buscaPorStatus(status);
     }
 }

@@ -5,9 +5,8 @@
  */
 package servico;
 
-import com.google.protobuf.ServiceException;
 import dao.MedicoDao;
-import exception.RegraDeNegocioException;
+import excecao.ServicoException;
 import java.util.List;
 import model.Medico;
 
@@ -15,76 +14,124 @@ import model.Medico;
  *
  * @author leandro
  */
-public class MedicoService {
-
-    private MedicoDao dao;
-
+/*classe de serviço de médico para verificar as regras de negocio da classe*/
+public class MedicoService extends MedicoDao{
+    /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
     public MedicoService() {
-        dao = new MedicoDao();
+       super();
     }
-
-    public Medico getByCodigo(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para salvar um médico */
+    public void salvar(Medico medico) throws ServicoException {
+        /*verifica se a classe não está nula e nem os campos necessários não foram preenchidos*/
+        /*se houver problema, lança exceção de acordo com o erro*/
+        if (medico == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (medico.getNome() == null || medico.getNome().isEmpty()) {
+            throw new ServicoException("Informe o nome do médico");
+        } else if (medico.getCrm() == null || medico.getCrm().isEmpty()) {
+            throw new ServicoException("Informe o CRM");
+        } else if (medico.getCpf() == null || medico.getCpf().isEmpty()) {
+            throw new ServicoException("Informe o CPF do médico");
+        } else if (medico.getCelular() == null || medico.getCelular().isEmpty()) {
+            throw new ServicoException("Informe o celular do médico");
+        } else if (medico.getLogin() == null || medico.getLogin().isEmpty()) {
+            throw new ServicoException("Informe o login do médico");
+        } else if (medico.getSenha() == null || medico.getSenha().isEmpty()) {
+            throw new ServicoException("Informe a senha do médico");
+        } else if (medico.getPermissao() == null) {
+            throw new ServicoException("Informe a permição do médico");
+        } else if (medico.getEmail() == null || medico.getEmail().isEmpty()) {
+            throw new ServicoException("Informe o E-mail do médico");
+        }
+        /*se não houve problema, salva o médico*/
+        super.salvar(medico);
+    }
+    
+    /*método para atualizar o médico*/
+    public void atualizar(Medico medico) throws ServicoException {
+        /*verifica se a classe não está nula e nem os campos necessários não foram preenchidos*/
+        /*se houver problema, lança exceção de acordo com o erro*/
+        if (medico == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (medico.getNome() == null || medico.getNome().isEmpty()) {
+            throw new ServicoException("Informe o nome do médico");
+        } else if (medico.getCrm() == null || medico.getCrm().isEmpty()) {
+            throw new ServicoException("Informe o CRM");
+        } else if (medico.getCpf() == null || medico.getCpf().isEmpty()) {
+            throw new ServicoException("Informe o CPF do médico");
+        } else if (medico.getCelular() == null || medico.getCelular().isEmpty()) {
+            throw new ServicoException("Informe o celular do médico");
+        } else if (medico.getLogin() == null || medico.getLogin().isEmpty()) {
+            throw new ServicoException("Informe o login do médico");
+        } else if (medico.getSenha() == null || medico.getSenha().isEmpty()) {
+            throw new ServicoException("Informe a senha do médico");
+        } else if (medico.getPermissao() == null) {
+            throw new ServicoException("Informe a permição do médico");
+        } else if (medico.getEmail() == null || medico.getEmail().isEmpty()) {
+            throw new ServicoException("Informe o E-mail do médico");
+        }
+        /*se não houve problema, atualiza o médico*/
+        super.atualizar(medico);
+    }
+    
+    /*método para remover um médico pelo seu codigo*/
+    public Medico remover(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um codigo invalido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*lança exceção com o erro abaixo*/
+            throw new ServicoException("Informe um código válido.");
         }
-        return dao.getId(codigo);
-    }
-
-    public void salvar(Medico entidade) throws RegraDeNegocioException {
-        if (entidade == null) {
-            throw new RegraDeNegocioException("Informe a entidade");
-        } else if (entidade.getNome() == null) {
-            throw new RegraDeNegocioException("Informe o nome do médico");
-        } else if (entidade.getCrm() == null) {
-            throw new RegraDeNegocioException("Informe o CRM");
-        } else if (entidade.getCpf() == null) {
-            throw new RegraDeNegocioException("Informe o CPF do médico");
-        } else if (entidade.getCelular() == null) {
-            throw new RegraDeNegocioException("Informe o celular do médico");
-        } else if (entidade.getLogin() == null) {
-            throw new RegraDeNegocioException("Informe o login do médico");
-        } else if (entidade.getSenha() == null) {
-            throw new RegraDeNegocioException("Informe a senha do médico");
-        } else if (entidade.getPermissao() == null) {
-            throw new RegraDeNegocioException("Informe a permição do médico");
-        } else if (entidade.getEmail() == null) {
-            throw new RegraDeNegocioException("Informe o E-mail do médico");
-        }
-        dao.salvar(entidade);
-    }
-
-    public Medico remover(Integer codigo) throws RegraDeNegocioException {
-        if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-        }
-        Medico medico = this.getId(codigo);
-        dao.remover(codigo);
+        /*se não houve problema, busca o médico*/
+        Medico medico = super.buscaPorID(codigo);
+        /*remove o médico*/
+        super.remover(codigo);
+        /*e por fim retorna o médico removido*/
         return medico;
     }
-
-    public Medico getId(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para busca um médico por ID */
+    public Medico buscaPorID(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um código valido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*caso não tenha recebido, lança exceção com o erro*/
+            throw new ServicoException("Informe um código válido.");
         }
-        Medico medico = dao.getId(codigo);
-        return medico;
+        /*caso não houve problema, retorna o médico buscado*/
+        return super.buscaPorID(codigo);
     }
-
-    public List<Medico> getAll() {
-        return dao.getAll();
+    
+    /*método para buscar todos os medicos cadastrados*/
+    public List<Medico> buscaTodos() {
+        /*retorna todos os médicos cadastrados*/
+        return super.buscaTodos();
     }
-
-    public Medico getByCrm(String crm) throws ServiceException, RegraDeNegocioException {
-        if (crm == null) {
-            throw new RegraDeNegocioException("Informe o CRM do médico");
+    
+    /*método para buscar um médico pelo seu CRM*/
+    public Medico buscaPeloCRM(String crm) throws ServicoException {
+        /*verifica se recebeu um crm valido, que não seja vazio ou nulo*/
+        if (crm == null || crm.isEmpty()) {
+            /*lança exceção com o erro abaixo*/
+            throw new ServicoException("Informe o CRM do médico");
         }
-        return dao.getByCrm(crm);
+        /*caso não houve problema, retorna o médico*/
+        return super.buscaPeloCRM(crm);
     }
-
-    public List<Medico> getByNome(String nome) throws ServiceException, RegraDeNegocioException {
-        if (nome == null) {
-            throw new RegraDeNegocioException("Informe o nome do médico");
+    
+    /*método para buscar médicos pelo nome */
+    public List<Medico> buscaPeloNome(String nome) throws ServicoException {
+        /*verifica se recebeu um nome nulo ou vazio*/
+        if (nome == null || nome.isEmpty()) {
+            /*caso recebeu, lança exceção informando o erro*/
+            throw new ServicoException("Informe o nome do médico");
         }
-        return dao.getByNome(nome);
+        /*se não houver problema, retorna a lista de médicos*/
+        return super.buscaPeloNome(nome);
+    }
+    
+    /*método para buscar uma lista de médicos pelo status*/
+    public List<Medico> buscaPorStatus(boolean status){
+        /*retorna a lista de médicos pelo seu status*/
+        return super.buscaPorStatus(status);
     }
 }

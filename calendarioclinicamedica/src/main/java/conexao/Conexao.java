@@ -13,7 +13,7 @@ public class Conexao {
     private Conexao() {
     }
 
-    public static EntityManager getConnection(){
+    public static EntityManager getConexao(){
         if(em == null){
             em = emFactory.createEntityManager();
         }

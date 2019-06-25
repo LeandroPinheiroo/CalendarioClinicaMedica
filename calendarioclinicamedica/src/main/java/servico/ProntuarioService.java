@@ -5,83 +5,134 @@
  */
 package servico;
 
-import com.google.protobuf.ServiceException;
 import dao.ProntuarioDao;
-import exception.RegraDeNegocioException;
+import excecao.ServicoException;
 import java.util.Date;
 import java.util.List;
+import model.Paciente;
 import model.Prontuario;
 
 /**
  *
  * @author leandro
  */
-public class ProntuarioService {
-
-    private ProntuarioDao dao;
-
+/*classe de serviço de prontuario para verificar as regras de negocio da classe*/
+public class ProntuarioService extends ProntuarioDao{
+    /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
     public ProntuarioService() {
-        dao = new ProntuarioDao();
+        super();
     }
-
-    public Prontuario getByCodigo(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para salvar um prontuario*/
+    public void salvar(Prontuario prontuario) throws ServicoException {
+        /*verifica se a classe foi recebida nula ou se algum dos campos não foi preenchidos*/
+        /*se aconteceu, lança exceção com o erro*/
+        if (prontuario == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (prontuario.getConsultas() == null) {
+            throw new ServicoException("Informe as consultas");
+        } else if (prontuario.getData() == null) {
+            throw new ServicoException("Informe a data");
+        } else if (prontuario.getMedicos() == null) {
+            throw new ServicoException("Informe os médicos");
+        } else if (prontuario.getPaciente() == null) {
+            throw new ServicoException("Informe o paciente");
+        } else if (prontuario.getProcedimentos() == null) {
+            throw new ServicoException("Informe os procedimentos");
+        }
+        /*se não houve problema, salva o prontuario*/
+        super.salvar(prontuario);
+    }
+    
+    /*método para atualizar um prontuario*/
+    public void atualizar(Prontuario prontuario) throws ServicoException {
+        /*verifica se a classe foi recebida nula ou se algum dos campos não foi preenchidos*/
+        /*se aconteceu, lança exceção com o erro*/
+        if (prontuario == null) {
+            throw new ServicoException("Informe a entidade");
+        } else if (prontuario.getConsultas() == null) {
+            throw new ServicoException("Informe as consultas");
+        } else if (prontuario.getData() == null) {
+            throw new ServicoException("Informe a data");
+        } else if (prontuario.getMedicos() == null) {
+            throw new ServicoException("Informe os médicos");
+        } else if (prontuario.getPaciente() == null) {
+            throw new ServicoException("Informe o paciente");
+        } else if (prontuario.getProcedimentos() == null) {
+            throw new ServicoException("Informe os procedimentos");
+        }
+        /*se não houve problema, atualiza o prontuario*/
+        super.atualizar(prontuario);
+    }
+    
+    /*método para remover um prontuario*/
+    public Prontuario remover(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um codigo valido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*se não recebeu, lança exceção*/
+            throw new ServicoException("Informe um código válido.");
         }
-        return dao.getId(codigo);
-    }
-
-    public void salvar(Prontuario entidade) throws RegraDeNegocioException {
-        if (entidade == null) {
-            throw new RegraDeNegocioException("Informe a entidade");
-        } else if (entidade.getConsultas() == null) {
-            throw new RegraDeNegocioException("Informe as consultas");
-        } else if (entidade.getData() == null) {
-            throw new RegraDeNegocioException("Informe a data");
-        } else if (entidade.getMedicos() == null) {
-            throw new RegraDeNegocioException("Informe os médicos");
-        } else if (entidade.getPaciente() == null) {
-            throw new RegraDeNegocioException("Informe o paciente");
-        } else if (entidade.getProcedimentos() == null) {
-            throw new RegraDeNegocioException("Informe os procedimentos");
-        }
-        dao.salvar(entidade);
-    }
-
-    public Prontuario remover(Integer codigo) throws RegraDeNegocioException {
-        if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-        }
-        Prontuario prontuario = this.getId(codigo);
-        dao.remover(codigo);
+        /*se não houve problema, busca o prontuario*/
+        Prontuario prontuario = super.buscaPorID(codigo);
+        /*remove o prontuario*/
+        super.remover(codigo);
+        /*e remove o prontuario removido*/
         return prontuario;
     }
-
-    public Prontuario getId(Integer codigo) throws RegraDeNegocioException {
+    
+    /*método para buscar um prontuario pelo seu codigo*/
+    public Prontuario buscaPorID(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um codigo valido*/
         if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
+            /*caso não recebeu, lança exceção com o erro*/
+            throw new ServicoException("Informe um código válido.");
         }
-        Prontuario prontuario = dao.getId(codigo);
-        return prontuario;
+        /*caso não houve problema, retorna o prontuario buscado*/
+        return super.buscaPorID(codigo);
     }
-
-    public List<Prontuario> getAll() {
-        return dao.getAll();
+    
+    /*método para buscar todos os prontuarios cadastrados*/
+    public List<Prontuario> buscaTodos() {
+        /*retorna a lista de prontuarios*/
+        return super.buscaTodos();
     }
-
-    public List<Prontuario> getByData(Date data) throws ServiceException, RegraDeNegocioException {
+    
+    /*método para buscar uma lista de prontuarios por uma data*/
+    public List<Prontuario> buscaPorData(Date data) throws ServicoException {
+        /*verifica se recebeu a data nula*/
         if (data == null) {
-            throw new RegraDeNegocioException("Informe a data");
+            /*caso sim, lança exceção*/
+            throw new ServicoException("Informe a data");
         }
-        return dao.getByData(data);
+        /*se não houve problema, retorna a lista de prontuarios*/
+        return super.buscaPorData(data);
     }
-
-    public List<Prontuario> getByDataRange(Date menorData, Date maiorData) throws ServiceException, RegraDeNegocioException {
+    
+    /*método para buscar uma lista de prontuarios por um range de datas*/
+    public List<Prontuario> buscaPorIntervaloData(Date menorData, Date maiorData) throws ServicoException {
+        /*verifica se alguma das datas está nula, caso estiver lança exceção com o erro*/
         if (menorData == null) {
-            throw new RegraDeNegocioException("Informe a menor data");
-        } else if (maiorData == null) {
-            throw new RegraDeNegocioException("Informe a maior data");
+            throw new ServicoException("Informe a primeira data");
+        } if (maiorData == null) {
+            throw new ServicoException("Informe a segunda data");
         }
-        return dao.getByDataRange(menorData, maiorData);
+        /*se não houve problema, busca a lista de prontuarios*/
+        return super.buscaPorIntervaloData(menorData, maiorData);
+    }
+    
+    /*método para buscar um prontuario pelo seu paciente*/
+    public Prontuario buscaPeloPaciente(Paciente paciente) throws ServicoException{
+        /*verifica se recebeu o paciente nulo*/
+        if(paciente == null){
+            throw new ServicoException("Informe o paciente");
+        }
+        /*se não houve problema, retorna o prontuario*/
+        return super.buscaPeloPaciente(paciente);
+    }
+    
+    /*método para buscar uma lista de prontuarios pelo status*/
+    public List<Prontuario> buscaPorStatus(boolean status){
+        /*retorna a lista de prontuarios*/
+        return super.buscaPorStatus(status);
     }
 }

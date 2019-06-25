@@ -10,15 +10,21 @@ package model;
  * @author leandro
  */
 public enum Permissao {
-    MEDICO("Médico"),SECRETARIA("Secretária"),GERAL("Geral");
+    ADMINISTRADOR("Administrador",'A'),SECRETARIA("Secretária",'S'),MEDICO("Médico",'M'),PACIENTE("Paciente",'P');
     
-    private String nome;
+    private String descricao;
+    private Character sigla;
 
-    private Permissao(String nome) {
-        this.nome = nome;
+    private Permissao(String descricao, Character sigla){
+        this.descricao = descricao;
+        this.sigla = sigla;
     }
 
-    public String getNome() {
-        return nome;
-    }   
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Character getSigla() {
+        return sigla;
+    }
 }

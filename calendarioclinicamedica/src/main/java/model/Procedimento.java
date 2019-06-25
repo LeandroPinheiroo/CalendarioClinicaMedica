@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,12 +18,12 @@ import javax.persistence.Id;
  * @author leandro
  */
 @Entity
-public class Procedimento {
+public class Procedimento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     private String nome;
     @Column(columnDefinition = "TEXT")
     private String descricao;

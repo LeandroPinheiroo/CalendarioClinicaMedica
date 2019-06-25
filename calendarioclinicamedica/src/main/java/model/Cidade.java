@@ -9,11 +9,12 @@ package model;
  *
  * @author leandro
  */
+import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Cidade {
+public class Cidade implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

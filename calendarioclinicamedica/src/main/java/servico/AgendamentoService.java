@@ -5,9 +5,8 @@
  */
 package servico;
 
-import com.google.protobuf.ServiceException;
 import dao.AgendamentoDao;
-import exception.RegraDeNegocioException;
+import excecao.ServicoException;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -17,87 +16,146 @@ import model.Agendamento;
  *
  * @author leandro
  */
-public class AgendamentoService {
-
-    private AgendamentoDao dao;
-
+/*classe de serviço de agendamento para verificar as regras de negocio */
+public class AgendamentoService extends AgendamentoDao{
+    /*construtor da classe invoca os métodos da classe pai, que contém todos os métodos utilizaveis*/
     public AgendamentoService() {
-        this.dao = new AgendamentoDao();
-    }
-
-    public Agendamento getByCodigo(Integer codigo) throws RegraDeNegocioException {
-        if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-
-        }
-        return dao.getId(codigo);
-    }
-
-    public void salvar(Agendamento entidade) throws RegraDeNegocioException {
-        if (entidade == null) {
-            throw new RegraDeNegocioException("Informe a entidade");
-        } else if (entidade.getData() == null) {
-            throw new RegraDeNegocioException("Informe a data do agendamento");
-        } else if (entidade.getHora() == null) {
-            throw new RegraDeNegocioException("Informe a hora do agendamento");
-        } else if (entidade.getMedico() == null) {
-            throw new RegraDeNegocioException("Informe o médico");
-        } else if (entidade.getPaciente() == null) {
-            throw new RegraDeNegocioException("Informe o paciente");
-        } else if (entidade.getPreco() < 0) {
-            throw new RegraDeNegocioException("O preço não deve ser menor que zero");
-        } else if (entidade.getProcedimentos() == null) {
-            throw new RegraDeNegocioException("Informe os procedimentos");
-        } else if (entidade.getConsulta() == null) {
-            throw new RegraDeNegocioException("O preço não deve ser menor que zero");
-        }
-        dao.salvar(entidade);
-    }
-
-    public Agendamento remover(Integer codigo) throws RegraDeNegocioException {
-        if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-        }
-        Agendamento agendamento = this.getId(codigo);
-        dao.remover(codigo);
-        return agendamento;
-    }
-
-    public Agendamento getId(Integer codigo) throws RegraDeNegocioException {
-        if (codigo == null || codigo <= 0) {
-            throw new RegraDeNegocioException("Informe um código válido.");
-        }
-        Agendamento agendamento = dao.getId(codigo);
-        return agendamento;
-    }
-
-    public List<Agendamento> getAll() {
-        return dao.getAll();
-    }
-
-    public List<Agendamento> getByDataHora(Date data, Time hora) throws RegraDeNegocioException, ServiceException {
-        if (data == null) {
-            throw new RegraDeNegocioException("Informe a data.");
-        } else if (hora == null) {
-            throw new RegraDeNegocioException("Informe a hora.");
-        }
-        return dao.getByDataHora(data, hora);
-    }
-
-    public List<Agendamento> getByData(Date data) throws ServiceException, RegraDeNegocioException {
-        if (data == null) {
-            throw new RegraDeNegocioException("Informe a data.");
-        }
-        return dao.getByData(data);
-    }
-
-    public List<Agendamento> getByDataRange(Date menorData, Date maiorData) throws ServiceException, RegraDeNegocioException {
-        if (menorData == null) {
-            throw new RegraDeNegocioException("Informe a menor data.");
-        } else if (maiorData == null) {
-            throw new RegraDeNegocioException("Informe a maior data.");
-        }
-        return dao.getByDataRange(menorData, maiorData);
+        super();
     }
     
+    /*método para salvar um agendamento*/
+    public void salvar(Agendamento agendamento) throws ServicoException {
+        /*verifica se o agendamento não está nulo*/
+        if (agendamento == null) {
+            throw new ServicoException("Informe a entidade");
+            /*se não tem a data*/
+        } else if (agendamento.getData() == null) {
+            throw new ServicoException("Informe a data do agendamento");
+            /*se não tem a hora*/
+        } else if (agendamento.getHora() == null) {
+            throw new ServicoException("Informe a hora do agendamento");
+            /*se não tem o médico*/
+        } else if (agendamento.getMedico() == null) {
+            throw new ServicoException("Informe o médico");
+            /*se não tem o paciente*/
+        } else if (agendamento.getPaciente() == null) {
+            throw new ServicoException("Informe o paciente");
+            /*se for um preço invalido*/
+        } else if (agendamento.getPreco() < 0) {
+            throw new ServicoException("O preço não deve ser menor que zero");
+            /*se tem uma lista de procedimentos*/
+        } else if (agendamento.getProcedimentos() == null) {
+            throw new ServicoException("Informe os procedimentos");
+            /*e se tem uma consulta atrelada*/
+        } else if (agendamento.getConsulta() == null) {
+            throw new ServicoException("Deve ter uma consulta inserida ao agendamento");
+        }
+        /*se não ocorreu nenhum desses erros, salva o agendamento*/
+        super.salvar(agendamento);
+    }
+    
+    /*método para atualizar um agendamento*/
+    public void atualizar(Agendamento agendamento) throws ServicoException{
+        /*verifica se o agendamento não está nulo*/
+        if (agendamento == null) {
+            throw new ServicoException("Informe a entidade");
+            /*se não tem a data*/
+        } else if (agendamento.getData() == null) {
+            throw new ServicoException("Informe a data do agendamento");
+            /*se não tem a hora*/
+        } else if (agendamento.getHora() == null) {
+            throw new ServicoException("Informe a hora do agendamento");
+            /*se não tem o médico*/
+        } else if (agendamento.getMedico() == null) {
+            throw new ServicoException("Informe o médico");
+            /*se não tem o paciente*/
+        } else if (agendamento.getPaciente() == null) {
+            throw new ServicoException("Informe o paciente");
+            /*se for um preço invalido*/
+        } else if (agendamento.getPreco() < 0) {
+            throw new ServicoException("O preço não deve ser menor que zero");
+            /*se tem uma lista de procedimentos*/
+        } else if (agendamento.getProcedimentos() == null) {
+            throw new ServicoException("Informe os procedimentos");
+            /*e se tem uma consulta atrelada*/
+        } else if (agendamento.getConsulta() == null) {
+            throw new ServicoException("Deve ter uma consulta inserida ao agendamento");
+        }
+        /*se não ocorreu nenhum desses erros, atualiza o agendamento*/
+        super.atualizar(agendamento);
+    }
+    
+    /*método para remover uma agendamento, recebendo o código do id*/
+    public Agendamento remover(Integer codigo) throws ServicoException {
+        if (codigo == null || codigo <= 0) {
+            /*se receber um codigo invalido, levanta exceção*/
+            throw new ServicoException("Informe um código válido.");
+        }
+        /*busca o agendamento*/
+        Agendamento agendamento = super.buscaPorID(codigo);
+        /*remove ele*/
+        super.remover(agendamento.getId());
+        /*retorna o agendamento removido*/
+        return agendamento;
+    }
+    
+    /*método para buscar o agendamento por id*/
+    public Agendamento buscaPorID(Integer codigo) throws ServicoException {
+        /*verifica se recebeu um código valido*/
+        if (codigo == null || codigo <= 0) {
+            /*se não recebeu, retorna uma exceção*/
+            throw new ServicoException("Informe um código válido.");
+        }
+        /*senão retorna o agendamento pelo id*/
+        return super.buscaPorID(codigo);
+    }
+    
+    /*método para buscar todos os agendamentos cadastrados */
+    public List<Agendamento> buscaTodos() {
+        /*retorna todos*/
+        return super.buscaTodos();
+    }
+    
+    /*método para buscar uma lista de agendamentos por uma hora e uma data*/
+    public List<Agendamento> buscaPorDataHora(Date data, Time hora) throws ServicoException{
+        /*verifica se recebe uma data e hora valida*/
+        if (data == null) {
+            /*se não recebeu, retorna a exceção*/
+            throw new ServicoException("Informe a data.");
+        }if (hora == null) {
+            throw new ServicoException("Informe a hora.");
+        }
+        /*se não houve problema, retorna a lista*/
+        return super.buscaPorDataHora(data, hora);
+    }
+    
+    /*método para buscar uma lista de agendamentos pela data*/
+    public List<Agendamento> buscaPorData(Date data) throws ServicoException {
+        /*verifica se a data não está nula*/
+        if (data == null) {
+            /*se estiver, levanta a exceção*/
+            throw new ServicoException("Informe a data.");
+        }
+        /*se não houver problema, busca os agendamentos*/
+        return super.buscaPorData(data);
+    }
+    
+    /*método para buscar uma lista de agendamentos por um range de datas*/
+    public List<Agendamento> buscaPorIntervaloDatas(Date menorData, Date maiorData) throws ServicoException {
+        /*verifica se alguma das datas está nula*/
+        if (menorData == null) {
+            /*se estiver, levanta exceção*/
+            throw new ServicoException("Informe a menor data.");
+        }if (maiorData == null) {
+            throw new ServicoException("Informe a maior data.");
+        }
+        /*se não houver problema, retorna os agendamentos*/
+        return super.buscaPorIntervaloDatas(menorData, maiorData);
+    }
+    
+    /*método para buscar uma lista de agendamentos pelo status*/
+    public List<Agendamento> buscaPorStatus(boolean status){
+        /*retorna pelo status*/
+        return super.buscaPorStatus(status);
+    }
 }

@@ -9,13 +9,14 @@ package model;
  *
  * @author leandro
  */
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Prontuario {
+public class Prontuario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
