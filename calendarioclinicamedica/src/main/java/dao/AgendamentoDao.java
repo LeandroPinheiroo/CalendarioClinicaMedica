@@ -36,7 +36,7 @@ public class AgendamentoDao extends GenericDao<Agendamento, Integer> {
     /*método para buscar uma lista de agendamentos por um intervalo de datas*/
     protected List<Agendamento> buscaPorIntervaloDatas(Date menorData, Date maiorData) throws ServicoException {
         /*retorna a lista de agendamentos por um intervalo de datas*/
-        return em.createQuery("\"select a from Agendamento a where a.paidDay between :menorData and :maiorData", Agendamento.class)
+        return em.createQuery("\"select a from Agendamento a where a.data between :menorData and :maiorData order by a.hora", Agendamento.class)
                 .setParameter("lessPaidDay",menorData).setParameter("higherPaidDay", maiorData).getResultList();
     }
 }
