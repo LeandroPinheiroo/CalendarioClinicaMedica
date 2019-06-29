@@ -24,9 +24,7 @@ import visao.TelaPrincipal;
  */
 public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
     
-     /**
-     * Creates new form TelaConsultaPaciente
-     */
+     
     private TelaPrincipal telaPrincipal;  
     private DefaultTableModel modelo;
 

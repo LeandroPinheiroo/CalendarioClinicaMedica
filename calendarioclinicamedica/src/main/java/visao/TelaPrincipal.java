@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import visao.convenio.TelaCadastroConvenio;
 import visao.convenio.TelaConsultaConvenio;
+import visao.especializacao.TelaCadastroEspecializacao;
+import visao.especializacao.TelaConsultaEspecializacao;
 import visao.paciente.TelaCadastroPaciente;
 import visao.paciente.TelaConsultaPaciente;
 
@@ -55,7 +57,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuConvenio = new javax.swing.JMenu();
         menuItemCadastraConvenio = new javax.swing.JMenuItem();
         menuItemConsultaConvenio = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menuEspecializacao = new javax.swing.JMenu();
+        menuItemCadastraEspecializacao = new javax.swing.JMenuItem();
+        menuItemConsultaEspecializacao = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -118,8 +122,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuConvenio);
 
-        jMenu2.setText("jMenu2");
-        jMenuBar1.add(jMenu2);
+        menuEspecializacao.setText("Especialização Médico");
+
+        menuItemCadastraEspecializacao.setText("Cadastro de Especialização");
+        menuItemCadastraEspecializacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCadastraEspecializacaoActionPerformed(evt);
+            }
+        });
+        menuEspecializacao.add(menuItemCadastraEspecializacao);
+
+        menuItemConsultaEspecializacao.setText("Consulta de Especialização");
+        menuItemConsultaEspecializacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemConsultaEspecializacaoActionPerformed(evt);
+            }
+        });
+        menuEspecializacao.add(menuItemConsultaEspecializacao);
+
+        jMenuBar1.add(menuEspecializacao);
 
         jMenu3.setText("jMenu3");
         jMenuBar1.add(jMenu3);
@@ -130,11 +151,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 815, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 283, Short.MAX_VALUE)
+            .addGap(0, 444, Short.MAX_VALUE)
         );
 
         pack();
@@ -177,6 +198,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         painel.add(tcc);
     }//GEN-LAST:event_menuItemConsultaConvenioActionPerformed
 
+    private void menuItemCadastraEspecializacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCadastraEspecializacaoActionPerformed
+        TelaCadastroEspecializacao tce = new TelaCadastroEspecializacao();
+        tce.setVisible(true);
+        painel.add(tce);
+    }//GEN-LAST:event_menuItemCadastraEspecializacaoActionPerformed
+
+    private void menuItemConsultaEspecializacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConsultaEspecializacaoActionPerformed
+        TelaConsultaEspecializacao tce = new TelaConsultaEspecializacao(this);
+        tce.setVisible(true);
+        painel.add(tce);
+    }//GEN-LAST:event_menuItemConsultaEspecializacaoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -213,15 +246,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu menuAgendamento;
     private javax.swing.JMenu menuConvenio;
+    private javax.swing.JMenu menuEspecializacao;
     private javax.swing.JMenuItem menuItemAgendaConsulta;
     private javax.swing.JMenuItem menuItemCadastraConvenio;
+    private javax.swing.JMenuItem menuItemCadastraEspecializacao;
     private javax.swing.JMenuItem menuItemCadastroPaciente;
     private javax.swing.JMenuItem menuItemConsultaConvenio;
+    private javax.swing.JMenuItem menuItemConsultaEspecializacao;
     private javax.swing.JMenuItem menuItemConsultaPaciente;
     private javax.swing.JMenu menuPaciente;
     // End of variables declaration//GEN-END:variables

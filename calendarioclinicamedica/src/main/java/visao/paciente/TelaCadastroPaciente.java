@@ -27,9 +27,7 @@ import servico.ConvenioServico;
  * @author weth767
  */
 public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
-    /**
-     * Creates new form ClientScreen
-     */
+    
     public TelaCadastroPaciente() {
         initComponents();
         campoComplemento.setHorizontalAlignment(CENTER);

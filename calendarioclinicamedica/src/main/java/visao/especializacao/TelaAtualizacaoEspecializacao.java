@@ -3,57 +3,55 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package visao.convenio;
+package visao.especializacao;
 
 
 import excecao.ServicoException;
 import javax.swing.*;
-import java.util.List;
-import modelo.Convenio;
-import servico.ConvenioServico;
-import util.CamposTextoUtil;
+import modelo.Especializacao;
+import servico.EspecializacaoServico;
 
 /**
  *
  * @author weth767
  */
-public class TelaAtualizacaoConvenio extends javax.swing.JInternalFrame {
+public class TelaAtualizacaoEspecializacao extends javax.swing.JInternalFrame {
 
-    private TelaConsultaConvenio telaConsultaConvenio;
-    private Convenio convenio;
+    private TelaConsultaEspecializacao telaConsultaEspecializacao;
+    private Especializacao especializacao;
     
-    public TelaAtualizacaoConvenio(TelaConsultaConvenio telaConsultaConvenio, Convenio convenio) {
+    public TelaAtualizacaoEspecializacao(TelaConsultaEspecializacao TelaConsultaEspecializacao, Especializacao especializacao) {
         initComponents();
-        this.telaConsultaConvenio = telaConsultaConvenio;
-        this.convenio = convenio;
-        setDadosConvenio();
+        this.telaConsultaEspecializacao = TelaConsultaEspecializacao;
+        this.especializacao = especializacao;
+        setDadosEspecializacao();
     }
     
     /*método para setar os dados do convenio nos campos*/
-    public void setDadosConvenio(){
-        campoNome.setText(convenio.getNome());
-        campoDescricao.setText(convenio.getDescricao());
-        checkBoxStatus.setSelected(convenio.isStatus());
+    public void setDadosEspecializacao(){
+        campoNome.setText(especializacao.getNome());
+        campoDescricao.setText(especializacao.getDescricao());
+        checkBoxStatus.setSelected(especializacao.isStatus());
     }
     
-    /*método para atualizar um convenio*/
-    public void atualizarConvenio(){
-        /*instancia o convenio e o serviço*/
-        Convenio convenio = this.convenio;
-        ConvenioServico cs = new ConvenioServico();
-        /*verifica se o campo de nome está vazio para obrigar a preencher o nome do convenio*/
+    /*método para atualizar uma especializacao*/
+    public void atualizarEspecializacao(){
+        /*instancia a especializacao e o serviço*/
+        Especializacao especializacao = this.especializacao;
+        EspecializacaoServico es = new EspecializacaoServico();
+        /*verifica se o campo de nome está vazio para obrigar a preencher o nome da especializacao*/
         if(campoNome.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this,"O nome do convênio deve ser informado");
+            JOptionPane.showMessageDialog(this,"O nome da especializacao deve ser informada");
             return;
         }
-        convenio.setNome(campoNome.getText());
-        convenio.setDescricao(campoDescricao.getText());
-        convenio.setStatus(checkBoxStatus.isSelected());
+        especializacao.setNome(campoNome.getText());
+        especializacao.setDescricao(campoDescricao.getText());
+        especializacao.setStatus(checkBoxStatus.isSelected());
         try{
-            /*salva o convenio*/
-            cs.atualizar(convenio);
+            /*atualiza a especializacao*/
+            es.atualizar(especializacao);
             /*e mostra mensagem de sucesso*/
-            JOptionPane.showMessageDialog(this, "Convênio atualizado com sucesso","Sucesso",
+            JOptionPane.showMessageDialog(this, "Especialização atualizada com sucesso","Sucesso",
                     JOptionPane.INFORMATION_MESSAGE);
         } catch (ServicoException e) {
             /*caso houver erro, mostra mensagem de erro*/
@@ -81,8 +79,8 @@ public class TelaAtualizacaoConvenio extends javax.swing.JInternalFrame {
         checkBoxStatus = new javax.swing.JCheckBox();
 
         setClosable(true);
-        setTitle("Atualização de Convênio");
-        setToolTipText("Tela de Atualização de Convẽnio");
+        setTitle("Atualização de especialização");
+        setToolTipText("Tela de Atualização de especialização");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -103,17 +101,17 @@ public class TelaAtualizacaoConvenio extends javax.swing.JInternalFrame {
 
         labelName.setText("Nome");
 
-        campoNome.setToolTipText("Nome do Convênio");
+        campoNome.setToolTipText("Nome da especialização");
 
         labelDescription.setText("Descrição");
 
         campoDescricao.setColumns(20);
         campoDescricao.setRows(5);
-        campoDescricao.setToolTipText("Descrição do que representa o Convênio");
+        campoDescricao.setToolTipText("Descrição do que representa a especialização");
         jScrollPane1.setViewportView(campoDescricao);
 
         btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/update-24.png"))); // NOI18N
-        btnUpdate.setToolTipText("Atualizar Convênio");
+        btnUpdate.setToolTipText("Atualizar especialização");
         btnUpdate.setBorderPainted(false);
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,16 +184,16 @@ public class TelaAtualizacaoConvenio extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        atualizarConvenio();
+        atualizarEspecializacao();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        telaConsultaConvenio.setVisible(true);
+        telaConsultaEspecializacao.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        telaConsultaConvenio.setVisible(true);
+        telaConsultaEspecializacao.setVisible(true);
     }//GEN-LAST:event_formInternalFrameClosing
 
 

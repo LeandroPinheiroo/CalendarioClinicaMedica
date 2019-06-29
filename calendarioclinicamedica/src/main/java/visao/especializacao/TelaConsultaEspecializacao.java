@@ -3,30 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package visao.convenio;
+package visao.especializacao;
 
 
+import visao.convenio.*;
 import excecao.ServicoException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import modelo.Convenio;
+import modelo.Especializacao;
 import servico.ConvenioServico;
+import servico.EspecializacaoServico;
 import visao.TelaPrincipal;
 
 /**
  *
  * @author weth767
  */
-public class TelaConsultaConvenio extends javax.swing.JInternalFrame {
+public class TelaConsultaEspecializacao extends javax.swing.JInternalFrame {
 
     private TelaPrincipal telaPrincipal;
     private DefaultTableModel model;
-   
-    public TelaConsultaConvenio(TelaPrincipal telaPrincipal) {
+    
+    public TelaConsultaEspecializacao(TelaPrincipal telaPrincipal) {
         initComponents();
         this.telaPrincipal = telaPrincipal;
-        this.model = (DefaultTableModel) tabelaConvenio.getModel(); 
+        this.model = (DefaultTableModel) tabelaEspecializacao.getModel(); 
         model.setRowCount(0);
     }
 
@@ -35,73 +38,74 @@ public class TelaConsultaConvenio extends javax.swing.JInternalFrame {
         /*zera as linhas da tabela, para não acumular*/
         model.setRowCount(0);
         /*instancia o serviço*/
-        ConvenioServico cs = new ConvenioServico();
-        Convenio convenio = null;
-        List<Convenio> convenios = null;
+        EspecializacaoServico es = new EspecializacaoServico();
+        Especializacao especializacao = null;
+        List<Especializacao> especializacoes = null;
         /*verifica os filtros*/
         if(comboSearch.getSelectedItem().toString().equals("Sem Filtragem")){
-            convenios = cs.buscarTodos();
+            especializacoes = es.buscaTodos();
         }
         else if(comboSearch.getSelectedItem().toString().equals("ID")){
             /*verifica se não recebeu um id inválido*/
             if(textFilter.getText().matches("\\d+")){
-                /*senão recebeu, busca o convenio*/
+                /*senão recebeu, busca a especialização*/
                 try {
-                    convenio = cs.buscaPorID(Integer.parseInt(textFilter.getText()));
+                    especializacao = es.buscaPorID(Integer.parseInt(textFilter.getText()));
                 } catch (ServicoException e) {
                     /*se houver erro, mostra mensagem na tela*/
                     JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
-        /*busca o convenio por nome*/
+        /*busca a especialização por nome*/
         else if(comboSearch.getSelectedItem().toString().equals("Nome")){
             try {
-                convenio = cs.buscaPorNome(textFilter.getText());
+                especializacao = es.buscaPeloNome(textFilter.getText());
             } catch (ServicoException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
-        /*busca os convenios por status*/
+        /*busca os especializações por status*/
         else if(comboSearch.getSelectedItem().toString().equals("Status")){
             if(textFilter.getText().toLowerCase().equals("true") || textFilter.getText().toLowerCase().equals("false")){
-                convenios = cs.buscaPorStatus(Boolean.valueOf(textFilter.getText()));
+                especializacoes = es.buscaPorStatus(Boolean.valueOf(textFilter.getText()));
             }
         }
         /*verifica qual a foi preenchido, se foi a lista ou apenas um valor*/
-        if(convenio != null){
+        if(especializacao != null){
             /*seta a linha na tabela*/
-            Object data[] = {convenio.getId(),convenio.getNome(),convenio.getDescricao(), convenio.isStatus()};
+            Object data[] = {especializacao.getId(),especializacao.getNome(),especializacao.getDescricao(),
+                especializacao.isStatus()};
             model.addRow(data);
         }
         /*caso foi linhas*/
-        else if(convenios != null){
-            for(Convenio c : convenios){
+        else if(especializacoes != null){
+            for(Especializacao e : especializacoes){
                 /*seta as linhas na tabela*/
-                Object data[] = {c.getId(), c.getNome(), c.getDescricao(), c.isStatus()};
+                Object data[] = {e.getId(), e.getNome(), e.getDescricao(), e.isStatus()};
                 model.addRow(data);
             }
         }
     }
 
-    /*método para atualizar um convenio*/
-    public void atualizarConvenio(){
+    /*método para atualizar uma especialização*/
+    public void atualizarEspecializacao(){
         /*verifica se selecionou alguma lina da tabela*/
-        if(tabelaConvenio.getSelectedRow() != -1){
+        if(tabelaEspecializacao.getSelectedRow() != -1){
             /*se sim guarda a linha*/
-            int line = tabelaConvenio.getSelectedRow();
+            int line = tabelaEspecializacao.getSelectedRow();
             /*instancia o serviço*/
-            ConvenioServico cs = new ConvenioServico();
-            /*busca o convenio*/
+            EspecializacaoServico es = new EspecializacaoServico();
+            /*busca a especialização*/
             try {
-                Convenio convenio = cs.buscaPorID((Integer) model.getValueAt(line , 0));
-                /*depois envia para a tela de consulta*/
-                TelaAtualizacaoConvenio tac = new TelaAtualizacaoConvenio(this,convenio);
+                Especializacao especializacao = es.buscaPorID((Integer) model.getValueAt(line , 0));
+                /*depois envia para a tela de atualização*/
+                TelaAtualizacaoEspecializacao tae = new TelaAtualizacaoEspecializacao(this,especializacao);
                 /*deixa a tela essa tela visivel e deixa a de consulta invisivel*/
-                tac.setVisible(true);
+                tae.setVisible(true);
                 this.setVisible(false);
                 /*depois adiciona a tela principal*/
-                telaPrincipal.getContentPane().add(tac);
+                telaPrincipal.getContentPane().add(tae);
             } catch (ServicoException e) {
                 /*se houver erro, mostra mensagem*/
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -109,23 +113,23 @@ public class TelaConsultaConvenio extends javax.swing.JInternalFrame {
         }
     }
 
-    /*método para remover uma um convenio*/
-    public void removerConvenio(){
+    /*método para remover uma especialização*/
+    public void removerEspecializacao(){
         /*verifica se selecionou alguma linha da tabela*/
-        if(tabelaConvenio.getSelectedRow() != -1){
+        if(tabelaEspecializacao.getSelectedRow() != -1){
             /*guarda a linha selecionada*/
-            int line = tabelaConvenio.getSelectedRow();
+            int line = tabelaEspecializacao.getSelectedRow();
             /*instancia o serviço*/
-            ConvenioServico cs = new ConvenioServico();
+            EspecializacaoServico es = new EspecializacaoServico();
             /*busca o convênio de acordo o id na coluna 0 da linha selecionada*/
             try {
-                Convenio c = cs.buscaPorID((Integer) model.getValueAt(line , 0 ));
-                /*depois verifica se o usuário deseja realmente apagar esse convênio*/
-                int anwser = JOptionPane.showConfirmDialog(this, "Deseja realmente apagar o convênio: "
-                +c.getNome(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                Especializacao e = es.buscaPorID((Integer) model.getValueAt(line , 0 ));
+                /*depois verifica se o usuário deseja realmente apagar essa especialização*/
+                int anwser = JOptionPane.showConfirmDialog(this, "Deseja realmente apagar a especiaçização: "
+                +e.getNome(), "Aviso", JOptionPane.WARNING_MESSAGE);
                 /*caso a resposta for sim, apaga a categoria*/
                 if(anwser == JOptionPane.YES_OPTION){
-                    cs.remover(c.getId());
+                    es.remover(e.getId());
                 }
                 /*se houver erro, mostra mensagem com o erro na tela*/
             } catch (ServicoException e) {
@@ -152,7 +156,7 @@ public class TelaConsultaConvenio extends javax.swing.JInternalFrame {
         btnUpdate = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaConvenio = new javax.swing.JTable();
+        tabelaEspecializacao = new javax.swing.JTable();
 
         setClosable(true);
         setTitle("Consulta de Convênios");
@@ -205,7 +209,7 @@ public class TelaConsultaConvenio extends javax.swing.JInternalFrame {
             }
         });
 
-        tabelaConvenio.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaEspecializacao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -221,21 +225,21 @@ public class TelaConsultaConvenio extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tabelaConvenio.setToolTipText("Tabela de Convênios");
-        tabelaConvenio.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tabelaConvenio.setSurrendersFocusOnKeystroke(true);
-        tabelaConvenio.getTableHeader().setResizingAllowed(false);
-        tabelaConvenio.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tabelaConvenio);
-        if (tabelaConvenio.getColumnModel().getColumnCount() > 0) {
-            tabelaConvenio.getColumnModel().getColumn(0).setResizable(false);
-            tabelaConvenio.getColumnModel().getColumn(0).setPreferredWidth(105);
-            tabelaConvenio.getColumnModel().getColumn(1).setResizable(false);
-            tabelaConvenio.getColumnModel().getColumn(1).setPreferredWidth(150);
-            tabelaConvenio.getColumnModel().getColumn(2).setResizable(false);
-            tabelaConvenio.getColumnModel().getColumn(2).setPreferredWidth(250);
-            tabelaConvenio.getColumnModel().getColumn(3).setResizable(false);
-            tabelaConvenio.getColumnModel().getColumn(3).setPreferredWidth(120);
+        tabelaEspecializacao.setToolTipText("Tabela de Convênios");
+        tabelaEspecializacao.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tabelaEspecializacao.setSurrendersFocusOnKeystroke(true);
+        tabelaEspecializacao.getTableHeader().setResizingAllowed(false);
+        tabelaEspecializacao.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabelaEspecializacao);
+        if (tabelaEspecializacao.getColumnModel().getColumnCount() > 0) {
+            tabelaEspecializacao.getColumnModel().getColumn(0).setResizable(false);
+            tabelaEspecializacao.getColumnModel().getColumn(0).setPreferredWidth(105);
+            tabelaEspecializacao.getColumnModel().getColumn(1).setResizable(false);
+            tabelaEspecializacao.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tabelaEspecializacao.getColumnModel().getColumn(2).setResizable(false);
+            tabelaEspecializacao.getColumnModel().getColumn(2).setPreferredWidth(250);
+            tabelaEspecializacao.getColumnModel().getColumn(3).setResizable(false);
+            tabelaEspecializacao.getColumnModel().getColumn(3).setPreferredWidth(120);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -292,7 +296,7 @@ public class TelaConsultaConvenio extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        atualizarConvenio();
+        atualizarEspecializacao();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -308,7 +312,7 @@ public class TelaConsultaConvenio extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        removerConvenio();
+        removerEspecializacao();
     }//GEN-LAST:event_btnRemoveActionPerformed
 
 
@@ -321,7 +325,7 @@ public class TelaConsultaConvenio extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> comboSearch;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelFilter;
-    private javax.swing.JTable tabelaConvenio;
+    private javax.swing.JTable tabelaEspecializacao;
     private javax.swing.JTextField textFilter;
     // End of variables declaration//GEN-END:variables
 }

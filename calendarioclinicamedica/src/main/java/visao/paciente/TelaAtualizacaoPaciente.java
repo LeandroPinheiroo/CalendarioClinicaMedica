@@ -27,9 +27,7 @@ import servico.ConvenioServico;
  * @author weth767
  */
 public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
-    /**
-     * Creates new form ClientScreen
-     */
+    
     private Paciente paciente;
     private TelaConsultaPaciente telaConsultaPaciente;
     

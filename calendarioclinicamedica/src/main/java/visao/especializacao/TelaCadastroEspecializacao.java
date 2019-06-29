@@ -3,44 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package visao.convenio;
+package visao.especializacao;
 
 import excecao.ServicoException;
 import javax.swing.*;
-import java.util.List;
-import modelo.Convenio;
-import servico.ConvenioServico;
+import modelo.Especializacao;
+import servico.EspecializacaoServico;
 import util.CamposTextoUtil;
 
 /**
  *
  * @author weth767
  */
-public class TelaCadastroConvenio extends javax.swing.JInternalFrame {
+public class TelaCadastroEspecializacao extends javax.swing.JInternalFrame {
 
-   
-    public TelaCadastroConvenio() {
+    
+    public TelaCadastroEspecializacao() {
         initComponents();
     }
     
-    /*método para salvar um convenio*/
-    public void salvarConvenio(){
-        /*instancia o convenio e o serviço*/
-        Convenio convenio = new Convenio();
-        ConvenioServico cs = new ConvenioServico();
-        /*verifica se o campo de nome está vazio para obrigar a preencher o nome do convenio*/
+    /*método para salvar uma especialização*/
+    public void salvarEspecializacao(){
+        /*instancia a especialização e o serviço*/
+        Especializacao especializacao = new Especializacao();
+        EspecializacaoServico es = new EspecializacaoServico();
+        /*verifica se o campo de nome está vazio para obrigar a preencher o nome da especialização*/
         if(campoNome.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this,"O nome do convênio deve ser informado");
+            JOptionPane.showMessageDialog(this,"O nome da especialização deve ser informada");
             return;
         }
-        convenio.setNome(campoNome.getText());
-        convenio.setDescricao(campoDescricao.getText());
-        convenio.setStatus(true);
+        especializacao.setNome(campoNome.getText());
+        especializacao.setDescricao(campoDescricao.getText());
+        especializacao.setStatus(true);
         try{
             /*salva a convenio*/
-            cs.salvar(convenio);
+            es.salvar(especializacao);
             /*e mostra mensagem de sucesso*/
-            JOptionPane.showMessageDialog(this, "Convênio salvo com sucesso","Sucesso",
+            JOptionPane.showMessageDialog(this, "Especialização salva com sucesso","Sucesso",
                     JOptionPane.INFORMATION_MESSAGE);
             CamposTextoUtil.limpaTodosCampos(rootPane);
             campoDescricao.setText("");
@@ -70,22 +69,22 @@ public class TelaCadastroConvenio extends javax.swing.JInternalFrame {
         btCancelar = new javax.swing.JButton();
 
         setClosable(true);
-        setTitle("Cadastro de Convênio");
-        setToolTipText("Tela de Cadastro de Convênio");
+        setTitle("Cadastro de Especialização");
+        setToolTipText("Tela de Cadastro de Especialização");
 
         labelName.setText("Nome");
 
-        campoNome.setToolTipText("Nome do convênio");
+        campoNome.setToolTipText("Nome da especialização");
 
         labelDescription.setText("Descrição");
 
         campoDescricao.setColumns(20);
         campoDescricao.setRows(5);
-        campoDescricao.setToolTipText("Descrição sobre o convẽnio");
+        campoDescricao.setToolTipText("Descrição sobre a especialização");
         jScrollPane1.setViewportView(campoDescricao);
 
         btSalvaConvenio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
-        btSalvaConvenio.setToolTipText("Cadastrar um Convênio");
+        btSalvaConvenio.setToolTipText("Cadastrar uma especialização");
         btSalvaConvenio.setBorderPainted(false);
         btSalvaConvenio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,7 +157,7 @@ public class TelaCadastroConvenio extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSalvaConvenioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvaConvenioActionPerformed
-        salvarConvenio();
+        salvarEspecializacao();
     }//GEN-LAST:event_btSalvaConvenioActionPerformed
 
     private void btLimpaCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpaCamposActionPerformed
