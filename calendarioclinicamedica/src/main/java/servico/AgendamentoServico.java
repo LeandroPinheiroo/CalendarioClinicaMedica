@@ -10,7 +10,7 @@ import excecao.ServicoException;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
-import model.Agendamento;
+import modelo.Agendamento;
 
 /**
  *

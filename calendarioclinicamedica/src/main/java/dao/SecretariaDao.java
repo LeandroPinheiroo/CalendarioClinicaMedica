@@ -9,7 +9,7 @@ import com.google.protobuf.ServiceException;
 import excecao.ServicoException;
 import java.util.List;
 import javax.persistence.NoResultException;
-import model.Secretaria;
+import modelo.Secretaria;
 
 /**
  *

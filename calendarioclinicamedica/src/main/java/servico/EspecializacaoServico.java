@@ -8,7 +8,7 @@ package servico;
 import dao.EspecializacaoDao;
 import excecao.ServicoException;
 import java.util.List;
-import model.Especializacao;
+import modelo.Especializacao;
 
 /**
  *

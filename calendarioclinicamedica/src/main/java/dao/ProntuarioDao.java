@@ -9,8 +9,8 @@ import excecao.ServicoException;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.NoResultException;
-import model.Paciente;
-import model.Prontuario;
+import modelo.Paciente;
+import modelo.Prontuario;
 
 /**
  *

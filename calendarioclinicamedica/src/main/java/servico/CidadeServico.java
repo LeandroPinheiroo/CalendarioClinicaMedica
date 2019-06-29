@@ -8,7 +8,7 @@ package servico;
 import dao.CidadeDao;
 import excecao.ServicoException;
 import java.util.List;
-import model.Cidade;
+import modelo.Cidade;
 
 /**
  *

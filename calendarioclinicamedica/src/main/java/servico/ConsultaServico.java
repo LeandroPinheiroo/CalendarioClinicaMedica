@@ -8,7 +8,7 @@ package servico;
 import dao.ConsultaDao;
 import excecao.ServicoException;
 import java.util.List;
-import model.Consulta;
+import modelo.Consulta;
 
 /**
  *

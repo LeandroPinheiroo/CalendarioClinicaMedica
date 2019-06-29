@@ -7,7 +7,7 @@ package dao;
 
 import excecao.ServicoException;
 import javax.persistence.NoResultException;
-import model.Convenio;
+import modelo.Convenio;
 
 /**
  *

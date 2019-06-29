@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="Clinica" transaction-type="RESOURCE_LOCAL">
-        <class>model.Agendamento</class>
-        <class>model.Cidade</class>
-        <class>model.Consulta</class>
-        <class>model.Convenio</class>
-        <class>model.Especializacao</class>
-        <class>model.Medico</class>
-        <class>model.Paciente</class>
-        <class>model.Permissao</class>
-        <class>model.Pessoa</class>
-        <class>model.Procedimento</class>
-        <class>model.Prontuario</class>
-        <class>model.Secretaria</class>
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/clinica"/>
-            <property name="javax.persistence.jdbc.user" value="root" />
-            <property name="javax.persistence.jdbc.password" value="MOwo7898#@"/>
-            <!---<property name="javax.persistence.schema-generation.database.action" value="update"/>-->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-        </properties>
-    </persistence-unit>
+  <persistence-unit name="Clinica" transaction-type="RESOURCE_LOCAL">
+    <class>modelo.Prontuario</class>
+    <class>modelo.Secretaria</class>
+    <class>modelo.Permissao</class>
+    <class>modelo.Cidade</class>
+    <class>modelo.Paciente</class>
+    <class>modelo.Convenio</class>
+    <class>modelo.Procedimento</class>
+    <class>modelo.Pessoa</class>
+    <class>modelo.Medico</class>
+    <class>modelo.Especializacao</class>
+    <class>modelo.Consulta</class>
+    <class>modelo.Agendamento</class>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/clinica"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.password" value="MOwo7898#@"/>
+      <!---<property name="javax.persistence.schema-generation.database.action" value="update"/>-->
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+  </persistence-unit>
 </persistence>

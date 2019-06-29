@@ -8,7 +8,7 @@ package dao;
 import excecao.ServicoException;
 import java.util.List;
 import javax.persistence.NoResultException;
-import model.Medico;
+import modelo.Medico;
 
 /**
  *

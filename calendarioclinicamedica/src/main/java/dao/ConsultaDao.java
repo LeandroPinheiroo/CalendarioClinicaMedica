@@ -5,7 +5,7 @@
  */
 package dao;
 
-import model.Consulta;
+import modelo.Consulta;
 
 /**
  *

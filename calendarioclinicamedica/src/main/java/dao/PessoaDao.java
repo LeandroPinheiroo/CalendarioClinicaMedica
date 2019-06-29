@@ -5,7 +5,7 @@
  */
 package dao;
 
-import model.Pessoa;
+import modelo.Pessoa;
 
 /**
  *

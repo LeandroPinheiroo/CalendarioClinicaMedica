@@ -7,7 +7,7 @@ package dao;
 
 import excecao.ServicoException;
 import javax.persistence.NoResultException;
-import model.Especializacao;
+import modelo.Especializacao;
 
 /**
  *

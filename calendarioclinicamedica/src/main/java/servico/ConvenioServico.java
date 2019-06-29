@@ -8,7 +8,7 @@ package servico;
 import dao.ConvenioDao;
 import excecao.ServicoException;
 import java.util.List;
-import model.Convenio;
+import modelo.Convenio;
 
 /**
  *
