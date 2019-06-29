@@ -11,6 +11,8 @@ import java.awt.Toolkit;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import visao.convenio.TelaCadastroConvenio;
+import visao.convenio.TelaConsultaConvenio;
 import visao.paciente.TelaCadastroPaciente;
 import visao.paciente.TelaConsultaPaciente;
 
@@ -50,6 +52,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuItemConsultaPaciente = new javax.swing.JMenuItem();
         menuAgendamento = new javax.swing.JMenu();
         menuItemAgendaConsulta = new javax.swing.JMenuItem();
+        menuConvenio = new javax.swing.JMenu();
+        menuItemCadastraConvenio = new javax.swing.JMenuItem();
+        menuItemConsultaConvenio = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Software Gerente de Clínica");
@@ -90,6 +97,32 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuAgendamento.add(menuItemAgendaConsulta);
 
         jMenuBar1.add(menuAgendamento);
+
+        menuConvenio.setText("Convênio");
+
+        menuItemCadastraConvenio.setText("Cadastro de Convênio");
+        menuItemCadastraConvenio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCadastraConvenioActionPerformed(evt);
+            }
+        });
+        menuConvenio.add(menuItemCadastraConvenio);
+
+        menuItemConsultaConvenio.setText("Consulta de Convênio");
+        menuItemConsultaConvenio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemConsultaConvenioActionPerformed(evt);
+            }
+        });
+        menuConvenio.add(menuItemConsultaConvenio);
+
+        jMenuBar1.add(menuConvenio);
+
+        jMenu2.setText("jMenu2");
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("jMenu3");
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -132,6 +165,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowClosing
 
+    private void menuItemCadastraConvenioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCadastraConvenioActionPerformed
+        TelaCadastroConvenio tcc = new TelaCadastroConvenio();
+        tcc.setVisible(true);
+        painel.add(tcc);
+    }//GEN-LAST:event_menuItemCadastraConvenioActionPerformed
+
+    private void menuItemConsultaConvenioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConsultaConvenioActionPerformed
+        TelaConsultaConvenio tcc = new TelaConsultaConvenio(this);
+        tcc.setVisible(true);
+        painel.add(tcc);
+    }//GEN-LAST:event_menuItemConsultaConvenioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -168,10 +213,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu menuAgendamento;
+    private javax.swing.JMenu menuConvenio;
     private javax.swing.JMenuItem menuItemAgendaConsulta;
+    private javax.swing.JMenuItem menuItemCadastraConvenio;
     private javax.swing.JMenuItem menuItemCadastroPaciente;
+    private javax.swing.JMenuItem menuItemConsultaConvenio;
     private javax.swing.JMenuItem menuItemConsultaPaciente;
     private javax.swing.JMenu menuPaciente;
     // End of variables declaration//GEN-END:variables

@@ -43,6 +43,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
         Paciente p = new Paciente();
         PacienteServico ps = new PacienteServico();
         CidadeServico cds = new CidadeServico();
+        ConvenioServico cs = new ConvenioServico();
         /*seta os valores para o cliente*/
         p.setNome(campoNome.getText().trim());
         /*verifica se o CPF é invalido, caso seja, mostra mensagem de erro e sai do método*/
@@ -75,7 +76,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
             campoCEP.setText("");
             return;
         }
-        p.setCep(campoCEP.getText());
+        p.setCep(campoCEP.getText().replaceAll("-", "").trim());
         /*coloca o bairro, rua e outros dados referentes ao endereço*/
         p.setBairro(campoBairro.getText());
         p.setRua(campoRua.getText());
@@ -87,6 +88,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
             campoEmail.setText("");
             return;
         }
+        p.setEmail(campoEmail.getText());
         /*pega o número de celular*/
         if(campoCelular.getText().isEmpty() || campoCelular.getText().length() < 11){
             JOptionPane.showMessageDialog(this, "Número de celular inválido","Erro",JOptionPane.ERROR_MESSAGE);
@@ -94,7 +96,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
             return;
         }
         p.setCelular(campoCelular.getText().replaceAll("\\.", "").replaceAll("-", "")
-        .replaceAll("(", "").replaceAll(")", "").replaceAll(" ", ""));
+        .replaceAll("\\(", "").replaceAll("\\)", "").replaceAll(" ", ""));
         /*pega a permissão*/
         p.setPermissao(Permissao.PACIENTE);
         /*pega a data atual como data de cadastro*/
@@ -102,7 +104,8 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
         /*e coloca o status como true já que inicialmente está habilitado*/
         p.setStatus(true);
         try {
-            /*salva um cliente*/
+            p.setConvenio(cs.buscaPorNome(comboConvenio.getSelectedItem().toString()));
+            /*salva um paciente*/
             ps.salvar(p);
             /*mostra mensagem de sucesso*/
             JOptionPane.showMessageDialog(this,"Paciente salvo com sucesso",
@@ -219,7 +222,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
 
         labelNome.setText("Nome");
 
-        campoNome.setToolTipText("Nome do cliente");
+        campoNome.setToolTipText("Nome do paciente");
 
         labelCpf.setText("CPF");
 
@@ -229,16 +232,16 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
         campoCPF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        campoCPF.setToolTipText("CPF do cliente");
+        campoCPF.setToolTipText("CPF do paciente");
 
         labelRg.setText("RG");
 
         campoRG.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        campoRG.setToolTipText("RG do cliente");
+        campoRG.setToolTipText("RG do paciente");
 
         labelCidade.setText("Cidade");
 
-        comboCidade.setToolTipText("Cidade onde se localiza a moradia do cliente");
+        comboCidade.setToolTipText("Cidade onde se localiza a moradia do paciente");
 
         labelEstado.setText("Estado");
 
@@ -261,7 +264,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
 
         campoNumero.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
         campoNumero.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        campoNumero.setToolTipText("Número da casa do cliente");
+        campoNumero.setToolTipText("Número da casa do paciente");
         campoNumero.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 campoNumeroKeyTyped(evt);
@@ -276,7 +279,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
         campoCEP.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        campoCEP.setToolTipText("CEP onde se localiza a moradia do cliente");
+        campoCEP.setToolTipText("CEP onde se localiza a moradia do paciente");
 
         labelBairro.setText("Bairro");
 
@@ -284,11 +287,11 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
 
         labelComplemento.setText("Complemento");
 
-        campoComplemento.setToolTipText("Complemento");
+        campoComplemento.setToolTipText("Complemento da casa do paciente");
 
         labelEmail.setText("E-mail");
 
-        campoEmail.setToolTipText("E-mail do cliente");
+        campoEmail.setToolTipText("E-mail do paciente");
 
         labelCelular.setText("Celular");
 
@@ -297,7 +300,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        campoCelular.setToolTipText("Celular do cliente");
+        campoCelular.setToolTipText("Celular do paciente");
 
         btSalvaPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
         btSalvaPaciente.setToolTipText("Cadastrar Paciente");
@@ -342,23 +345,19 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelCep)
-                            .addComponent(labelNumero)
-                            .addComponent(labelEmail)
+                    .addComponent(labelCep)
+                    .addComponent(labelNumero)
+                    .addComponent(labelEmail)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelRg)
-                                        .addComponent(labelNome))
-                                    .addGap(5, 5, 5))
-                                .addComponent(labelCidade, javax.swing.GroupLayout.Alignment.TRAILING))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(labelConvenio)))
+                                .addComponent(labelRg)
+                                .addComponent(labelNome))
+                            .addGap(5, 5, 5))
+                        .addComponent(labelCidade, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(labelConvenio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()

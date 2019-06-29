@@ -40,9 +40,10 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         setCidades(comboEstado.getSelectedItem().toString());
         comboCidade.setSelectedItem(paciente.getCidade().getNome());
         setConvenios();
-        comboConvenio.setSelectedItem(paciente.getConvenio().getNome());
+        //comboConvenio.setSelectedItem(paciente.getConvenio().getNome());
         this.paciente = paciente;
         this.telaConsultaPaciente = telaConsultaPaciente;
+        setPaciente();
     }
     
     /*método para setar os pacientes*/
@@ -58,6 +59,7 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         campoEmail.setText(paciente.getEmail());
         campoCelular.setText(paciente.getCelular());
         checkStatus.setSelected(paciente.isStatus());
+        comboConvenio.setSelectedItem(paciente.getConvenio().getNome());
     }
     
     /*método para salvar o cliente*/
@@ -66,6 +68,7 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         Paciente p = paciente;
         PacienteServico ps = new PacienteServico();
         CidadeServico cds = new CidadeServico();
+        ConvenioServico cs = new ConvenioServico();
         /*seta os valores para o cliente*/
         p.setNome(campoNome.getText().trim());
         /*verifica se o CPF é invalido, caso seja, mostra mensagem de erro e sai do método*/
@@ -98,7 +101,7 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
             campoCEP.setText("");
             return;
         }
-        p.setCep(campoCEP.getText());
+        p.setCep(campoCEP.getText().replaceAll("-", "").trim());
         /*coloca o bairro, rua e outros dados referentes ao endereço*/
         p.setBairro(campoBairro.getText());
         p.setRua(campoRua.getText());
@@ -117,18 +120,18 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
             return;
         }
         p.setCelular(campoCelular.getText().replaceAll("\\.", "").replaceAll("-", "")
-        .replaceAll("(", "").replaceAll(")", "").replaceAll(" ", ""));
+        .replaceAll("\\(", "").replaceAll("\\)", "").replaceAll(" ", ""));
         /*pega a permissão*/
         p.setPermissao(Permissao.PACIENTE);
         /*e coloca o status como true já que inicialmente está habilitado*/
         p.setStatus(checkStatus.isSelected());
         try {
-            /*salva um cliente*/
+            p.setConvenio(cs.buscaPorNome(comboConvenio.getSelectedItem().toString()));
+            /*atualiza um paciente*/
             ps.atualizar(p);
             /*mostra mensagem de sucesso*/
-            JOptionPane.showMessageDialog(this,"Paciente salvo com sucesso",
+            JOptionPane.showMessageDialog(this,"Paciente atualizado com sucesso",
                     "Sucesso",JOptionPane.INFORMATION_MESSAGE);
-            CamposTextoUtil.limpaTodosCampos(rootPane);
             /*se houve erro*/
         } catch (ServicoException e) {
             /*mostra mensagem de erro*/
@@ -237,11 +240,28 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         jLabel2.setText("jLabel2");
 
         setClosable(true);
-        setTitle("Cadastro de Paciente");
+        setTitle("Atualização de Paciente");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         labelNome.setText("Nome");
 
-        campoNome.setToolTipText("Nome do cliente");
+        campoNome.setToolTipText("Nome do paciente");
 
         labelCpf.setText("CPF");
 
@@ -251,22 +271,22 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
         campoCPF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        campoCPF.setToolTipText("CPF do cliente");
+        campoCPF.setToolTipText("CPF do paciente");
 
         labelRg.setText("RG");
 
         campoRG.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        campoRG.setToolTipText("RG do cliente");
+        campoRG.setToolTipText("RG do paciente");
 
         labelCidade.setText("Cidade");
 
-        comboCidade.setToolTipText("Cidade onde se localiza a moradia do cliente");
+        comboCidade.setToolTipText("Cidade onde se localiza a moradia do paciente");
 
         labelEstado.setText("Estado");
 
         comboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins" }));
         comboEstado.setSelectedIndex(12);
-        comboEstado.setToolTipText("Estado onde se localiza a moradia do cliente");
+        comboEstado.setToolTipText("Estado onde se localiza a moradia do paciente");
         comboEstado.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -283,7 +303,7 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
 
         campoNumero.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
         campoNumero.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        campoNumero.setToolTipText("Número da casa do cliente");
+        campoNumero.setToolTipText("Número da casa do paciente");
         campoNumero.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 campoNumeroKeyTyped(evt);
@@ -298,7 +318,7 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
         campoCEP.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        campoCEP.setToolTipText("CEP onde se localiza a moradia do cliente");
+        campoCEP.setToolTipText("CEP onde se localiza a moradia do paciente");
 
         labelBairro.setText("Bairro");
 
@@ -306,11 +326,11 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
 
         labelComplemento.setText("Complemento");
 
-        campoComplemento.setToolTipText("Complemento");
+        campoComplemento.setToolTipText("Complemento da casa do paciente");
 
         labelEmail.setText("E-mail");
 
-        campoEmail.setToolTipText("E-mail do cliente");
+        campoEmail.setToolTipText("E-mail do paciente");
 
         labelCelular.setText("Celular");
 
@@ -319,10 +339,10 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        campoCelular.setToolTipText("Celular do cliente");
+        campoCelular.setToolTipText("Celular do paciente");
 
         btAtualizaPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
-        btAtualizaPaciente.setToolTipText("Cadastrar Cliente");
+        btAtualizaPaciente.setToolTipText("Cadastrar paciente");
         btAtualizaPaciente.setBorderPainted(false);
         btAtualizaPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -438,7 +458,7 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
                 .addComponent(btAtualizaPaciente)
                 .addGap(18, 18, 18)
                 .addComponent(btCancela)
-                .addGap(276, 276, 276))
+                .addGap(278, 278, 278))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -521,6 +541,10 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
             evt.consume();
         }
     }//GEN-LAST:event_campoNumeroKeyTyped
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        telaConsultaPaciente.setVisible(true);
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

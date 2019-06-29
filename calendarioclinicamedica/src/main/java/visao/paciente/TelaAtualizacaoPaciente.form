@@ -25,11 +25,14 @@
   </NonVisualComponents>
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
-    <Property name="title" type="java.lang.String" value="Cadastro de Paciente"/>
+    <Property name="title" type="java.lang.String" value="Atualiza&#xe7;&#xe3;o de Paciente"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="internalFrameClosing" listener="javax.swing.event.InternalFrameListener" parameters="javax.swing.event.InternalFrameEvent" handler="formInternalFrameClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -150,7 +153,7 @@
               <Component id="btAtualizaPaciente" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btCancela" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="276" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="278" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -229,7 +232,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="campoNome">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="Nome do cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="Nome do paciente"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelCpf">
@@ -243,7 +246,7 @@
           <Format format="###.###.###-##" subtype="-1" type="5"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="toolTipText" type="java.lang.String" value="CPF do cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="CPF do paciente"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelRg">
@@ -254,7 +257,7 @@
     <Component class="javax.swing.JTextField" name="campoRG">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="toolTipText" type="java.lang.String" value="RG do cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="RG do paciente"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelCidade">
@@ -267,7 +270,7 @@
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Cidade onde se localiza a moradia do cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="Cidade onde se localiza a moradia do paciente"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -312,7 +315,7 @@
           </StringArray>
         </Property>
         <Property name="selectedIndex" type="int" value="12"/>
-        <Property name="toolTipText" type="java.lang.String" value="Estado onde se localiza a moradia do cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="Estado onde se localiza a moradia do paciente"/>
       </Properties>
       <Events>
         <EventHandler event="popupMenuWillBecomeInvisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="comboEstadoPopupMenuWillBecomeInvisible"/>
@@ -339,7 +342,7 @@
           <Format format="######" subtype="-1" type="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="toolTipText" type="java.lang.String" value="N&#xfa;mero da casa do cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="N&#xfa;mero da casa do paciente"/>
       </Properties>
       <Events>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="campoNumeroKeyTyped"/>
@@ -356,7 +359,7 @@
           <Format format="#####-###" subtype="-1" type="5"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="toolTipText" type="java.lang.String" value="CEP onde se localiza a moradia do cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="CEP onde se localiza a moradia do paciente"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelBairro">
@@ -376,7 +379,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="campoComplemento">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="Complemento"/>
+        <Property name="toolTipText" type="java.lang.String" value="Complemento da casa do paciente"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelEmail">
@@ -386,7 +389,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="campoEmail">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="E-mail do cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="E-mail do paciente"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelCelular">
@@ -399,7 +402,7 @@
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
           <Format format="(##) # ####-####" subtype="-1" type="5"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Celular do cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="Celular do paciente"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btAtualizaPaciente">
@@ -407,7 +410,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/imagens/add-24.png"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Cadastrar Cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="Cadastrar paciente"/>
         <Property name="borderPainted" type="boolean" value="false"/>
       </Properties>
       <Events>

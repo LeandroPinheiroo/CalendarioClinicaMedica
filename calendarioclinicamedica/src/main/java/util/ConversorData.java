@@ -2,7 +2,7 @@ package util;
 
 public class ConversorData {
     /*método para converter data do formato americano para o formato brasileiro*/
-    public static String convertDateUSAtoBR(String date){
+    public static String converetDataUSAtParaBR(String date){
         /*quebra a data em pedaços de acordo com o traço*/
         String dateVector[] = date.split("-");
         /*pega os valores de data separados*/
@@ -14,7 +14,7 @@ public class ConversorData {
     }
 
     /*método para converter data no formato brasileiro para o formato americano*/
-    public static String convertDateBRtoUSA(String date){
+    public static String converteDataBRParaUSA(String date){
         /*quebra a data em pedaços de acordo com o barra*/
         String dateVector[] = date.split("/");
         /*pega os valores de data separados*/

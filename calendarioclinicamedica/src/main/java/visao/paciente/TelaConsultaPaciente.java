@@ -80,8 +80,9 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         }
         /*depois verifica se é um paciente só para os métodos de cpf e id ou uma lista para nome, stauts e sem filtro*/
         if (paciente != null) {
-            Object data[] = {paciente.getId(), paciente.getNome(), paciente.getCpf(), paciente.getRg(), 
-                paciente.getEmail(),ConversorData.convertDateUSAtoBR(paciente.getDataCadastro().toString()), 
+            Object data[] = {paciente.getId(), paciente.getNome(), paciente.getCpf(), paciente.getRg(),
+                paciente.getConvenio().getNome(),
+                paciente.getEmail(),ConversorData.converetDataUSAtParaBR(paciente.getDataCadastro().toString()), 
                 paciente.getCelular(), paciente.getCidade().getEstado(), 
                 paciente.getCidade().getNome(), paciente.getCep(), 
                 paciente.getBairro(), paciente.getRua(), paciente.getNumero(), 
@@ -91,7 +92,8 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         } else if (pacientes != null) {
             for (Paciente p : pacientes) {
                 Object data[] = {p.getId(), p.getNome(), p.getCpf(), p.getRg(), 
-                p.getEmail(),ConversorData.convertDateUSAtoBR(p.getDataCadastro().toString()), 
+                p.getConvenio().getNome(),
+                p.getEmail(),ConversorData.converetDataUSAtParaBR(p.getDataCadastro().toString()), 
                 p.getCelular(), p.getCidade().getEstado(), 
                 p.getCidade().getNome(), p.getCep(), 
                 p.getBairro(), p.getRua(), p.getNumero(), 
@@ -149,6 +151,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
                 /*envia para a tela de atualização*/
                 TelaAtualizacaoPaciente tap = new TelaAtualizacaoPaciente(this, p);
                 tap.setVisible(true);
+                this.setVisible(false);
                 telaPrincipal.getContentPane().add(tap);
             }
         }
@@ -220,7 +223,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         btnReport = new javax.swing.JButton();
 
         setClosable(true);
-        setTitle("Consulta de Clientes");
+        setTitle("Consulta de Pacientes");
         setMaximumSize(null);
         setRequestFocusEnabled(false);
 
@@ -229,18 +232,18 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "Nome", "CPF", "RG", "E-mail", "Data de Cadastro", "Celular", "Estado", "Cidade", "CEP", "Bairro", "Rua", "Número", "Complemento", "Status"
+                "ID", "Nome", "CPF", "RG", "Convênio", "E-mail", "Data de Cadastro", "Celular", "Estado", "Cidade", "CEP", "Bairro", "Rua", "Número", "Complemento", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tabelaPacientes.setToolTipText("Tabela de clientes");
+        tabelaPacientes.setToolTipText("Tabela de pacientes");
         tabelaPacientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tabelaPacientes.setSurrendersFocusOnKeystroke(true);
         tabelaPacientes.getTableHeader().setResizingAllowed(false);
@@ -256,33 +259,35 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
             tabelaPacientes.getColumnModel().getColumn(3).setResizable(false);
             tabelaPacientes.getColumnModel().getColumn(3).setPreferredWidth(100);
             tabelaPacientes.getColumnModel().getColumn(4).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(4).setPreferredWidth(250);
+            tabelaPacientes.getColumnModel().getColumn(4).setPreferredWidth(150);
             tabelaPacientes.getColumnModel().getColumn(5).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(5).setPreferredWidth(130);
+            tabelaPacientes.getColumnModel().getColumn(5).setPreferredWidth(250);
             tabelaPacientes.getColumnModel().getColumn(6).setResizable(false);
             tabelaPacientes.getColumnModel().getColumn(6).setPreferredWidth(130);
             tabelaPacientes.getColumnModel().getColumn(7).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(7).setPreferredWidth(150);
+            tabelaPacientes.getColumnModel().getColumn(7).setPreferredWidth(130);
             tabelaPacientes.getColumnModel().getColumn(8).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(8).setPreferredWidth(250);
+            tabelaPacientes.getColumnModel().getColumn(8).setPreferredWidth(150);
             tabelaPacientes.getColumnModel().getColumn(9).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(9).setPreferredWidth(100);
+            tabelaPacientes.getColumnModel().getColumn(9).setPreferredWidth(250);
             tabelaPacientes.getColumnModel().getColumn(10).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(10).setPreferredWidth(220);
+            tabelaPacientes.getColumnModel().getColumn(10).setPreferredWidth(100);
             tabelaPacientes.getColumnModel().getColumn(11).setResizable(false);
             tabelaPacientes.getColumnModel().getColumn(11).setPreferredWidth(220);
             tabelaPacientes.getColumnModel().getColumn(12).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(12).setPreferredWidth(70);
+            tabelaPacientes.getColumnModel().getColumn(12).setPreferredWidth(220);
             tabelaPacientes.getColumnModel().getColumn(13).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(13).setPreferredWidth(150);
+            tabelaPacientes.getColumnModel().getColumn(13).setPreferredWidth(70);
             tabelaPacientes.getColumnModel().getColumn(14).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(14).setPreferredWidth(50);
+            tabelaPacientes.getColumnModel().getColumn(14).setPreferredWidth(150);
+            tabelaPacientes.getColumnModel().getColumn(15).setResizable(false);
+            tabelaPacientes.getColumnModel().getColumn(15).setPreferredWidth(50);
         }
         tabelaPacientes.getAccessibleContext().setAccessibleName("");
 
         labelFilter.setText("Filtro:");
 
-        campoFiltro.setToolTipText("Informação de filtragem de cliente");
+        campoFiltro.setToolTipText("Informação de filtragem de paciente");
 
         btnBusca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/search-24.png"))); // NOI18N
         btnBusca.setToolTipText("Consulta de clientes");
@@ -312,7 +317,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         });
 
         btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/update-24.png"))); // NOI18N
-        btnUpdate.setToolTipText("Atualizar cliente");
+        btnUpdate.setToolTipText("Atualizar paciente");
         btnUpdate.setBorderPainted(false);
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -321,7 +326,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         });
 
         btnRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/delete-24.png"))); // NOI18N
-        btnRemove.setToolTipText("Apagar um cliente");
+        btnRemove.setToolTipText("Apagar um paciente");
         btnRemove.setBorderPainted(false);
         btnRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -330,10 +335,10 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         });
 
         comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sem Filtragem", "ID", "Nome", "CPF", "Status" }));
-        comboSearch.setToolTipText("Filtro de busca de clientes");
+        comboSearch.setToolTipText("Filtro de busca de pacientes");
 
         btnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/report-24.png"))); // NOI18N
-        btnReport.setToolTipText("Gerar Ficha Mensal");
+        btnReport.setToolTipText("Gerar Relatório de Pacientes");
         btnReport.setBorderPainted(false);
         btnReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -361,7 +366,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
                         .addComponent(btnRemove)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(208, 208, 208)
+                .addGap(199, 199, 199)
                 .addComponent(labelFilter)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(comboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -369,17 +374,18 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
                 .addComponent(campoFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBusca)
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addContainerGap(199, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelFilter)
-                    .addComponent(campoFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnBusca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelFilter)
+                        .addComponent(campoFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -391,7 +397,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
                         .addComponent(btnCleanTable, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
