@@ -7,7 +7,7 @@ public class ValidacaoEmail {
         String dominio = null;
         String subdominio = null;
         /*verifica se o email está nulo, se estiver*/
-        if (email == null || email.isEmpty()){
+        if (email == null || email.isEmpty() || !(email.contains("@")) || !(email.contains("."))){
             /*retorna false*/
             return false;
         }

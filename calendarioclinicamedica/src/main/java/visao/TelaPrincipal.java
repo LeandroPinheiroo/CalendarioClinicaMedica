@@ -11,10 +11,13 @@ import java.awt.Toolkit;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import visao.convenio.TelaCadastroConvenio;
 import visao.convenio.TelaConsultaConvenio;
 import visao.especializacao.TelaCadastroEspecializacao;
 import visao.especializacao.TelaConsultaEspecializacao;
+import visao.medico.TelaCadastroMedico;
+import visao.medico.TelaConsultaMedico;
 import visao.paciente.TelaCadastroPaciente;
 import visao.paciente.TelaConsultaPaciente;
 
@@ -60,9 +63,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuEspecializacao = new javax.swing.JMenu();
         menuItemCadastraEspecializacao = new javax.swing.JMenuItem();
         menuItemConsultaEspecializacao = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        menuMedico = new javax.swing.JMenu();
+        menuItemCadastraMedico = new javax.swing.JMenuItem();
+        menuItemConsultaMedico = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Software Gerente de Clínica");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -122,7 +127,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuConvenio);
 
-        menuEspecializacao.setText("Especialização Médico");
+        menuEspecializacao.setText("Especialização Médica");
 
         menuItemCadastraEspecializacao.setText("Cadastro de Especialização");
         menuItemCadastraEspecializacao.addActionListener(new java.awt.event.ActionListener() {
@@ -142,8 +147,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuEspecializacao);
 
-        jMenu3.setText("jMenu3");
-        jMenuBar1.add(jMenu3);
+        menuMedico.setText("Médico");
+
+        menuItemCadastraMedico.setText("Cadastro de Médico");
+        menuItemCadastraMedico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCadastraMedicoActionPerformed(evt);
+            }
+        });
+        menuMedico.add(menuItemCadastraMedico);
+
+        menuItemConsultaMedico.setText("Consulta de Médico");
+        menuItemConsultaMedico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemConsultaMedicoActionPerformed(evt);
+            }
+        });
+        menuMedico.add(menuItemConsultaMedico);
+
+        jMenuBar1.add(menuMedico);
 
         setJMenuBar(jMenuBar1);
 
@@ -180,9 +202,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemConsultaPacienteActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente sair do sistema?");
+        int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente sair do sistema?",
+                "Verificação de saída",JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if(resposta == JOptionPane.YES_OPTION){
-            System.exit(0);
+            this.dispose();
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -210,6 +233,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         painel.add(tce);
     }//GEN-LAST:event_menuItemConsultaEspecializacaoActionPerformed
 
+    private void menuItemCadastraMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCadastraMedicoActionPerformed
+        TelaCadastroMedico tcm = new TelaCadastroMedico();
+        tcm.setVisible(true);
+        painel.add(tcm);
+    }//GEN-LAST:event_menuItemCadastraMedicoActionPerformed
+
+    private void menuItemConsultaMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConsultaMedicoActionPerformed
+        TelaConsultaMedico tcm = new TelaConsultaMedico(this);
+        tcm.setVisible(true);
+        painel.add(tcm);
+    }//GEN-LAST:event_menuItemConsultaMedicoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -220,21 +255,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
@@ -246,7 +272,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu menuAgendamento;
     private javax.swing.JMenu menuConvenio;
@@ -254,10 +279,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemAgendaConsulta;
     private javax.swing.JMenuItem menuItemCadastraConvenio;
     private javax.swing.JMenuItem menuItemCadastraEspecializacao;
+    private javax.swing.JMenuItem menuItemCadastraMedico;
     private javax.swing.JMenuItem menuItemCadastroPaciente;
     private javax.swing.JMenuItem menuItemConsultaConvenio;
     private javax.swing.JMenuItem menuItemConsultaEspecializacao;
+    private javax.swing.JMenuItem menuItemConsultaMedico;
     private javax.swing.JMenuItem menuItemConsultaPaciente;
+    private javax.swing.JMenu menuMedico;
     private javax.swing.JMenu menuPaciente;
     // End of variables declaration//GEN-END:variables
 }

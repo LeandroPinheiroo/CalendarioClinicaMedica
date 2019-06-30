@@ -2,7 +2,7 @@ package util;
 /*classe de verificação de força da senha*/
 public class ValidacaoSenha {
     /*método estatico para verifiica se a senha é forte e retorna a mensagem sobre o que está faltando para ser*/
-    public static String passwordIsStrong(String password){
+    public static String validaForcaSenha(String password){
         /*transforma a senha em uma array de char*/
         char pass[] = password.toCharArray();
         /*verifica primeiro se o tamanho é pelo menos de tamanho 8*/

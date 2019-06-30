@@ -35,14 +35,14 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
         comboCidade.setSelectedIndex(290);
         setConvenios();
     }
-    /*método para salvar o cliente*/
+    /*método para salvar o paciente*/
     public void salvarPaciente(){
-        /*instancia o cliente e os services necessários*/
+        /*instancia o paciente e os services necessários*/
         Paciente p = new Paciente();
         PacienteServico ps = new PacienteServico();
         CidadeServico cds = new CidadeServico();
         ConvenioServico cs = new ConvenioServico();
-        /*seta os valores para o cliente*/
+        /*seta os valores para o paciente*/
         p.setNome(campoNome.getText().trim());
         /*verifica se o CPF é invalido, caso seja, mostra mensagem de erro e sai do método*/
         if(ValidacaoCPF.validaCPF(campoCPF.getText()) == false){

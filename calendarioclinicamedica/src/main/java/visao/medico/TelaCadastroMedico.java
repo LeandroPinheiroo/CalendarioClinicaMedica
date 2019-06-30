@@ -1,4 +1,4 @@
-package visao.paciente;
+package visao.medico;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -9,66 +9,44 @@ package visao.paciente;
 
 import excecao.ServicoException;
 import modelo.Cidade;
-import modelo.Paciente;
 import servico.CidadeServico;
-import servico.PacienteServico;
+import servico.MedicoServico;
 import util.*;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javax.swing.SwingConstants.CENTER;
-import modelo.Convenio;
+import modelo.Especializacao;
+import modelo.Medico;
 import modelo.Permissao;
-import servico.ConvenioServico;
+import servico.EspecializacaoServico;
+import servico.MedicoServico;
 
 /**
  *
  * @author weth767
  */
-public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
+public class TelaCadastroMedico extends javax.swing.JInternalFrame {
     
-    private Paciente paciente;
-    private TelaConsultaPaciente telaConsultaPaciente;
-    
-    public TelaAtualizacaoPaciente(TelaConsultaPaciente telaConsultaPaciente, Paciente paciente) {
+    public TelaCadastroMedico() {
         initComponents();
         campoComplemento.setHorizontalAlignment(CENTER);
-        comboEstado.setSelectedItem(paciente.getCidade().getEstado());
         setCidades(comboEstado.getSelectedItem().toString());
-        comboCidade.setSelectedItem(paciente.getCidade().getNome());
-        setConvenios();
-        comboConvenio.setSelectedItem(paciente.getConvenio().getNome());
-        this.paciente = paciente;
-        this.telaConsultaPaciente = telaConsultaPaciente;
-        setPaciente();
+        comboCidade.setSelectedIndex(290);
+        setEspecializacoes();
     }
-    
-    /*método para setar os pacientes*/
-    public void setPaciente(){
-        campoNome.setText(paciente.getNome());
-        campoCPF.setText(paciente.getCpf());
-        campoRG.setText(paciente.getRg());
-        campoBairro.setText(paciente.getBairro());
-        campoCEP.setText(paciente.getCep());
-        campoRua.setText(paciente.getRua());
-        campoNumero.setText(paciente.getNumero());
-        campoComplemento.setText(paciente.getComplemento());
-        campoEmail.setText(paciente.getEmail());
-        campoCelular.setText(paciente.getCelular());
-        checkStatus.setSelected(paciente.isStatus());
-        comboConvenio.setSelectedItem(paciente.getConvenio().getNome());
-    }
-    
-    /*método para atualizar o paciente*/
-    public void atualizarPaciente(){
-        /*instancia o paciente e os services necessários*/
-        Paciente p = paciente;
-        PacienteServico ps = new PacienteServico();
+    /*método para salvar o medico*/
+    public void salvarMedico(){
+        /*instancia o medico e os services necessários*/
+        Medico m = new Medico();
+        MedicoServico ms = new MedicoServico();
         CidadeServico cds = new CidadeServico();
-        ConvenioServico cs = new ConvenioServico();
-        /*seta os valores para o paciente*/
-        p.setNome(campoNome.getText().trim());
+        /*seta os valores para o medico*/
+        m.setNome(campoNome.getText().trim());
         /*verifica se o CPF é invalido, caso seja, mostra mensagem de erro e sai do método*/
         if(ValidacaoCPF.validaCPF(campoCPF.getText()) == false){
             JOptionPane.showMessageDialog(this, "CPF inválido","Erro",JOptionPane.ERROR_MESSAGE);
@@ -76,19 +54,19 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
             return;
         }
         /*caso não seja, pega o cpf*/
-        p.setCpf(campoCPF.getText().replaceAll("\\.", "").replaceAll("-", ""));
+        m.setCpf(campoCPF.getText().replaceAll("\\.", "").replaceAll("-", ""));
         /*verifica se o RG não veio vazio*/
         if(campoRG.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "RG inválido","Erro",JOptionPane.ERROR_MESSAGE);
             campoRG.setText("");
             return;
         }
-        p.setRg(campoRG.getText());
+        m.setRg(campoRG.getText());
         /*busca a cidade pelo seu nome e estado*/
         try {
             Cidade c = cds.buscaPorNomeEstado(comboCidade.getSelectedItem().toString(),
                     comboEstado.getSelectedItem().toString());
-            p.setCidade(c);
+            m.setCidade(c);
         } catch (ServicoException ex) {
             JOptionPane.showMessageDialog(this, "Erro em realizar a busca","Erro",JOptionPane.ERROR_MESSAGE);
             return;
@@ -99,37 +77,74 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
             campoCEP.setText("");
             return;
         }
-        p.setCep(campoCEP.getText().replaceAll("-", "").trim());
+        m.setCep(campoCEP.getText().replaceAll("-", "").trim());
         /*coloca o bairro, rua e outros dados referentes ao endereço*/
-        p.setBairro(campoBairro.getText());
-        p.setRua(campoRua.getText());
-        p.setNumero(campoNumero.getText());
-        p.setComplemento(campoComplemento.getText());
+        m.setBairro(campoBairro.getText());
+        m.setRua(campoRua.getText());
+        m.setNumero(campoNumero.getText());
+        m.setComplemento(campoComplemento.getText());
         /*verifica se recebeu um email valido*/
         if(ValidacaoEmail.validaEmail(campoEmail.getText()) == false){
             JOptionPane.showMessageDialog(this, "E-mail inválido","Erro",JOptionPane.ERROR_MESSAGE);
             campoEmail.setText("");
             return;
         }
+        m.setEmail(campoEmail.getText());
         /*pega o número de celular*/
         if(campoCelular.getText().isEmpty() || campoCelular.getText().length() < 11){
             JOptionPane.showMessageDialog(this, "Número de celular inválido","Erro",JOptionPane.ERROR_MESSAGE);
             campoEmail.setText("");
             return;
         }
-        p.setCelular(campoCelular.getText().replaceAll("\\.", "").replaceAll("-", "")
+        m.setCelular(campoCelular.getText().replaceAll("\\.", "").replaceAll("-", "")
         .replaceAll("\\(", "").replaceAll("\\)", "").replaceAll(" ", ""));
         /*pega a permissão*/
-        p.setPermissao(Permissao.PACIENTE);
+        m.setPermissao(Permissao.MEDICO);
+        /*pega o crm do médico*/
+        if(campoCRM.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "CRM do médico deve ser fornecido","Erro",JOptionPane.ERROR_MESSAGE);
+            campoCRM.setText("");
+            return;
+        }
+        m.setCrm(campoCRM.getText());
+        /*pega o login do médico*/
+        if(campoLogin.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "login do médico deve ser fornecido","Erro",JOptionPane.ERROR_MESSAGE);
+            campoLogin.setText("");
+            return;
+        }
+        m.setLogin(campoLogin.getText());
+        /*pega a senha do médico*/
+        String senha = new String(campoSenha.getPassword());
+        String erro = ValidacaoSenha.validaForcaSenha(senha);
+        if(erro != null){
+            JOptionPane.showMessageDialog(this, erro,"Erro",JOptionPane.ERROR_MESSAGE);
+            campoSenha.setText("");
+            return;
+        }
+        m.setSenha(senha); 
+        /*pega as especializações selecionadas*/
+        List<Especializacao> especializacoes = new ArrayList();
+        for(int i = 0; i < listaEspecializacoes.getSelectedValuesList().size(); i++){
+            try {
+                especializacoes.add(new EspecializacaoServico()
+                        .buscaPeloNome(listaEspecializacoes.getSelectedValuesList().get(i)));
+            } catch (ServicoException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        m.setEspecializacoes(especializacoes);
+        /*pega a data atual como data de cadastro*/
+        m.setDataCadastro(new java.util.Date());
         /*e coloca o status como true já que inicialmente está habilitado*/
-        p.setStatus(checkStatus.isSelected());
+        m.setStatus(true);
         try {
-            p.setConvenio(cs.buscaPorNome(comboConvenio.getSelectedItem().toString()));
-            /*atualiza um paciente*/
-            ps.atualizar(p);
+            /*salva um paciente*/
+            ms.salvar(m);
             /*mostra mensagem de sucesso*/
-            JOptionPane.showMessageDialog(this,"Paciente atualizado com sucesso",
+            JOptionPane.showMessageDialog(this,"Médico salvo com sucesso",
                     "Sucesso",JOptionPane.INFORMATION_MESSAGE);
+            CamposTextoUtil.limpaTodosCampos(rootPane);
             /*se houve erro*/
         } catch (ServicoException e) {
             /*mostra mensagem de erro*/
@@ -149,17 +164,16 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         }
     }
     
-    /*método para setar todos os convenios no combobox */
-    public void setConvenios(){
-        /*remove todos inicialmente*/
-        comboConvenio.removeAll();
-        /*utiliza o serviço de convenio*/
-        ConvenioServico cs = new ConvenioServico();
-        List<Convenio> convenios  = cs.buscarTodos();
-        /*um for para inserir todos no combo*/
-        for(Convenio c : convenios){
-            comboConvenio.addItem(c.getNome());
+    /*método para setar as especializações na lista*/
+    public void setEspecializacoes(){
+        DefaultListModel modelo = new DefaultListModel();
+        /*busca todas as especializações*/
+        List<Especializacao> especializacoes = new EspecializacaoServico().buscaTodos();
+        /*adiciona na lista*/
+        for(Especializacao e: especializacoes){
+            modelo.addElement(e.getNome());
         }
+        listaEspecializacoes.setModel(modelo);
     }
     
     /*método para setar todas as cidades daquele estado no combo de cidades*/
@@ -192,6 +206,8 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         labelNome = new javax.swing.JLabel();
         campoNome = new javax.swing.JTextField();
         labelCpf = new javax.swing.JLabel();
@@ -216,13 +232,19 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         campoEmail = new javax.swing.JTextField();
         labelCelular = new javax.swing.JLabel();
         campoCelular = new javax.swing.JFormattedTextField();
-        btAtualizaPaciente = new javax.swing.JButton();
+        btSalvaPaciente = new javax.swing.JButton();
+        btLimpaCampos = new javax.swing.JButton();
         btCancela = new javax.swing.JButton();
         btBuscaCep = new javax.swing.JButton();
-        comboConvenio = new javax.swing.JComboBox<>();
-        labelConvenio = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        checkStatus = new javax.swing.JCheckBox();
+        labelCRM = new javax.swing.JLabel();
+        campoCRM = new javax.swing.JTextField();
+        labelLogin = new javax.swing.JLabel();
+        campoLogin = new javax.swing.JTextField();
+        labelSenha = new javax.swing.JLabel();
+        campoSenha = new javax.swing.JPasswordField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listaEspecializacoes = new javax.swing.JList<>();
+        labelEspecializacoes = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -237,25 +259,15 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
 
         jLabel2.setText("jLabel2");
 
-        setClosable(true);
-        setTitle("Atualização de Paciente");
-        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
-            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                formInternalFrameClosing(evt);
-            }
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
-            }
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
         });
+        jScrollPane1.setViewportView(jList1);
+
+        setClosable(true);
+        setTitle("Cadastro de Médico");
 
         labelNome.setText("Nome");
 
@@ -284,7 +296,7 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
 
         comboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins" }));
         comboEstado.setSelectedIndex(12);
-        comboEstado.setToolTipText("Estado onde se localiza a moradia do paciente");
+        comboEstado.setToolTipText("Estado onde se localiza a moradia do cliente");
         comboEstado.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -339,12 +351,21 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         }
         campoCelular.setToolTipText("Celular do paciente");
 
-        btAtualizaPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/update-24.png"))); // NOI18N
-        btAtualizaPaciente.setToolTipText("Atualizar paciente");
-        btAtualizaPaciente.setBorderPainted(false);
-        btAtualizaPaciente.addActionListener(new java.awt.event.ActionListener() {
+        btSalvaPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
+        btSalvaPaciente.setToolTipText("Cadastrar Paciente");
+        btSalvaPaciente.setBorderPainted(false);
+        btSalvaPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAtualizaPacienteActionPerformed(evt);
+                btSalvaPacienteActionPerformed(evt);
+            }
+        });
+
+        btLimpaCampos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/clean-24.png"))); // NOI18N
+        btLimpaCampos.setToolTipText("Limpar Campos");
+        btLimpaCampos.setBorderPainted(false);
+        btLimpaCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btLimpaCamposActionPerformed(evt);
             }
         });
 
@@ -366,11 +387,15 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
             }
         });
 
-        labelConvenio.setText("Convênio");
+        labelCRM.setText("CRM");
 
-        jLabel1.setText("Status");
+        labelLogin.setText("Login");
 
-        checkStatus.setText("Status");
+        labelSenha.setText("Senha");
+
+        jScrollPane2.setViewportView(listaEspecializacoes);
+
+        labelEspecializacoes.setText("Especializações");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -378,25 +403,46 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(labelRg)
-                                    .addComponent(labelNome)
-                                    .addComponent(labelCidade)))
-                            .addComponent(labelCep, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(campoCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btBuscaCep, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(256, 256, 256)
+                                .addComponent(btSalvaPaciente)
+                                .addGap(18, 18, 18)
+                                .addComponent(btLimpaCampos)
+                                .addGap(18, 18, 18)
+                                .addComponent(btCancela))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(labelSenha)
+                                .addGap(41, 41, 41)
+                                .addComponent(campoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelRua)
+                                .addComponent(labelEspecializacoes)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelCep)
+                            .addComponent(labelNumero)
+                            .addComponent(labelEmail)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(labelRg)
+                                        .addComponent(labelNome))
+                                    .addGap(5, 5, 5))
+                                .addComponent(labelCidade, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(labelCRM))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelCelular)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(campoRua, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(campoCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -404,59 +450,46 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(campoCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(comboCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(labelEstado)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(comboCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(labelBairro)))
-                                    .addComponent(campoRG, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(labelBairro)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(47, 47, 47)
+                                        .addComponent(campoBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(campoRG, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelEstado)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(campoBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(32, 32, 32)
-                            .addComponent(labelEmail)
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelCelular)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(campoCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(20, 20, 20)
-                                    .addComponent(labelNumero)
-                                    .addGap(294, 294, 294)
-                                    .addComponent(labelComplemento))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(15, 15, 15)
-                                    .addComponent(labelConvenio)
-                                    .addGap(9, 9, 9)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(comboConvenio, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(campoNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(0, 0, Short.MAX_VALUE)
-                                    .addComponent(jLabel1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(checkStatus))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(campoComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btAtualizaPaciente)
-                .addGap(18, 18, 18)
-                .addComponent(btCancela)
-                .addGap(278, 278, 278))
+                                .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(campoCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btBuscaCep, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelRua)
+                                .addGap(18, 18, 18)
+                                .addComponent(campoRua, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(campoNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(labelComplemento))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(campoCRM, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(25, 25, 25)
+                                        .addComponent(campoComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(labelLogin)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(campoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,9 +503,9 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoRG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelRg)
                     .addComponent(labelEstado)
-                    .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelRg))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -497,28 +530,41 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelEmail)
-                    .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelCelular)
-                    .addComponent(campoCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboConvenio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelConvenio)
-                    .addComponent(jLabel1)
-                    .addComponent(checkStatus))
-                .addGap(18, 18, 18)
+                    .addComponent(campoCRM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelCRM)
+                    .addComponent(labelLogin)
+                    .addComponent(campoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelSenha)
+                        .addComponent(campoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelEspecializacoes))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btCancela, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btAtualizaPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(33, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btSalvaPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btLimpaCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btAtualizaPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizaPacienteActionPerformed
-        atualizarPaciente();
-    }//GEN-LAST:event_btAtualizaPacienteActionPerformed
+    private void btSalvaPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvaPacienteActionPerformed
+        salvarMedico();
+    }//GEN-LAST:event_btSalvaPacienteActionPerformed
+
+    private void btLimpaCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpaCamposActionPerformed
+        CamposTextoUtil.limpaTodosCampos(rootPane);
+    }//GEN-LAST:event_btLimpaCamposActionPerformed
 
     private void btCancelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelaActionPerformed
         this.dispose();
@@ -540,44 +586,48 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_campoNumeroKeyTyped
 
-    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        telaConsultaPaciente.setVisible(true);
-    }//GEN-LAST:event_formInternalFrameClosing
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btAtualizaPaciente;
     private javax.swing.JButton btBuscaCep;
     private javax.swing.JButton btCancela;
+    private javax.swing.JButton btLimpaCampos;
+    private javax.swing.JButton btSalvaPaciente;
     private javax.swing.JTextField campoBairro;
     private javax.swing.JFormattedTextField campoCEP;
     private javax.swing.JFormattedTextField campoCPF;
+    private javax.swing.JTextField campoCRM;
     private javax.swing.JFormattedTextField campoCelular;
     private javax.swing.JTextField campoComplemento;
     private javax.swing.JTextField campoEmail;
+    private javax.swing.JTextField campoLogin;
     private javax.swing.JTextField campoNome;
     private javax.swing.JFormattedTextField campoNumero;
     private javax.swing.JTextField campoRG;
     private javax.swing.JTextField campoRua;
-    private javax.swing.JCheckBox checkStatus;
+    private javax.swing.JPasswordField campoSenha;
     private javax.swing.JComboBox<String> comboCidade;
-    private javax.swing.JComboBox<String> comboConvenio;
     private javax.swing.JComboBox<String> comboEstado;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelBairro;
+    private javax.swing.JLabel labelCRM;
     private javax.swing.JLabel labelCelular;
     private javax.swing.JLabel labelCep;
     private javax.swing.JLabel labelCidade;
     private javax.swing.JLabel labelComplemento;
-    private javax.swing.JLabel labelConvenio;
     private javax.swing.JLabel labelCpf;
     private javax.swing.JLabel labelEmail;
+    private javax.swing.JLabel labelEspecializacoes;
     private javax.swing.JLabel labelEstado;
+    private javax.swing.JLabel labelLogin;
     private javax.swing.JLabel labelNome;
     private javax.swing.JLabel labelNumero;
     private javax.swing.JLabel labelRg;
     private javax.swing.JLabel labelRua;
+    private javax.swing.JLabel labelSenha;
+    private javax.swing.JList<String> listaEspecializacoes;
     // End of variables declaration//GEN-END:variables
 }

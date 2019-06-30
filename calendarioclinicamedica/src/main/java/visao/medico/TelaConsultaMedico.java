@@ -1,55 +1,58 @@
-package visao.paciente;
+package visao.medico;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import visao.medico.*;
 import excecao.ServicoException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import modelo.Paciente;
-import servico.PacienteServico;
+import modelo.Medico;
+import servico.MedicoServico;
 import util.ConversorData;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import modelo.Especializacao;
 import visao.TelaPrincipal;
 
 /**
  * @author weth767
  */
-public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
+public class TelaConsultaMedico extends javax.swing.JInternalFrame {
     
      
     private TelaPrincipal telaPrincipal;  
     private DefaultTableModel modelo;
 
-    public TelaConsultaPaciente(TelaPrincipal telaPrincipal) {
+    public TelaConsultaMedico(TelaPrincipal telaPrincipal) {
         initComponents();
         this.telaPrincipal = telaPrincipal;
-        this.modelo = (DefaultTableModel) tabelaPacientes.getModel();
+        this.modelo = (DefaultTableModel) tabelaMedicos.getModel();
         modelo.setRowCount(0);
     }
 
-    /*método para setar todos os pacientes cadastrados verificando o filtro de busca*/
+    /*método para setar todos os médicos cadastrados verificando o filtro de busca*/
     public void setDadosTabela() {
         modelo.setRowCount(0);
-        PacienteServico ps = new PacienteServico();
+        MedicoServico ps = new MedicoServico();
         /*verifica se o filtro é sem filtro*/
-        List<Paciente> pacientes = null;
-        Paciente paciente = null;
+        List<Medico> medicos = null;
+        Medico medico = null;
         /*verifica cada filtro e vai pegando os dados conforme o filtro e mostra mensagem de erro caso erros acontecem*/
         /*o primeiro é o sem filtro, que retorna todos*/
         if (comboSearch.getSelectedItem().toString().equals("Sem Filtragem")) {
-            pacientes = ps.buscaTodos();
+            medicos = ps.buscaTodos();
             /*o segundo é pelo nome*/
         } else if (comboSearch.getSelectedItem().toString().equals("Nome")) {
             try {
-                pacientes = ps.buscaPeloNome(campoFiltro.getText().trim());
+                medicos = ps.buscaPeloNome(campoFiltro.getText().trim());
             } catch (ServicoException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -58,68 +61,80 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
             String text = campoFiltro.getText();
             if (text.matches("\\d+")) {
                 try {
-                    paciente = ps.buscaPorID(Integer.parseInt(text));
+                    medico = ps.buscaPorID(Integer.parseInt(text));
                 } catch (ServicoException e) {
                     JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            /*pelo cpf*/
-        } else if (comboSearch.getSelectedItem().toString().equals("CPF")) {
+            /*pelo crm*/
+        } else if (comboSearch.getSelectedItem().toString().equals("CRM")) {
             try {
-                paciente = ps.buscaPeloCPF(campoFiltro.getText());
+                medico = ps.buscaPeloCRM(campoFiltro.getText());
             } catch (ServicoException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
             /*e pelo status*/
         } else if (comboSearch.getSelectedItem().toString().equals("Status")) {
             if (campoFiltro.getText().toLowerCase().equals("true") || campoFiltro.getText().toLowerCase().equals("false")) {
-                pacientes = ps.buscaPorStatus(Boolean.valueOf(campoFiltro.getText()));
+                medicos = ps.buscaPorStatus(Boolean.valueOf(campoFiltro.getText()));
             }
         }
-        /*depois verifica se é um paciente só para os métodos de cpf e id ou uma lista para nome, stauts e sem filtro*/
-        if (paciente != null) {
-            Object data[] = {paciente.getId(), paciente.getNome(), paciente.getCpf(), paciente.getRg(),
-                paciente.getConvenio().getNome(),
-                paciente.getEmail(),ConversorData.converetDataUSAtParaBR(paciente.getDataCadastro().toString()), 
-                paciente.getCelular(), paciente.getCidade().getEstado(), 
-                paciente.getCidade().getNome(), paciente.getCep(), 
-                paciente.getBairro(), paciente.getRua(), paciente.getNumero(), 
-                paciente.getComplemento(),
-                paciente.isStatus()};
+        /*depois verifica se é um medico só para os métodos de cpf e id ou uma lista para nome, stauts e sem filtro*/
+        if (medico != null) {
+            Object data[] = {medico.getId(), medico.getNome(), medico.getCpf(), medico.getRg(),
+                medico.getCrm(),getEspecializacoes(medico.getEspecializacoes()),
+                medico.getEmail(),ConversorData.converetDataUSAtParaBR(medico.getDataCadastro().toString()), 
+                medico.getCelular(), medico.getCidade().getEstado(), 
+                medico.getCidade().getNome(), medico.getCep(), 
+                medico.getBairro(), medico.getRua(), medico.getNumero(), 
+                medico.getComplemento(),
+                medico.isStatus()};
             modelo.addRow(data);
-        } else if (pacientes != null) {
-            for (Paciente p : pacientes) {
-                Object data[] = {p.getId(), p.getNome(), p.getCpf(), p.getRg(), 
-                p.getConvenio().getNome(),
-                p.getEmail(),ConversorData.converetDataUSAtParaBR(p.getDataCadastro().toString()), 
-                p.getCelular(), p.getCidade().getEstado(), 
-                p.getCidade().getNome(), p.getCep(), 
-                p.getBairro(), p.getRua(), p.getNumero(), 
-                p.getComplemento(),
-                p.isStatus()};
+        } else if (medicos != null) {
+            for (Medico m : medicos) {
+                Object data[] = {m.getId(), m.getNome(), m.getCpf(), m.getRg(), 
+                m.getCrm(),getEspecializacoes(m.getEspecializacoes()),
+                m.getEmail(),ConversorData.converetDataUSAtParaBR(m.getDataCadastro().toString()), 
+                m.getCelular(), m.getCidade().getEstado(), 
+                m.getCidade().getNome(), m.getCep(), 
+                m.getBairro(), m.getRua(), m.getNumero(), 
+                m.getComplemento(),
+                m.isStatus()};
                 modelo.addRow(data);
             }
         }
     }
+    
+    /*método para buscar as especializações do médico e retorna-las como string*/
+    public List<String> getEspecializacoes(List<Especializacao> especializacoes){
+        /*cria uma lista de string*/
+        List<String> esps = new ArrayList();
+        /*adiciona as especializações*/
+        for(Especializacao e: especializacoes){
+            esps.add(e.getNome());
+        }
+        /*e retorna a lista*/
+        return esps;
+    }
 
-    /*método para remover um paciente*/
+    /*método para remover um medico*/
     public void removerPaciente() {
-        PacienteServico ps = new PacienteServico();
+        MedicoServico ps = new MedicoServico();
         /*verifica se tem uma linha selecionada*/
-        if (tabelaPacientes.getSelectedRow() != -1) {
-            Paciente p = null;
+        if (tabelaMedicos.getSelectedRow() != -1) {
+            Medico m = null;
             /*pega o id*/
-            int id = (Integer) modelo.getValueAt(tabelaPacientes.getSelectedRow(), 0);
+            int id = (Integer) modelo.getValueAt(tabelaMedicos.getSelectedRow(), 0);
             /*busca o cliente*/
             try {
-                p = ps.buscaPorID(id);
-                /*verifica se o usuário realmente deseja apagar o paciente*/
-                int answer = JOptionPane.showConfirmDialog(this, "Deseja realmente apagar o Paciente: " + 
-                        p.getNome()+ ", do CPF: " + p.getCpf(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                m = ps.buscaPorID(id);
+                /*verifica se o usuário realmente deseja apagar o medico*/
+                int answer = JOptionPane.showConfirmDialog(this, "Deseja realmente apagar o Medico: " + 
+                        m.getNome()+ ", do CPF: " + m.getCpf(), "Aviso", JOptionPane.WARNING_MESSAGE);
                 /*se a resposta for sim*/
                 if (answer == JOptionPane.YES_OPTION) {
                     /*removerPaciente então o cliente*/
-                    ps.remover(p.getId());
+                    ps.remover(m.getId());
                     setDadosTabela();
                 }
                 /*caso der erro, mostra mensagem*/
@@ -129,28 +144,29 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         }
     }
 
-    /*método para atualizar o paciente*/
-    public void atualizarPaciente() {
+    /*método para atualizar o medico*/
+    public void atualizarMedico() {
         /*verifica se alguma linha foi selecionada*/
-        if (tabelaPacientes.getSelectedRow() != -1) {
+        if (tabelaMedicos.getSelectedRow() != -1) {
             /*se foi, instancia o serviço*/
-            PacienteServico ps = new PacienteServico();
-            Paciente p = null;
+            MedicoServico ps = new MedicoServico();
+            Medico m = null;
             /*pega a linha selecionada*/
-            int line = tabelaPacientes.getSelectedRow();
-            /*tenta buscar o paciente pelo id*/
+            int line = tabelaMedicos.getSelectedRow();
+            /*tenta buscar o medico pelo id*/
             try {
-                p = ps.buscaPorID((Integer) modelo.getValueAt(line, 0));
-            } /*se houver erro, mostra mensagem ao usuário*/ catch (ServicoException e) {
+                m = ps.buscaPorID((Integer) modelo.getValueAt(line, 0));
+            } /*se houver erro, mostra mensagem ao usuário*/ 
+            catch (ServicoException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
-            /*se foi encontrado o paciente*/
-            if (p != null) {
+            /*se foi encontrado o medico*/
+            if (m != null) {
                 /*envia para a tela de atualização*/
-                TelaAtualizacaoPaciente tap = new TelaAtualizacaoPaciente(this, p);
-                tap.setVisible(true);
+                TelaAtualizacaoMedico tam = new TelaAtualizacaoMedico(this, m);
+                tam.setVisible(true);
                 this.setVisible(false);
-                telaPrincipal.getContentPane().add(tap);
+                telaPrincipal.getContentPane().add(tam);
             }
         }
     }
@@ -209,7 +225,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaPacientes = new javax.swing.JTable();
+        tabelaMedicos = new javax.swing.JTable();
         labelFilter = new javax.swing.JLabel();
         campoFiltro = new javax.swing.JTextField();
         btnBusca = new javax.swing.JButton();
@@ -221,71 +237,73 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         btnReport = new javax.swing.JButton();
 
         setClosable(true);
-        setTitle("Consulta de Pacientes");
+        setTitle("Consulta de Médicos");
         setMaximumSize(null);
         setRequestFocusEnabled(false);
 
-        tabelaPacientes.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nome", "CPF", "RG", "Convênio", "E-mail", "Data de Cadastro", "Celular", "Estado", "Cidade", "CEP", "Bairro", "Rua", "Número", "Complemento", "Status"
+                "ID", "Nome", "CPF", "RG", "CRM", "Especializações", "E-mail", "Data de Cadastro", "Celular", "Estado", "Cidade", "CEP", "Bairro", "Rua", "Número", "Complemento", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tabelaPacientes.setToolTipText("Tabela de pacientes");
-        tabelaPacientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tabelaPacientes.setSurrendersFocusOnKeystroke(true);
-        tabelaPacientes.getTableHeader().setResizingAllowed(false);
-        tabelaPacientes.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tabelaPacientes);
-        if (tabelaPacientes.getColumnModel().getColumnCount() > 0) {
-            tabelaPacientes.getColumnModel().getColumn(0).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(0).setPreferredWidth(70);
-            tabelaPacientes.getColumnModel().getColumn(1).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(1).setPreferredWidth(250);
-            tabelaPacientes.getColumnModel().getColumn(2).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(2).setPreferredWidth(100);
-            tabelaPacientes.getColumnModel().getColumn(3).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(3).setPreferredWidth(100);
-            tabelaPacientes.getColumnModel().getColumn(4).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(4).setPreferredWidth(150);
-            tabelaPacientes.getColumnModel().getColumn(5).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(5).setPreferredWidth(250);
-            tabelaPacientes.getColumnModel().getColumn(6).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(6).setPreferredWidth(130);
-            tabelaPacientes.getColumnModel().getColumn(7).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(7).setPreferredWidth(130);
-            tabelaPacientes.getColumnModel().getColumn(8).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(8).setPreferredWidth(150);
-            tabelaPacientes.getColumnModel().getColumn(9).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(9).setPreferredWidth(250);
-            tabelaPacientes.getColumnModel().getColumn(10).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(10).setPreferredWidth(100);
-            tabelaPacientes.getColumnModel().getColumn(11).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(11).setPreferredWidth(220);
-            tabelaPacientes.getColumnModel().getColumn(12).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(12).setPreferredWidth(220);
-            tabelaPacientes.getColumnModel().getColumn(13).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(13).setPreferredWidth(70);
-            tabelaPacientes.getColumnModel().getColumn(14).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(14).setPreferredWidth(150);
-            tabelaPacientes.getColumnModel().getColumn(15).setResizable(false);
-            tabelaPacientes.getColumnModel().getColumn(15).setPreferredWidth(50);
+        tabelaMedicos.setToolTipText("Tabela de médicos");
+        tabelaMedicos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tabelaMedicos.setSurrendersFocusOnKeystroke(true);
+        tabelaMedicos.getTableHeader().setResizingAllowed(false);
+        tabelaMedicos.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabelaMedicos);
+        if (tabelaMedicos.getColumnModel().getColumnCount() > 0) {
+            tabelaMedicos.getColumnModel().getColumn(0).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(0).setPreferredWidth(70);
+            tabelaMedicos.getColumnModel().getColumn(1).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(1).setPreferredWidth(250);
+            tabelaMedicos.getColumnModel().getColumn(2).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabelaMedicos.getColumnModel().getColumn(3).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tabelaMedicos.getColumnModel().getColumn(4).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(4).setPreferredWidth(150);
+            tabelaMedicos.getColumnModel().getColumn(5).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(5).setPreferredWidth(250);
+            tabelaMedicos.getColumnModel().getColumn(6).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(6).setPreferredWidth(250);
+            tabelaMedicos.getColumnModel().getColumn(7).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(7).setPreferredWidth(130);
+            tabelaMedicos.getColumnModel().getColumn(8).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(8).setPreferredWidth(130);
+            tabelaMedicos.getColumnModel().getColumn(9).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(9).setPreferredWidth(150);
+            tabelaMedicos.getColumnModel().getColumn(10).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(10).setPreferredWidth(250);
+            tabelaMedicos.getColumnModel().getColumn(11).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(11).setPreferredWidth(100);
+            tabelaMedicos.getColumnModel().getColumn(12).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(12).setPreferredWidth(220);
+            tabelaMedicos.getColumnModel().getColumn(13).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(13).setPreferredWidth(220);
+            tabelaMedicos.getColumnModel().getColumn(14).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(14).setPreferredWidth(70);
+            tabelaMedicos.getColumnModel().getColumn(15).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(15).setPreferredWidth(150);
+            tabelaMedicos.getColumnModel().getColumn(16).setResizable(false);
+            tabelaMedicos.getColumnModel().getColumn(16).setPreferredWidth(50);
         }
-        tabelaPacientes.getAccessibleContext().setAccessibleName("");
+        tabelaMedicos.getAccessibleContext().setAccessibleName("");
 
         labelFilter.setText("Filtro:");
 
-        campoFiltro.setToolTipText("Informação de filtragem de paciente");
+        campoFiltro.setToolTipText("Informação de filtragem de médico");
 
         btnBusca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/search-24.png"))); // NOI18N
         btnBusca.setToolTipText("Consulta de médicos");
@@ -315,7 +333,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         });
 
         btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/update-24.png"))); // NOI18N
-        btnUpdate.setToolTipText("Atualizar paciente");
+        btnUpdate.setToolTipText("Atualizar médico");
         btnUpdate.setBorderPainted(false);
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,7 +342,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
         });
 
         btnRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/delete-24.png"))); // NOI18N
-        btnRemove.setToolTipText("Apagar um paciente");
+        btnRemove.setToolTipText("Apagar um médico");
         btnRemove.setBorderPainted(false);
         btnRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -332,8 +350,8 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
             }
         });
 
-        comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sem Filtragem", "ID", "Nome", "CPF", "Status" }));
-        comboSearch.setToolTipText("Filtro de busca de pacientes");
+        comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sem Filtragem", "ID", "Nome", "CRM", "Status" }));
+        comboSearch.setToolTipText("Filtro de busca de médicos");
 
         btnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/report-24.png"))); // NOI18N
         btnReport.setToolTipText("Gerar Relatório de Pacientes");
@@ -402,7 +420,7 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        atualizarPaciente();
+        atualizarMedico();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscaActionPerformed
@@ -437,6 +455,6 @@ public class TelaConsultaPaciente extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> comboSearch;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelFilter;
-    private javax.swing.JTable tabelaPacientes;
+    private javax.swing.JTable tabelaMedicos;
     // End of variables declaration//GEN-END:variables
 }
