@@ -30,7 +30,7 @@ public class AgendamentoDao extends GenericDao<Agendamento, Integer> {
     /*método para buscar um agendamento por uma data específica*/
     protected List<Agendamento> buscaPorData(Date data) throws ServicoException {
         /*retorna a lista de agendamentos pela data*/
-        return em.createQuery("select a from Agendamento a where a.data= :data", Agendamento.class)
+        return em.createQuery("select a from Agendamento a where a.data= :data order by a.hora", Agendamento.class)
                 .setParameter("data", data).getResultList();
     }
     /*método para buscar uma lista de agendamentos por um intervalo de datas*/

@@ -36,5 +36,16 @@ public class MedicoDao extends GenericDao<Medico, Integer> {
             /*se não encontrar, retorna null*/
             return null;
         }
-    }     
+    }
+    /*método para buscar o médico pela cpf dele*/
+    protected Medico buscaPeloCPF(String cpf) throws ServicoException {
+        /*tenta retornar o médico pela cpf fornecida*/
+        try{
+            return em.createQuery("select m from Medico m where m.cpf = :cpf", Medico.class)
+                .setParameter("cpf", cpf).getSingleResult();
+        }catch(NoResultException no){
+            /*se não encontrar, retorna null*/
+            return null;
+        }
+    } 
 }

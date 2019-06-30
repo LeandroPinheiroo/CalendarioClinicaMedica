@@ -5,6 +5,7 @@
  */
 package dao;
 
+import javax.persistence.NoResultException;
 import modelo.Consulta;
 
 /**
@@ -17,4 +18,18 @@ public class ConsultaDao extends GenericDao<Consulta, Integer> {
     protected ConsultaDao() {
         super(Consulta.class);
     }
+    
+    /*método para buscar a ultima consulta inserida*/
+    protected Consulta buscaUltimaConsulta(){
+        /*tenta realizar a busca*/
+        try{
+            /*se encontrar, retorna ela*/
+            return em.createQuery("select c from Consulta c order by c.id desc",Consulta.class).setMaxResults(1)
+                    .getSingleResult();
+         /*caso não consiga encontra, retorna null*/
+        }catch(NoResultException no){
+            return null;
+        }
+    }
+    
 }

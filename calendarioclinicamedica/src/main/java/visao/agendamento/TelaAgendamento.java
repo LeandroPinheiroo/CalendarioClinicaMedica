@@ -50,17 +50,20 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 /*pega a data, concatena o dia, com o mes e ano*/
-                String data = modelo.getValueAt(tabelaCalendario.getSelectedRow(), 
-                        tabelaCalendario.getSelectedColumn()).toString();
-                data += "/";
+                Calendar cal = Calendar.getInstance();
+                int dia = Integer.parseInt(modelo.getValueAt(tabelaCalendario.getSelectedRow(), 
+                        tabelaCalendario.getSelectedColumn()).toString());
                 String mesAno[] = labelMes.getText().split("/");
-                data += numeroMeses.get(mesAno[0]);
-                data += "/";
-                data += mesAno[1];
+                int mes = Integer.parseInt(numeroMeses.get(mesAno[0]));
+                int ano = Integer.parseInt(mesAno[1]);
+                cal.clear();
+                cal.set(ano,mes - 1,dia);
+                System.out.println(cal.getTime());
                 /*e passa para a tela de agendamento*/
-                TelaAgendamentoDia tad = new TelaAgendamentoDia(telaPrincipal,true,data);
+                TelaAgendamentoDia tad = new TelaAgendamentoDia(telaPrincipal,true,cal.getTime(),telaPrincipal);
                 tad.setVisible(true);
-                add(tad);
+                telaPrincipal.getContentPane().add(tad);
+  
             }
         });
     }

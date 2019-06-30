@@ -107,6 +107,17 @@ public class MedicoServico extends MedicoDao{
         return super.buscaTodos();
     }
     
+    /*método para buscar um médico pelo seu cpf*/
+    public Medico buscaPeloCPF(String cpf) throws ServicoException{
+        /*verifica se recebeu algo vazio*/
+        if(cpf == null || cpf.isEmpty()){
+            /*lança exceção*/
+            throw new ServicoException("Informe o CPF do médico");
+        }
+        /*se não houve problema, retorna o médico buscado*/
+        return super.buscaPeloCPF(cpf);
+    }
+    
     /*método para buscar um médico pelo seu CRM*/
     public Medico buscaPeloCRM(String crm) throws ServicoException {
         /*verifica se recebeu um crm valido, que não seja vazio ou nulo*/

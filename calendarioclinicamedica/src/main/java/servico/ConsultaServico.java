@@ -84,4 +84,9 @@ public class ConsultaServico extends ConsultaDao{
         /*retorna a lista de consultas*/
         return super.buscaPorStatus(status);
     }
+    
+    /*método para buscar a ultima consulta cadastrada*/
+    public Consulta buscaUltimaConsulta(){
+        return super.buscaUltimaConsulta();
+    }
 }

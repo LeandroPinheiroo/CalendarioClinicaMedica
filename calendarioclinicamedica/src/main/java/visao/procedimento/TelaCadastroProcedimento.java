@@ -35,7 +35,7 @@ public class TelaCadastroProcedimento extends javax.swing.JInternalFrame {
             return;
         }
         procedimento.setNome(campoNome.getText());
-       /*verifica se o foi digitado o preço do procedimento, se foi*/
+        /*verifica se o foi digitado o preço do procedimento, se foi*/
         if(!(campoPreco.getText().isEmpty())) {
             /*pega o valor, retira os itens indesejados dele*/
             float valor = Float.parseFloat(campoPreco.getText().replaceAll("R", "")
