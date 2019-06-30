@@ -3,33 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package visao.especializacao;
+package visao.procedimento;
 
 
-import visao.convenio.*;
 import excecao.ServicoException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-import modelo.Convenio;
-import modelo.Especializacao;
-import servico.ConvenioServico;
-import servico.EspecializacaoServico;
+import modelo.Procedimento;
+import servico.ProcedimentoServico;
 import visao.TelaPrincipal;
 
 /**
  *
  * @author weth767
  */
-public class TelaConsultaEspecializacao extends javax.swing.JInternalFrame {
+public class TelaConsultaProcedimento extends javax.swing.JInternalFrame {
 
     private TelaPrincipal telaPrincipal;
     private DefaultTableModel model;
     
-    public TelaConsultaEspecializacao(TelaPrincipal telaPrincipal) {
+    public TelaConsultaProcedimento(TelaPrincipal telaPrincipal) {
         initComponents();
         this.telaPrincipal = telaPrincipal;
-        this.model = (DefaultTableModel) tabelaEspecializacao.getModel(); 
+        this.model = (DefaultTableModel) tabelaProcedimentos.getModel(); 
         model.setRowCount(0);
     }
 
@@ -38,74 +35,76 @@ public class TelaConsultaEspecializacao extends javax.swing.JInternalFrame {
         /*zera as linhas da tabela, para não acumular*/
         model.setRowCount(0);
         /*instancia o serviço*/
-        EspecializacaoServico es = new EspecializacaoServico();
-        Especializacao especializacao = null;
-        List<Especializacao> especializacoes = null;
+        ProcedimentoServico ps = new ProcedimentoServico();
+        Procedimento procedimento = null;
+        List<Procedimento> procedimentos = null;
         /*verifica os filtros*/
         if(comboSearch.getSelectedItem().toString().equals("Sem Filtragem")){
-            especializacoes = es.buscaTodos();
+            procedimentos = ps.buscaTodos();
         }
         else if(comboSearch.getSelectedItem().toString().equals("ID")){
             /*verifica se não recebeu um id inválido*/
             if(textFilter.getText().matches("\\d+")){
-                /*senão recebeu, busca a especialização*/
+                /*senão recebeu, busca o procedimento*/
                 try {
-                    especializacao = es.buscaPorID(Integer.parseInt(textFilter.getText()));
+                    procedimento = ps.buscaPorID(Integer.parseInt(textFilter.getText()));
                 } catch (ServicoException e) {
                     /*se houver erro, mostra mensagem na tela*/
                     JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
-        /*busca a especialização por nome*/
+        /*busca o procedimento pelo nome*/
         else if(comboSearch.getSelectedItem().toString().equals("Nome")){
             try {
-                especializacao = es.buscaPeloNome(textFilter.getText());
+                procedimento = ps.buscaPeloNome(textFilter.getText());
             } catch (ServicoException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
-        /*busca os especializações por status*/
+        /*busca os procedimentos por status*/
         else if(comboSearch.getSelectedItem().toString().equals("Status")){
             if(textFilter.getText().toLowerCase().equals("true") || textFilter.getText().toLowerCase().equals("false")){
-                especializacoes = es.buscaPorStatus(Boolean.valueOf(textFilter.getText()));
+                procedimentos = ps.buscaPorStatus(Boolean.valueOf(textFilter.getText()));
             }
         }
         /*verifica qual a foi preenchido, se foi a lista ou apenas um valor*/
-        if(especializacao != null){
+        if(procedimento != null){
             /*seta a linha na tabela*/
-            Object data[] = {especializacao.getId(),especializacao.getNome(),especializacao.getDescricao(),
-                especializacao.isStatus()};
+            Object data[] = {procedimento.getId(),procedimento.getNome(),procedimento.getDescricao(),
+            ajusteFormatoDinheiro(Float.toString(procedimento.getPreco())),
+            procedimento.isStatus()};
             model.addRow(data);
         }
         /*caso foi linhas*/
-        else if(especializacoes != null){
-            for(Especializacao e : especializacoes){
+        else if(procedimentos != null){
+            for(Procedimento p : procedimentos){
                 /*seta as linhas na tabela*/
-                Object data[] = {e.getId(), e.getNome(), e.getDescricao(), e.isStatus()};
+                Object data[] = {p.getId(), p.getNome(), p.getDescricao(), 
+                    ajusteFormatoDinheiro(Float.toString(p.getPreco())),p.isStatus()};
                 model.addRow(data);
             }
         }
     }
 
-    /*método para atualizar uma especialização*/
-    public void atualizarEspecializacao(){
+    /*método para atualizar um procedimento*/
+    public void atualizarProcedimento(){
         /*verifica se selecionou alguma lina da tabela*/
-        if(tabelaEspecializacao.getSelectedRow() != -1){
+        if(tabelaProcedimentos.getSelectedRow() != -1){
             /*se sim guarda a linha*/
-            int line = tabelaEspecializacao.getSelectedRow();
+            int line = tabelaProcedimentos.getSelectedRow();
             /*instancia o serviço*/
-            EspecializacaoServico es = new EspecializacaoServico();
-            /*busca a especialização*/
+            ProcedimentoServico ps = new ProcedimentoServico();
+            /*busca o procedimento*/
             try {
-                Especializacao especializacao = es.buscaPorID((Integer) model.getValueAt(line , 0));
+                Procedimento procedimento = ps.buscaPorID((Integer) model.getValueAt(line , 0));
                 /*depois envia para a tela de atualização*/
-                TelaAtualizacaoEspecializacao tae = new TelaAtualizacaoEspecializacao(this,especializacao);
+                TelaAtualizacaoProcedimento tap = new TelaAtualizacaoProcedimento(this,procedimento);
                 /*deixa a tela essa tela visivel e deixa a de consulta invisivel*/
-                tae.setVisible(true);
+                tap.setVisible(true);
                 this.setVisible(false);
                 /*depois adiciona a tela principal*/
-                telaPrincipal.getContentPane().add(tae);
+                telaPrincipal.getContentPane().add(tap);
             } catch (ServicoException e) {
                 /*se houver erro, mostra mensagem*/
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -113,29 +112,38 @@ public class TelaConsultaEspecializacao extends javax.swing.JInternalFrame {
         }
     }
 
-    /*método para remover uma especialização*/
-    public void removerEspecializacao(){
+    /*método para remover um procedimento*/
+    public void removerProcedimento(){
         /*verifica se selecionou alguma linha da tabela*/
-        if(tabelaEspecializacao.getSelectedRow() != -1){
+        if(tabelaProcedimentos.getSelectedRow() != -1){
             /*guarda a linha selecionada*/
-            int line = tabelaEspecializacao.getSelectedRow();
+            int line = tabelaProcedimentos.getSelectedRow();
             /*instancia o serviço*/
-            EspecializacaoServico es = new EspecializacaoServico();
+            ProcedimentoServico ps = new ProcedimentoServico();
             /*busca o convênio de acordo o id na coluna 0 da linha selecionada*/
             try {
-                Especializacao e = es.buscaPorID((Integer) model.getValueAt(line , 0 ));
-                /*depois verifica se o usuário deseja realmente apagar essa especialização*/
-                int anwser = JOptionPane.showConfirmDialog(this, "Deseja realmente apagar a especiaçização: "
-                +e.getNome(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                Procedimento p = ps.buscaPorID((Integer) model.getValueAt(line , 0 ));
+                /*depois verifica se o usuário deseja realmente apagar esse procedimento*/
+                int anwser = JOptionPane.showConfirmDialog(this, "Deseja realmente apagar o procedimento: "
+                +p.getNome(), "Aviso", JOptionPane.WARNING_MESSAGE);
                 /*caso a resposta for sim, apaga a categoria*/
                 if(anwser == JOptionPane.YES_OPTION){
-                    es.remover(e.getId());
+                    ps.remover(p.getId());
                 }
                 /*se houver erro, mostra mensagem com o erro na tela*/
             } catch (ServicoException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+    
+    /*método para ajustar o dinheiro no formato mais compreensível*/
+    public String ajusteFormatoDinheiro(String texto) {
+        /*converte o valor para float*/
+        float value = Float.parseFloat(texto.replaceAll("\\.", ",").replaceAll(",", ".").replaceAll("R","")
+                .replaceAll("\\$",""));
+        /*e o formata*/
+        return(String.format("R$ %.2f", value));
     }
 
     /**
@@ -156,10 +164,10 @@ public class TelaConsultaEspecializacao extends javax.swing.JInternalFrame {
         btnUpdate = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaEspecializacao = new javax.swing.JTable();
+        tabelaProcedimentos = new javax.swing.JTable();
 
         setClosable(true);
-        setTitle("Consulta de Especializações");
+        setTitle("Consulta de Procedimentos");
         setToolTipText("");
 
         labelFilter.setText("Filtro:");
@@ -209,37 +217,39 @@ public class TelaConsultaEspecializacao extends javax.swing.JInternalFrame {
             }
         });
 
-        tabelaEspecializacao.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaProcedimentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nome", "Descrição", "Status"
+                "ID", "Nome", "Descrição", "Preço", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tabelaEspecializacao.setToolTipText("Tabela de Convênios");
-        tabelaEspecializacao.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tabelaEspecializacao.setSurrendersFocusOnKeystroke(true);
-        tabelaEspecializacao.getTableHeader().setResizingAllowed(false);
-        tabelaEspecializacao.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tabelaEspecializacao);
-        if (tabelaEspecializacao.getColumnModel().getColumnCount() > 0) {
-            tabelaEspecializacao.getColumnModel().getColumn(0).setResizable(false);
-            tabelaEspecializacao.getColumnModel().getColumn(0).setPreferredWidth(105);
-            tabelaEspecializacao.getColumnModel().getColumn(1).setResizable(false);
-            tabelaEspecializacao.getColumnModel().getColumn(1).setPreferredWidth(150);
-            tabelaEspecializacao.getColumnModel().getColumn(2).setResizable(false);
-            tabelaEspecializacao.getColumnModel().getColumn(2).setPreferredWidth(250);
-            tabelaEspecializacao.getColumnModel().getColumn(3).setResizable(false);
-            tabelaEspecializacao.getColumnModel().getColumn(3).setPreferredWidth(120);
+        tabelaProcedimentos.setToolTipText("Tabela de Convênios");
+        tabelaProcedimentos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tabelaProcedimentos.setSurrendersFocusOnKeystroke(true);
+        tabelaProcedimentos.getTableHeader().setResizingAllowed(false);
+        tabelaProcedimentos.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabelaProcedimentos);
+        if (tabelaProcedimentos.getColumnModel().getColumnCount() > 0) {
+            tabelaProcedimentos.getColumnModel().getColumn(0).setResizable(false);
+            tabelaProcedimentos.getColumnModel().getColumn(0).setPreferredWidth(105);
+            tabelaProcedimentos.getColumnModel().getColumn(1).setResizable(false);
+            tabelaProcedimentos.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tabelaProcedimentos.getColumnModel().getColumn(2).setResizable(false);
+            tabelaProcedimentos.getColumnModel().getColumn(2).setPreferredWidth(250);
+            tabelaProcedimentos.getColumnModel().getColumn(3).setResizable(false);
+            tabelaProcedimentos.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tabelaProcedimentos.getColumnModel().getColumn(4).setResizable(false);
+            tabelaProcedimentos.getColumnModel().getColumn(4).setPreferredWidth(120);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -296,7 +306,7 @@ public class TelaConsultaEspecializacao extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        atualizarEspecializacao();
+        atualizarProcedimento();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -312,7 +322,7 @@ public class TelaConsultaEspecializacao extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        removerEspecializacao();
+        removerProcedimento();
     }//GEN-LAST:event_btnRemoveActionPerformed
 
 
@@ -325,7 +335,7 @@ public class TelaConsultaEspecializacao extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> comboSearch;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelFilter;
-    private javax.swing.JTable tabelaEspecializacao;
+    private javax.swing.JTable tabelaProcedimentos;
     private javax.swing.JTextField textFilter;
     // End of variables declaration//GEN-END:variables
 }

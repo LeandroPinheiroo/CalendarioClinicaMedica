@@ -20,6 +20,8 @@ import visao.medico.TelaCadastroMedico;
 import visao.medico.TelaConsultaMedico;
 import visao.paciente.TelaCadastroPaciente;
 import visao.paciente.TelaConsultaPaciente;
+import visao.procedimento.TelaCadastroProcedimento;
+import visao.procedimento.TelaConsultaProcedimento;
 import visao.secretaria.TelaCadastroSecretaria;
 import visao.secretaria.TelaConsultaSecretaria;
 
@@ -71,7 +73,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuSecretaria = new javax.swing.JMenu();
         menuItemCadastraSecretaria = new javax.swing.JMenuItem();
         menuItemConsultaSecretaria = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menuProcedimento = new javax.swing.JMenu();
+        menuItemCadastraProcedimento = new javax.swing.JMenuItem();
+        menuItemConsultaProcedimento = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
 
@@ -195,8 +199,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuSecretaria);
 
-        jMenu2.setText("jMenu2");
-        jMenuBar1.add(jMenu2);
+        menuProcedimento.setText("Procedimento");
+
+        menuItemCadastraProcedimento.setText("Cadastro de Procedimento ");
+        menuItemCadastraProcedimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCadastraProcedimentoActionPerformed(evt);
+            }
+        });
+        menuProcedimento.add(menuItemCadastraProcedimento);
+
+        menuItemConsultaProcedimento.setText("Consulta de Procedimento");
+        menuItemConsultaProcedimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemConsultaProcedimentoActionPerformed(evt);
+            }
+        });
+        menuProcedimento.add(menuItemConsultaProcedimento);
+
+        jMenuBar1.add(menuProcedimento);
 
         jMenu3.setText("jMenu3");
         jMenuBar1.add(jMenu3);
@@ -294,6 +315,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         painel.add(tcs);
     }//GEN-LAST:event_menuItemConsultaSecretariaActionPerformed
 
+    private void menuItemCadastraProcedimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCadastraProcedimentoActionPerformed
+        TelaCadastroProcedimento tcp = new TelaCadastroProcedimento();
+        tcp.setVisible(true);
+        painel.add(tcp);
+    }//GEN-LAST:event_menuItemCadastraProcedimentoActionPerformed
+
+    private void menuItemConsultaProcedimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConsultaProcedimentoActionPerformed
+        TelaConsultaProcedimento tcp = new TelaConsultaProcedimento(this);
+        tcp.setVisible(true);
+        painel.add(tcp);
+    }//GEN-LAST:event_menuItemConsultaProcedimentoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -321,7 +354,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
@@ -332,15 +364,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemCadastraConvenio;
     private javax.swing.JMenuItem menuItemCadastraEspecializacao;
     private javax.swing.JMenuItem menuItemCadastraMedico;
+    private javax.swing.JMenuItem menuItemCadastraProcedimento;
     private javax.swing.JMenuItem menuItemCadastraSecretaria;
     private javax.swing.JMenuItem menuItemCadastroPaciente;
     private javax.swing.JMenuItem menuItemConsultaConvenio;
     private javax.swing.JMenuItem menuItemConsultaEspecializacao;
     private javax.swing.JMenuItem menuItemConsultaMedico;
     private javax.swing.JMenuItem menuItemConsultaPaciente;
+    private javax.swing.JMenuItem menuItemConsultaProcedimento;
     private javax.swing.JMenuItem menuItemConsultaSecretaria;
     private javax.swing.JMenu menuMedico;
     private javax.swing.JMenu menuPaciente;
+    private javax.swing.JMenu menuProcedimento;
     private javax.swing.JMenu menuSecretaria;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,43 +3,54 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package visao.especializacao;
+package visao.procedimento;
 
+import visao.procedimento.*;
 import excecao.ServicoException;
 import javax.swing.*;
-import modelo.Especializacao;
+import modelo.Procedimento;
 import servico.EspecializacaoServico;
+import servico.ProcedimentoServico;
 import util.CamposTextoUtil;
 
 /**
  *
  * @author weth767
  */
-public class TelaCadastroEspecializacao extends javax.swing.JInternalFrame {
+public class TelaCadastroProcedimento extends javax.swing.JInternalFrame {
 
     
-    public TelaCadastroEspecializacao() {
+    public TelaCadastroProcedimento() {
         initComponents();
     }
     
-    /*método para salvar uma especialização*/
-    public void salvarEspecializacao(){
-        /*instancia a especialização e o serviço*/
-        Especializacao especializacao = new Especializacao();
-        EspecializacaoServico es = new EspecializacaoServico();
-        /*verifica se o campo de nome está vazio para obrigar a preencher o nome da especialização*/
+    /*método para salvar um procedimento*/
+    public void salvarProcedimento(){
+        /*instancia o procedimento e o serviço*/
+        Procedimento procedimento = new Procedimento();
+        ProcedimentoServico ps = new ProcedimentoServico();
+        /*verifica se o campo de nome está vazio para obrigar a preencher o nome do procedimento*/
         if(campoNome.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this,"O nome da especialização deve ser informada");
+            JOptionPane.showMessageDialog(this,"O nome do procedimento deve ser informado");
             return;
         }
-        especializacao.setNome(campoNome.getText());
-        especializacao.setDescricao(campoDescricao.getText());
-        especializacao.setStatus(true);
+        procedimento.setNome(campoNome.getText());
+       /*verifica se o foi digitado o preço do procedimento, se foi*/
+        if(!(campoPreco.getText().isEmpty())) {
+            /*pega o valor, retira os itens indesejados dele*/
+            float valor = Float.parseFloat(campoPreco.getText().replaceAll("R", "")
+                    .replaceAll("\\$", "").replaceAll(" ", "")
+                    .replaceAll("\\.", "").replaceAll(",", "."));
+            /*e passa para o procedimento*/
+            procedimento.setPreco(valor);
+        }
+        procedimento.setDescricao(campoDescricao.getText());
+        procedimento.setStatus(true);
         try{
-            /*salva a convenio*/
-            es.salvar(especializacao);
+            /*salva o procedimento*/
+            ps.salvar(procedimento);
             /*e mostra mensagem de sucesso*/
-            JOptionPane.showMessageDialog(this, "Especialização salva com sucesso","Sucesso",
+            JOptionPane.showMessageDialog(this, "Procedimento salvo com sucesso","Sucesso",
                     JOptionPane.INFORMATION_MESSAGE);
             CamposTextoUtil.limpaTodosCampos(rootPane);
             campoDescricao.setText("");
@@ -48,8 +59,17 @@ public class TelaCadastroEspecializacao extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-
- 
+    
+    /*método para ajustar o dinheiro no formato mais compreensível*/
+    public void ajusteFormatoDinheiro(JTextField campo) {
+        String t = campo.getText().replaceAll("\\.", ",");
+        /*converte o valor para float*/
+        float value = Float.parseFloat(t.replaceAll("\\.", "").replaceAll(",", ".").replaceAll("R","")
+                .replaceAll("\\$",""));
+        /*e o formata*/
+        campo.setText(String.format("R$ %.2f", value));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,6 +87,8 @@ public class TelaCadastroEspecializacao extends javax.swing.JInternalFrame {
         btSalvaConvenio = new javax.swing.JButton();
         btLimpaCampos = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
+        labelPreco = new javax.swing.JLabel();
+        campoPreco = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("Cadastro de Especialização");
@@ -110,6 +132,14 @@ public class TelaCadastroEspecializacao extends javax.swing.JInternalFrame {
             }
         });
 
+        labelPreco.setText("Preço");
+
+        campoPreco.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoPrecoFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,12 +156,17 @@ public class TelaCadastroEspecializacao extends javax.swing.JInternalFrame {
                             .addComponent(labelDescription)
                             .addComponent(jScrollPane1)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
+                        .addGap(100, 100, 100)
                         .addComponent(btSalvaConvenio, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btLimpaCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btCancelar)))
+                        .addComponent(btCancelar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(labelPreco)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -145,19 +180,23 @@ public class TelaCadastroEspecializacao extends javax.swing.JInternalFrame {
                 .addComponent(labelDescription)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelPreco)
+                    .addComponent(campoPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btCancelar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btSalvaConvenio, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btLimpaCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSalvaConvenioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvaConvenioActionPerformed
-        salvarEspecializacao();
+        salvarProcedimento();
     }//GEN-LAST:event_btSalvaConvenioActionPerformed
 
     private void btLimpaCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpaCamposActionPerformed
@@ -169,6 +208,12 @@ public class TelaCadastroEspecializacao extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btCancelarActionPerformed
 
+    private void campoPrecoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoPrecoFocusLost
+       if(!(campoPreco.getText().isEmpty()) || campoPreco.getText().matches("[a-zA-Z")){
+           ajusteFormatoDinheiro(campoPreco);
+       }
+    }//GEN-LAST:event_campoPrecoFocusLost
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;
@@ -176,8 +221,10 @@ public class TelaCadastroEspecializacao extends javax.swing.JInternalFrame {
     private javax.swing.JButton btSalvaConvenio;
     private javax.swing.JTextArea campoDescricao;
     private javax.swing.JTextField campoNome;
+    private javax.swing.JTextField campoPreco;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelDescription;
     private javax.swing.JLabel labelName;
+    private javax.swing.JLabel labelPreco;
     // End of variables declaration//GEN-END:variables
 }
