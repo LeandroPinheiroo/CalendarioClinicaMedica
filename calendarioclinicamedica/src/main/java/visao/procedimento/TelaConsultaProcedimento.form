@@ -43,11 +43,11 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
-              <Component id="labelFilter" min="-2" max="-2" attributes="0"/>
+              <Component id="labelFiltro" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="comboSearch" min="-2" pref="174" max="-2" attributes="0"/>
+              <Component id="comboBusca" min="-2" pref="174" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="textFilter" min="-2" pref="165" max="-2" attributes="0"/>
+              <Component id="campoFiltro" min="-2" pref="165" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnSearch" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
@@ -59,9 +59,9 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="labelFilter" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="textFilter" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="comboSearch" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="campoFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="comboBusca" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnSearch" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -81,17 +81,17 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="labelFilter">
+    <Component class="javax.swing.JLabel" name="labelFiltro">
       <Properties>
         <Property name="text" type="java.lang.String" value="Filtro:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="textFilter">
+    <Component class="javax.swing.JTextField" name="campoFiltro">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Informa&#xe7;&#xe3;o de filtragem do Conv&#xea;nio"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="comboSearch">
+    <Component class="javax.swing.JComboBox" name="comboBusca">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">

@@ -32,16 +32,16 @@ public class TelaRetornoPaciente extends javax.swing.JDialog {
     }
 
     /*método para setar o paciente*/
-    public void setPacientes(){
+    public void setPacientes() {
         /*instancia o serviço*/
         PacienteServico ps = new PacienteServico();
         modelo.setRowCount(0);
         /*busca os pacientes pelo nome*/
         try {
-            if(!(campoNome.getText().isEmpty())){
+            if (!(campoNome.getText().isEmpty())) {
                 List<Paciente> pacientes = ps.buscaPeloNome(campoNome.getText());
                 /*adiciona eles na tabela*/
-                for(Paciente p : pacientes){
+                for (Paciente p : pacientes) {
                     Object[] dados = {p.getNome(), p.getCpf()};
                     modelo.addRow(dados);
                 }
@@ -51,21 +51,21 @@ public class TelaRetornoPaciente extends javax.swing.JDialog {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
     /*método para retornar o paciente para a tela de agendamento*/
-    public void retornaPaciente(){
-        if(tabelaPacientes.getSelectedRow() != -1){
+    public void retornaPaciente() {
+        if (tabelaPacientes.getSelectedRow() != -1) {
             try {
                 /*passa o paciente selecionado*/
-                telaSalvaAgendamento.paciente =
-                        new PacienteServico().buscaPeloCPF(modelo.getValueAt(tabelaPacientes.getSelectedRow(),
+                telaSalvaAgendamento.paciente
+                        = new PacienteServico().buscaPeloCPF(modelo.getValueAt(tabelaPacientes.getSelectedRow(),
                                 1).toString());
             } catch (ServicoException ex) {
                 System.out.println(ex.getMessage());
             }
             /*e fecha essa tela*/
             this.dispose();
-        }
-        else{
+        } else {
             this.dispose();
         }
     }

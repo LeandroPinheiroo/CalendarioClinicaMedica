@@ -29,16 +29,8 @@ public class ProntuarioServico extends ProntuarioDao{
         /*se aconteceu, lança exceção com o erro*/
         if (prontuario == null) {
             throw new ServicoException("Informe a entidade");
-        } else if (prontuario.getConsultas() == null) {
-            throw new ServicoException("Informe as consultas");
         } else if (prontuario.getData() == null) {
             throw new ServicoException("Informe a data");
-        } else if (prontuario.getMedicos() == null) {
-            throw new ServicoException("Informe os médicos");
-        } else if (prontuario.getPaciente() == null) {
-            throw new ServicoException("Informe o paciente");
-        } else if (prontuario.getProcedimentos() == null) {
-            throw new ServicoException("Informe os procedimentos");
         }
         /*se não houve problema, salva o prontuario*/
         super.salvar(prontuario);
@@ -50,16 +42,8 @@ public class ProntuarioServico extends ProntuarioDao{
         /*se aconteceu, lança exceção com o erro*/
         if (prontuario == null) {
             throw new ServicoException("Informe a entidade");
-        } else if (prontuario.getConsultas() == null) {
-            throw new ServicoException("Informe as consultas");
         } else if (prontuario.getData() == null) {
             throw new ServicoException("Informe a data");
-        } else if (prontuario.getMedicos() == null) {
-            throw new ServicoException("Informe os médicos");
-        } else if (prontuario.getPaciente() == null) {
-            throw new ServicoException("Informe o paciente");
-        } else if (prontuario.getProcedimentos() == null) {
-            throw new ServicoException("Informe os procedimentos");
         }
         /*se não houve problema, atualiza o prontuario*/
         super.atualizar(prontuario);

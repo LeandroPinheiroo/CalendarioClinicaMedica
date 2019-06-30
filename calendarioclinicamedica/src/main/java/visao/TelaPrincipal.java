@@ -22,6 +22,7 @@ import visao.paciente.TelaCadastroPaciente;
 import visao.paciente.TelaConsultaPaciente;
 import visao.procedimento.TelaCadastroProcedimento;
 import visao.procedimento.TelaConsultaProcedimento;
+import visao.prontuario.TelaConsultaProntuario;
 import visao.secretaria.TelaCadastroSecretaria;
 import visao.secretaria.TelaConsultaSecretaria;
 
@@ -76,7 +77,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuProcedimento = new javax.swing.JMenu();
         menuItemCadastraProcedimento = new javax.swing.JMenuItem();
         menuItemConsultaProcedimento = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        menuProntuario = new javax.swing.JMenu();
+        menuItemConsultaProntuario = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -219,8 +221,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuProcedimento);
 
-        jMenu3.setText("jMenu3");
-        jMenuBar1.add(jMenu3);
+        menuProntuario.setText("Prontuário");
+
+        menuItemConsultaProntuario.setText("Consulta de Prontuário");
+        menuItemConsultaProntuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemConsultaProntuarioActionPerformed(evt);
+            }
+        });
+        menuProntuario.add(menuItemConsultaProntuario);
+
+        jMenuBar1.add(menuProntuario);
 
         jMenu4.setText("jMenu4");
         jMenuBar1.add(jMenu4);
@@ -327,6 +338,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         painel.add(tcp);
     }//GEN-LAST:event_menuItemConsultaProcedimentoActionPerformed
 
+    private void menuItemConsultaProntuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConsultaProntuarioActionPerformed
+        TelaConsultaProntuario tcp = new TelaConsultaProntuario(this);
+        tcp.setVisible(true);
+        painel.add(tcp);    
+    }//GEN-LAST:event_menuItemConsultaProntuarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -354,7 +371,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu menuAgendamento;
@@ -372,10 +388,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemConsultaMedico;
     private javax.swing.JMenuItem menuItemConsultaPaciente;
     private javax.swing.JMenuItem menuItemConsultaProcedimento;
+    private javax.swing.JMenuItem menuItemConsultaProntuario;
     private javax.swing.JMenuItem menuItemConsultaSecretaria;
     private javax.swing.JMenu menuMedico;
     private javax.swing.JMenu menuPaciente;
     private javax.swing.JMenu menuProcedimento;
+    private javax.swing.JMenu menuProntuario;
     private javax.swing.JMenu menuSecretaria;
     // End of variables declaration//GEN-END:variables
 }

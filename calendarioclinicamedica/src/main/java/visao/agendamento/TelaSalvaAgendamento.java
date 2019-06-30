@@ -20,9 +20,11 @@ import modelo.Consulta;
 import modelo.Medico;
 import modelo.Paciente;
 import modelo.Procedimento;
+import modelo.Prontuario;
 import servico.AgendamentoServico;
 import servico.ConsultaServico;
 import servico.ProcedimentoServico;
+import servico.ProntuarioServico;
 import util.CamposTextoUtil;
 import visao.TelaPrincipal;
 import visao.medico.TelaRetornoMedico;
@@ -57,12 +59,12 @@ public class TelaSalvaAgendamento extends javax.swing.JDialog {
     public void salvarAgendamento() {
         if (medico == null || paciente == null) {
             JOptionPane.showMessageDialog(this, "Informe o médico/paciente da consulta ou procedimento a ser "
-                    + "agendado","Erro",JOptionPane.ERROR_MESSAGE);
+                    + "agendado", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if(campoPreco.getText().isEmpty() || campoPreco.getText().matches("[a-zA-Z]")){
+        if (campoPreco.getText().isEmpty() || campoPreco.getText().matches("[a-zA-Z]")) {
             JOptionPane.showMessageDialog(this, "Informe o preço da consulta e procedimentos do agendamento",
-                    "Erro",JOptionPane.ERROR_MESSAGE);
+                    "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         /*cria a consulta, que depois será alterada, no momento da consulta*/
@@ -96,20 +98,53 @@ public class TelaSalvaAgendamento extends javax.swing.JDialog {
             /*pega os procedimentos selecionadas*/
             List<Procedimento> procedimentos = new ArrayList();
             for (int i = 0; i < listaProcedimentos.getSelectedValuesList().size(); i++) {
-                try {
-                    /*busca os procedimentos pelo o nome e vai inserindo na lista*/
-                    procedimentos.add(new ProcedimentoServico()
-                            .buscaPeloNome(listaProcedimentos.getSelectedValuesList().get(i)));
-                } catch (ServicoException ex) {
-                    System.out.println(ex.getMessage());
-                }
+                /*busca os procedimentos pelo o nome e vai inserindo na lista*/
+                procedimentos.add(new ProcedimentoServico()
+                        .buscaPeloNome(listaProcedimentos.getSelectedValuesList().get(i)));
             }
             /*que depois é fornecedida a classe de agendamento*/
             agendamento.setProcedimentos(procedimentos);
             /*e por fim o agendamento é inserido*/
             agendamentoServico.salvar(agendamento);
+            /*instancia o serviço e busca o prontuario pelo paciente*/
+            ProntuarioServico prontuarioServico = new ProntuarioServico();
+            Prontuario prontuario = prontuarioServico.buscaPeloPaciente(paciente);
+            /*verifica não encontrou*/
+            if(prontuario == null){
+                /*instancia o prontuario e passa os valores*/
+                prontuario = new Prontuario();
+                prontuario.setProcedimentos(procedimentos);
+                List<Medico> medicos = new ArrayList();
+                List<Consulta> consultas = new ArrayList();
+                medicos.add(medico);
+                consultas.add(consulta);
+                prontuario.setPaciente(paciente);
+                prontuario.setConsultas(consultas);
+                prontuario.setMedicos(medicos);
+                prontuario.setData(new Date());
+                /*e salva o prontuario*/
+                prontuarioServico.salvar(prontuario);
+            /*se encontrou o procedimento, pega as listas*/
+            }else{
+                /*pega os valores que ja tem para adicionar mais*/
+                List<Medico> medicos = prontuario.getMedicos();
+                List<Consulta> consultas = prontuario.getConsultas();
+                List<Procedimento> procs = prontuario.getProcedimentos();
+                /*adiciona mais aos que ja tem*/
+                medicos.add(medico);
+                consultas.add(consulta);
+                procs.addAll(procedimentos);
+                /*depois seta o paciente e a data novamente e as listas*/
+                prontuario.setPaciente(paciente);
+                prontuario.setData(new Date());
+                prontuario.setConsultas(consultas);
+                prontuario.setMedicos(medicos);
+                prontuario.setProcedimentos(procedimentos);
+                /*e depois atualiza o prontuario*/
+                prontuarioServico.atualizar(prontuario);
+            }
             /*e uma mensagem de sucesso é mostrada*/
-            JOptionPane.showMessageDialog(this, "Agendamento realizado com sucesso","Sucesso",
+            JOptionPane.showMessageDialog(this, "Agendamento realizado com sucesso", "Sucesso",
                     JOptionPane.INFORMATION_MESSAGE);
             CamposTextoUtil.limpaTodosCampos(rootPane);
         } catch (ServicoException ex) {
@@ -193,7 +228,11 @@ public class TelaSalvaAgendamento extends javax.swing.JDialog {
 
         labelPaciente.setText("Paciente");
 
+        campoNomePaciente.setEditable(false);
+
         labelMedico.setText("Médico");
+
+        campoNomeMedico.setEditable(false);
 
         btBuscaPaciente.setText("Busca Paciente");
         btBuscaPaciente.addActionListener(new java.awt.event.ActionListener() {
@@ -299,7 +338,7 @@ public class TelaSalvaAgendamento extends javax.swing.JDialog {
         TelaRetornoPaciente telaRetornoPaciente = new TelaRetornoPaciente(telaPrincipal,
                 true, this);
         telaRetornoPaciente.setVisible(true);
-        if(paciente != null){
+        if (paciente != null) {
             campoNomePaciente.setText(paciente.getNome());
         }
     }//GEN-LAST:event_btBuscaPacienteActionPerformed
@@ -307,7 +346,7 @@ public class TelaSalvaAgendamento extends javax.swing.JDialog {
     private void btBuscaMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscaMedicoActionPerformed
         TelaRetornoMedico telaRetornoMedico = new TelaRetornoMedico(telaPrincipal, true, this);
         telaRetornoMedico.setVisible(true);
-        if(medico != null){
+        if (medico != null) {
             campoNomeMedico.setText(medico.getNome());
         }
     }//GEN-LAST:event_btBuscaMedicoActionPerformed

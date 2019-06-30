@@ -39,15 +39,15 @@ public class TelaConsultaProcedimento extends javax.swing.JInternalFrame {
         Procedimento procedimento = null;
         List<Procedimento> procedimentos = null;
         /*verifica os filtros*/
-        if(comboSearch.getSelectedItem().toString().equals("Sem Filtragem")){
+        if(comboBusca.getSelectedItem().toString().equals("Sem Filtragem")){
             procedimentos = ps.buscaTodos();
         }
-        else if(comboSearch.getSelectedItem().toString().equals("ID")){
+        else if(comboBusca.getSelectedItem().toString().equals("ID")){
             /*verifica se não recebeu um id inválido*/
-            if(textFilter.getText().matches("\\d+")){
+            if(campoFiltro.getText().matches("\\d+")){
                 /*senão recebeu, busca o procedimento*/
                 try {
-                    procedimento = ps.buscaPorID(Integer.parseInt(textFilter.getText()));
+                    procedimento = ps.buscaPorID(Integer.parseInt(campoFiltro.getText()));
                 } catch (ServicoException e) {
                     /*se houver erro, mostra mensagem na tela*/
                     JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -55,17 +55,17 @@ public class TelaConsultaProcedimento extends javax.swing.JInternalFrame {
             }
         }
         /*busca o procedimento pelo nome*/
-        else if(comboSearch.getSelectedItem().toString().equals("Nome")){
+        else if(comboBusca.getSelectedItem().toString().equals("Nome")){
             try {
-                procedimento = ps.buscaPeloNome(textFilter.getText());
+                procedimento = ps.buscaPeloNome(campoFiltro.getText());
             } catch (ServicoException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
         /*busca os procedimentos por status*/
-        else if(comboSearch.getSelectedItem().toString().equals("Status")){
-            if(textFilter.getText().toLowerCase().equals("true") || textFilter.getText().toLowerCase().equals("false")){
-                procedimentos = ps.buscaPorStatus(Boolean.valueOf(textFilter.getText()));
+        else if(comboBusca.getSelectedItem().toString().equals("Status")){
+            if(campoFiltro.getText().toLowerCase().equals("true") || campoFiltro.getText().toLowerCase().equals("false")){
+                procedimentos = ps.buscaPorStatus(Boolean.valueOf(campoFiltro.getText()));
             }
         }
         /*verifica qual a foi preenchido, se foi a lista ou apenas um valor*/
@@ -126,7 +126,7 @@ public class TelaConsultaProcedimento extends javax.swing.JInternalFrame {
                 /*depois verifica se o usuário deseja realmente apagar esse procedimento*/
                 int anwser = JOptionPane.showConfirmDialog(this, "Deseja realmente apagar o procedimento: "
                 +p.getNome(), "Aviso", JOptionPane.WARNING_MESSAGE);
-                /*caso a resposta for sim, apaga a categoria*/
+                /*caso a resposta for sim, apaga o prontuario*/
                 if(anwser == JOptionPane.YES_OPTION){
                     ps.remover(p.getId());
                 }
@@ -155,9 +155,9 @@ public class TelaConsultaProcedimento extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelFilter = new javax.swing.JLabel();
-        textFilter = new javax.swing.JTextField();
-        comboSearch = new javax.swing.JComboBox<>();
+        labelFiltro = new javax.swing.JLabel();
+        campoFiltro = new javax.swing.JTextField();
+        comboBusca = new javax.swing.JComboBox<>();
         btnSearch = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
         btnCleanTable = new javax.swing.JButton();
@@ -170,12 +170,12 @@ public class TelaConsultaProcedimento extends javax.swing.JInternalFrame {
         setTitle("Consulta de Procedimentos");
         setToolTipText("");
 
-        labelFilter.setText("Filtro:");
+        labelFiltro.setText("Filtro:");
 
-        textFilter.setToolTipText("Informação de filtragem do Convênio");
+        campoFiltro.setToolTipText("Informação de filtragem do Convênio");
 
-        comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sem Filtragem", "ID", "Nome", "Status" }));
-        comboSearch.setToolTipText("Filtro de consultas de Convênio");
+        comboBusca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sem Filtragem", "ID", "Nome", "Status" }));
+        comboBusca.setToolTipText("Filtro de consultas de Convênio");
 
         btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/search-24.png"))); // NOI18N
         btnSearch.setToolTipText("Consulta de categorias");
@@ -272,11 +272,11 @@ public class TelaConsultaProcedimento extends javax.swing.JInternalFrame {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(88, 88, 88)
-                .addComponent(labelFilter)
+                .addComponent(labelFiltro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSearch)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -286,9 +286,9 @@ public class TelaConsultaProcedimento extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelFilter)
-                    .addComponent(textFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelFiltro)
+                    .addComponent(campoFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -332,10 +332,10 @@ public class TelaConsultaProcedimento extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JComboBox<String> comboSearch;
+    private javax.swing.JTextField campoFiltro;
+    private javax.swing.JComboBox<String> comboBusca;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelFilter;
+    private javax.swing.JLabel labelFiltro;
     private javax.swing.JTable tabelaProcedimentos;
-    private javax.swing.JTextField textFilter;
     // End of variables declaration//GEN-END:variables
 }

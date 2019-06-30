@@ -164,6 +164,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="campoNomePaciente">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelMedico">
       <Properties>
@@ -171,6 +174,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="campoNomeMedico">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btBuscaPaciente">
       <Properties>
