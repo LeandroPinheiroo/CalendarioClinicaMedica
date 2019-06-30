@@ -171,7 +171,7 @@ public class TelaAtualizacaoMedico extends javax.swing.JInternalFrame {
                     "Erro",JOptionPane.WARNING_MESSAGE);
         }
     }
-    /*método para setar os campos de rua e bairro pelo cep do cliente*/
+    /*método para setar os campos de rua e bairro pelo cep do médico*/
     public void setEndereco(String cep){
         try {
             /*seta a rua e o bairro de acordo com o cep*/

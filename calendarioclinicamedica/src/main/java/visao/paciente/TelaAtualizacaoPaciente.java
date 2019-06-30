@@ -44,7 +44,7 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
         setPaciente();
     }
     
-    /*método para setar os pacientes*/
+    /*método para setar os dados do paciente*/
     public void setPaciente(){
         campoNome.setText(paciente.getNome());
         campoCPF.setText(paciente.getCpf());
@@ -137,7 +137,7 @@ public class TelaAtualizacaoPaciente extends javax.swing.JInternalFrame {
                     "Erro",JOptionPane.WARNING_MESSAGE);
         }
     }
-    /*método para setar os campos de rua e bairro pelo cep do cliente*/
+    /*método para setar os campos de rua e bairro pelo cep do paciente*/
     public void setEndereco(String cep){
         try {
             /*seta a rua e o bairro de acordo com o cep*/

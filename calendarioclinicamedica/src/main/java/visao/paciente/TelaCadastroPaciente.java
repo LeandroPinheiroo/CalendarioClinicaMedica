@@ -116,7 +116,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
                     "Erro",JOptionPane.WARNING_MESSAGE);
         }
     }
-    /*método para setar os campos de rua e bairro pelo cep do cliente*/
+    /*método para setar os campos de rua e bairro pelo cep do paciente*/
     public void setEndereco(String cep){
         try {
             /*seta a rua e o bairro de acordo com o cep*/
@@ -245,7 +245,7 @@ public class TelaCadastroPaciente extends javax.swing.JInternalFrame {
 
         comboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins" }));
         comboEstado.setSelectedIndex(12);
-        comboEstado.setToolTipText("Estado onde se localiza a moradia do cliente");
+        comboEstado.setToolTipText("Estado onde se localiza a moradia do paciente\n");
         comboEstado.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }

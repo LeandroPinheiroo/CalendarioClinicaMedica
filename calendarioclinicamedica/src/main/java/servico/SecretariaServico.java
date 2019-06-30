@@ -87,7 +87,7 @@ public class SecretariaServico extends SecretariaDao{
     }
     
     /*método para buscar uma secretaria pelo codigo*/
-    public Secretaria getByCodigo(Integer codigo) throws ServicoException {
+    public Secretaria buscaPorID(Integer codigo) throws ServicoException {
         /*verifica se recebeu um codigo invalido*/
         if (codigo == null || codigo <= 0) {
             /*se recebeu, lança exceção com o erro informando*/
