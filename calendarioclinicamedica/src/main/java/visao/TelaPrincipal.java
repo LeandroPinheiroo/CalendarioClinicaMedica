@@ -94,6 +94,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuItemRelatorioPacientes = new javax.swing.JMenuItem();
         menuItemRelatorioAgendamentoPorIntervaloData = new javax.swing.JMenuItem();
         menuItemRelatorioPorcentagemProcedimentos = new javax.swing.JMenuItem();
+        menuSettings = new javax.swing.JMenu();
+        menuLogout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Software Gerente de Clínica");
@@ -103,8 +105,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        menuPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/client-24.png"))); // NOI18N
         menuPaciente.setText("Paciente");
 
+        menuItemCadastroPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
         menuItemCadastroPaciente.setText("Cadastro de Paciente");
         menuItemCadastroPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,6 +117,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuPaciente.add(menuItemCadastroPaciente);
 
+        menuItemConsultaPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/search-24.png"))); // NOI18N
         menuItemConsultaPaciente.setText("Consulta de Paciente");
         menuItemConsultaPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,9 +128,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuPaciente);
 
+        menuAgendamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/agendamento-24.png"))); // NOI18N
         menuAgendamento.setText("Agendamento");
 
+        menuItemAgendaConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/agendar-24.png"))); // NOI18N
         menuItemAgendaConsulta.setText("Agendar Consulta/Procedimento");
+        menuItemAgendaConsulta.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/agendar-24.png"))); // NOI18N
         menuItemAgendaConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemAgendaConsultaActionPerformed(evt);
@@ -135,8 +143,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuAgendamento);
 
+        menuConvenio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/convenio-24.png"))); // NOI18N
         menuConvenio.setText("Convênio");
 
+        menuItemCadastraConvenio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
         menuItemCadastraConvenio.setText("Cadastro de Convênio");
         menuItemCadastraConvenio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,6 +155,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuConvenio.add(menuItemCadastraConvenio);
 
+        menuItemConsultaConvenio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/search-24.png"))); // NOI18N
         menuItemConsultaConvenio.setText("Consulta de Convênio");
         menuItemConsultaConvenio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,8 +166,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuConvenio);
 
+        menuEspecializacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/especializacao-24.png"))); // NOI18N
         menuEspecializacao.setText("Especialização Médica");
 
+        menuItemCadastraEspecializacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
         menuItemCadastraEspecializacao.setText("Cadastro de Especialização");
         menuItemCadastraEspecializacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,6 +178,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuEspecializacao.add(menuItemCadastraEspecializacao);
 
+        menuItemConsultaEspecializacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/search-24.png"))); // NOI18N
         menuItemConsultaEspecializacao.setText("Consulta de Especialização");
         menuItemConsultaEspecializacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,8 +189,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuEspecializacao);
 
+        menuMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/medico-24.png"))); // NOI18N
         menuMedico.setText("Médico");
 
+        menuItemCadastraMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
         menuItemCadastraMedico.setText("Cadastro de Médico");
         menuItemCadastraMedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,6 +201,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuMedico.add(menuItemCadastraMedico);
 
+        menuItemConsultaMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/search-24.png"))); // NOI18N
         menuItemConsultaMedico.setText("Consulta de Médico");
         menuItemConsultaMedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -195,8 +212,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuMedico);
 
+        menuSecretaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/secretaria-24.png"))); // NOI18N
         menuSecretaria.setText("Secretária");
 
+        menuItemCadastraSecretaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
         menuItemCadastraSecretaria.setText("Cadastro de Secretária");
         menuItemCadastraSecretaria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,8 +234,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuSecretaria);
 
+        menuProcedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/procedimento-24.png"))); // NOI18N
         menuProcedimento.setText("Procedimento");
 
+        menuItemCadastraProcedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add-24.png"))); // NOI18N
         menuItemCadastraProcedimento.setText("Cadastro de Procedimento ");
         menuItemCadastraProcedimento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,6 +246,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuProcedimento.add(menuItemCadastraProcedimento);
 
+        menuItemConsultaProcedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/search-24.png"))); // NOI18N
         menuItemConsultaProcedimento.setText("Consulta de Procedimento");
         menuItemConsultaProcedimento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,8 +257,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuProcedimento);
 
+        menuProntuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/prontuario-24.png"))); // NOI18N
         menuProntuario.setText("Prontuário");
 
+        menuItemConsultaProntuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/search-24.png"))); // NOI18N
         menuItemConsultaProntuario.setText("Consulta de Prontuário");
         menuItemConsultaProntuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -247,8 +271,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuProntuario);
 
+        menuRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/report-24.png"))); // NOI18N
         menuRelatorios.setText("Relatórios");
 
+        menuItemRelatorioPacientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/client-24.png"))); // NOI18N
         menuItemRelatorioPacientes.setText("Relatório de Pacientes");
         menuItemRelatorioPacientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -257,6 +283,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuRelatorios.add(menuItemRelatorioPacientes);
 
+        menuItemRelatorioAgendamentoPorIntervaloData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/report-24.png"))); // NOI18N
         menuItemRelatorioAgendamentoPorIntervaloData.setText("Relatório de Agendamentos");
         menuItemRelatorioAgendamentoPorIntervaloData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -265,6 +292,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuRelatorios.add(menuItemRelatorioAgendamentoPorIntervaloData);
 
+        menuItemRelatorioPorcentagemProcedimentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/report-24.png"))); // NOI18N
         menuItemRelatorioPorcentagemProcedimentos.setText("Relatório de Procedimentos");
         menuItemRelatorioPorcentagemProcedimentos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -275,17 +303,32 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuRelatorios);
 
+        menuSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/settings-24.png"))); // NOI18N
+        menuSettings.setText("Configurações");
+
+        menuLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        menuLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/exit-24.png"))); // NOI18N
+        menuLogout.setText("Logout");
+        menuLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuLogoutActionPerformed(evt);
+            }
+        });
+        menuSettings.add(menuLogout);
+
+        jMenuBar1.add(menuSettings);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 815, Short.MAX_VALUE)
+            .addGap(0, 1003, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 444, Short.MAX_VALUE)
+            .addGap(0, 436, Short.MAX_VALUE)
         );
 
         pack();
@@ -453,6 +496,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_menuItemRelatorioPorcentagemProcedimentosActionPerformed
 
+    private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
+        TelaLogin sls = new TelaLogin();
+        sls.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_menuLogoutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -501,11 +550,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemRelatorioAgendamentoPorIntervaloData;
     private javax.swing.JMenuItem menuItemRelatorioPacientes;
     private javax.swing.JMenuItem menuItemRelatorioPorcentagemProcedimentos;
+    private javax.swing.JMenuItem menuLogout;
     private javax.swing.JMenu menuMedico;
     private javax.swing.JMenu menuPaciente;
     private javax.swing.JMenu menuProcedimento;
     private javax.swing.JMenu menuProntuario;
     private javax.swing.JMenu menuRelatorios;
     private javax.swing.JMenu menuSecretaria;
+    private javax.swing.JMenu menuSettings;
     // End of variables declaration//GEN-END:variables
 }
