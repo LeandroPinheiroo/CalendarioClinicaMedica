@@ -71,16 +71,16 @@ public class TelaConsultaProntuario extends javax.swing.JInternalFrame {
         if (prontuario != null) {
             /*seta a linha na tabela*/
             Object dados[] = {prontuario.getId(), prontuario.getPaciente().getNome(),
-                retornaNomesMedicos(prontuario.getMedicos()),
-                retornaNomesProcedimentos(prontuario.getProcedimentos())};
+                retornaNomesProcedimentos(prontuario.getProcedimentos()),
+                retornaNomesMedicos(prontuario.getMedicos())};
             model.addRow(dados);
         } /*caso foi linhas*/ 
         else if (prontuarios != null) {
             for (Prontuario p : prontuarios) {
                 /*seta as linhas na tabela*/
                 Object dados[] = {p.getId(), p.getPaciente().getNome(),
-                    retornaNomesMedicos(p.getMedicos()),
-                    retornaNomesProcedimentos(p.getProcedimentos())};
+                    retornaNomesProcedimentos(p.getProcedimentos()),
+                    retornaNomesMedicos(p.getMedicos())};
                 model.addRow(dados);
             }
         }

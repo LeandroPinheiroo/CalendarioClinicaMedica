@@ -145,4 +145,9 @@ public class MedicoServico extends MedicoDao{
         /*retorna a lista de médicos pelo seu status*/
         return super.buscaPorStatus(status);
     }
+    
+    /*método para verificar o login e senha do medico*/
+    public Medico buscaPorLoginSenha(String login, String senha){
+        return super.buscaPorLoginSenha(login, senha);
+    }
 }

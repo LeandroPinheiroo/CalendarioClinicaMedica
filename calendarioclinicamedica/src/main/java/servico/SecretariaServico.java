@@ -130,5 +130,9 @@ public class SecretariaServico extends SecretariaDao{
         /*retorna a lista de secretarias*/
         return super.buscaPorStatus(status);
     }
-
+    
+    /*método para verificar o login e senha da secretaria*/
+    public Secretaria buscaPorLoginSenha(String login, String senha){
+        return super.buscaPorLoginSenha(login, senha);
+    }
 }

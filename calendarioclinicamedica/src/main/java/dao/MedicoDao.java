@@ -47,5 +47,17 @@ public class MedicoDao extends GenericDao<Medico, Integer> {
             /*se não encontrar, retorna null*/
             return null;
         }
-    } 
+    }
+    
+    /*método para verificar se encontrou algum médico com esse login e senha*/
+    protected Medico buscaPorLoginSenha(String login, String senha){
+        try{
+            /*se encontrar retorna*/
+            return em.createQuery("select m from Medico m where m.login = :login and m.senha = :senha", Medico.class)
+                .setParameter("login", login).setParameter("senha", senha).getSingleResult();
+        }catch(NoResultException no){
+            /*se não encontrar, retorna null*/
+            return null;
+        }
+    }
 }

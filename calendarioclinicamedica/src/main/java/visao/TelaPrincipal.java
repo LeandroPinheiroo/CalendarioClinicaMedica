@@ -5,13 +5,25 @@
  */
 package visao;
 
+import conexao.Con;
 import visao.agendamento.TelaAgendamento;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import modelo.Medico;
+import modelo.Secretaria;
+import relatorios.RelatorioAgendamentoPorData;
+import relatorios.RelatorioPacientes;
+import relatorios.RelatorioPorcentagemProcedimentos;
 import visao.convenio.TelaCadastroConvenio;
 import visao.convenio.TelaConsultaConvenio;
 import visao.especializacao.TelaCadastroEspecializacao;
@@ -36,9 +48,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
      * Creates new form TelaPrincipal
      */
     private JDesktopPane painel;
-    
-    
-    public TelaPrincipal() {
+
+    public TelaPrincipal(Medico m, Secretaria s) {
         initComponents();
         Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
         this.setMaximumSize(DimMax);
@@ -79,7 +90,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuItemConsultaProcedimento = new javax.swing.JMenuItem();
         menuProntuario = new javax.swing.JMenu();
         menuItemConsultaProntuario = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        menuRelatorios = new javax.swing.JMenu();
+        menuItemRelatorioPacientes = new javax.swing.JMenuItem();
+        menuItemRelatorioAgendamentoPorIntervaloData = new javax.swing.JMenuItem();
+        menuItemRelatorioPorcentagemProcedimentos = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Software Gerente de Clínica");
@@ -233,8 +247,33 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuProntuario);
 
-        jMenu4.setText("jMenu4");
-        jMenuBar1.add(jMenu4);
+        menuRelatorios.setText("Relatórios");
+
+        menuItemRelatorioPacientes.setText("Relatório de Pacientes");
+        menuItemRelatorioPacientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRelatorioPacientesActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(menuItemRelatorioPacientes);
+
+        menuItemRelatorioAgendamentoPorIntervaloData.setText("Relatório de Agendamentos");
+        menuItemRelatorioAgendamentoPorIntervaloData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRelatorioAgendamentoPorIntervaloDataActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(menuItemRelatorioAgendamentoPorIntervaloData);
+
+        menuItemRelatorioPorcentagemProcedimentos.setText("Relatório de Procedimentos");
+        menuItemRelatorioPorcentagemProcedimentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRelatorioPorcentagemProcedimentosActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(menuItemRelatorioPorcentagemProcedimentos);
+
+        jMenuBar1.add(menuRelatorios);
 
         setJMenuBar(jMenuBar1);
 
@@ -253,9 +292,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuItemAgendaConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAgendaConsultaActionPerformed
-       TelaAgendamento telaAgendamento = new TelaAgendamento(this);
-       telaAgendamento.setVisible(true);
-       painel.add(telaAgendamento);
+        TelaAgendamento telaAgendamento = new TelaAgendamento(this);
+        telaAgendamento.setVisible(true);
+        painel.add(telaAgendamento);
     }//GEN-LAST:event_menuItemAgendaConsultaActionPerformed
 
     private void menuItemCadastroPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCadastroPacienteActionPerformed
@@ -272,8 +311,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente sair do sistema?",
-                "Verificação de saída",JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if(resposta == JOptionPane.YES_OPTION){
+                "Verificação de saída", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (resposta == JOptionPane.YES_OPTION) {
             this.dispose();
         }
     }//GEN-LAST:event_formWindowClosing
@@ -341,8 +380,78 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menuItemConsultaProntuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConsultaProntuarioActionPerformed
         TelaConsultaProntuario tcp = new TelaConsultaProntuario(this);
         tcp.setVisible(true);
-        painel.add(tcp);    
+        painel.add(tcp);
     }//GEN-LAST:event_menuItemConsultaProntuarioActionPerformed
+
+    private void menuItemRelatorioPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRelatorioPacientesActionPerformed
+        int resposta = JOptionPane.showConfirmDialog(this, "Deseja mostrar em tela?", "Dúvida", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        boolean verifica = false;
+        if (resposta == JOptionPane.YES_OPTION) {
+           verifica = true;
+        }
+        RelatorioPacientes relatorioPacientes = new RelatorioPacientes();
+        try {
+            relatorioPacientes.gerarRelatorio(verifica, Con.getInstance());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_menuItemRelatorioPacientesActionPerformed
+
+    private void menuItemRelatorioAgendamentoPorIntervaloDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRelatorioAgendamentoPorIntervaloDataActionPerformed
+        /*instancia a classe de relatorio*/
+        RelatorioAgendamentoPorData record = new RelatorioAgendamentoPorData();
+        /*verifica se o relatorio a ser gerado, deve ser mostrado em tela*/
+        int answer = JOptionPane.showConfirmDialog(this, "Mostrar em tela?", "Dúvida", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        /*recebe as datas*/
+        String d1 = JOptionPane.showInputDialog("Digite a primeira data: ");
+        String d2 = JOptionPane.showInputDialog("Digite a segunda data: ");
+        /*instancia o conversor*/
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date date1 = null;
+        Date date2 = null;
+        try {
+            /*tenta converter as datas, se for possível converter*/
+            date1 = df.parse(d1);
+            date2 = df.parse(d2);
+            /*faz a conversão, agora se der erro, indica que as datas não são validas*/
+        } catch (ParseException ex) {
+            /*nesse caso, mostra mensagem de erro e sai do método*/
+            JOptionPane.showMessageDialog(this, "ERRO, datas fornecedidas não são válidas!!", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        boolean visualize = false;
+        /*verifica a resposta, caso for sim, mostrará em tela*/
+        if (answer == JOptionPane.YES_OPTION) {
+            visualize = true;
+        }
+        /*tenta gerar o relatório*/
+        try {
+            record.gerarRelatorio(visualize, Con.getInstance(), date1, date2);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_menuItemRelatorioAgendamentoPorIntervaloDataActionPerformed
+
+    private void menuItemRelatorioPorcentagemProcedimentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRelatorioPorcentagemProcedimentosActionPerformed
+        /*instancia a classe de relatorio*/
+        RelatorioPorcentagemProcedimentos record = new RelatorioPorcentagemProcedimentos();
+        /*verifica se o relatorio a ser gerado, deve ser mostrado em tela*/
+        int answer = JOptionPane.showConfirmDialog(this, "Mostrar em tela?", "Dúvida", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        boolean visualize = false;
+        /*verifica a resposta, caso for sim, mostrará em tela*/
+        if (answer == JOptionPane.YES_OPTION) {
+            visualize = true;
+        }
+        /*tenta gerar o relatório*/
+        try {
+            record.gerarRelatorio(visualize, Con.getInstance());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_menuItemRelatorioPorcentagemProcedimentosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -354,24 +463,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaPrincipal().setVisible(true);
+                new TelaPrincipal(null, null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu menuAgendamento;
     private javax.swing.JMenu menuConvenio;
@@ -390,10 +498,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemConsultaProcedimento;
     private javax.swing.JMenuItem menuItemConsultaProntuario;
     private javax.swing.JMenuItem menuItemConsultaSecretaria;
+    private javax.swing.JMenuItem menuItemRelatorioAgendamentoPorIntervaloData;
+    private javax.swing.JMenuItem menuItemRelatorioPacientes;
+    private javax.swing.JMenuItem menuItemRelatorioPorcentagemProcedimentos;
     private javax.swing.JMenu menuMedico;
     private javax.swing.JMenu menuPaciente;
     private javax.swing.JMenu menuProcedimento;
     private javax.swing.JMenu menuProntuario;
+    private javax.swing.JMenu menuRelatorios;
     private javax.swing.JMenu menuSecretaria;
     // End of variables declaration//GEN-END:variables
 }

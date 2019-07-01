@@ -41,4 +41,17 @@ public class SecretariaDao extends GenericDao<Secretaria, Integer> {
         }
     }
     
+    /*método para verificar se encontrou alguma secretaria com esse login e senha*/
+    protected Secretaria buscaPorLoginSenha(String login, String senha){
+        try{
+            /*se encontrar retorna*/
+            return em.createQuery("select s from Secretaria s where s.login = :login and s.senha = :senha", 
+                    Secretaria.class)
+                .setParameter("login", login).setParameter("senha", senha).getSingleResult();
+        }catch(NoResultException no){
+            /*se não encontrar, retorna null*/
+            return null;
+        }
+    }
+    
 }

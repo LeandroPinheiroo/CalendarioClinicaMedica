@@ -5,6 +5,7 @@
  */
 package dao;
 
+import javax.persistence.NoResultException;
 import modelo.Pessoa;
 
 /**
@@ -14,7 +15,8 @@ import modelo.Pessoa;
 /*classe de dao da pessoa que extende do dao generico os métodos padrões*/
 public class PessoaDao extends GenericDao<Pessoa, Integer>{
     /*no construtor da classe, passa o tipo de classe para o pai para adaptar os metodos de acordo com a classe*/
-    protected PessoaDao() {
+    public PessoaDao() {
         super(Pessoa.class);
     }
+    
 }
